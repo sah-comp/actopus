@@ -1,0 +1,7 @@
+/* Some special css for our sandbox is placed here so style.css does not get poluted */
+li.active > a {
+    font-weight: bold;
+}
+li.current > a {
+    color: red;
+}

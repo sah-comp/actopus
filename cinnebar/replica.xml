@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : replica.xml
+    Created on : $Id$
+    Author     : $Author$
+    Description: Filelist to join all Cinnebar files.
+    Source     : https://github.com/gabordemooij/redbean  
+-->
+
+<root>
+	<load>
+		<item type="txt">license.txt</item>
+		<item type="php">interfaces.php</item>
+		<item type="php">gfunc.php</item>
+		<item type="php">factory.php</item>
+		<item type="php">facade.php</item>
+	    <item type="php">config.php</item>
+	    <item type="php">logger.php</item>
+	    <item type="php">writer.php</item>
+	    <item type="php">writer/errorlog.php</item>
+	    <item type="php">writer/file.php</item>
+	    <item type="php">stopwatch.php</item>
+		<item type="php">autoloader.php</item>
+	    <item type="php">request.php</item>
+	    <item type="php">response.php</item>
+	    <item type="php">router.php</item>
+	    <item type="php">controller.php</item>
+	    <item type="php">controller/scaffold.php</item>
+	    <item type="php">command.php</item>
+	    <item type="php">cache.php</item>
+	    <item type="php">input.php</item>
+	    <item type="php">permission.php</item>
+	    <item type="php">plugin.php</item>
+	    <item type="php">plugin/attach.php</item>
+	    <item type="php">plugin/detach.php</item>
+	    <item type="php">plugin/error.php</item>
+	    <item type="php">hash.php</item>
+	    <item type="php">element.php</item>
+	    <item type="php">upload.php</item>
+		<item type="php">view.php</item>
+	    <item type="php">menu.php</item>
+	    <item type="php">pagination.php</item>
+		<item type="php">viewhelper.php</item>
+		<item type="php">viewhelper/url.php</item>
+		<item type="php">viewhelper/textile.php</item>
+		<item type="php">messenger.php</item>
+		<item type="php">model.php</item>
+		<item type="php">model/setting.php</item>
+		<item type="php">model/country.php</item>
+		<item type="php">model/tag.php</item>
+		<item type="php">model/info.php</item>
+		<item type="php">model/token.php</item>
+		<item type="php">model/language.php</item>
+		<item type="php">model/user.php</item>
+		<item type="php">model/login.php</item>
+		<item type="php">model/domain.php</item>
+		<item type="php">model/filter.php</item>
+		<item type="php">model/criteria.php</item>
+		<item type="php">model/action.php</item>
+		<item type="php">model/role.php</item>
+		<item type="php">model/team.php</item>
+		<item type="php">model/session.php</item>
+		<item type="php">model/module.php</item>
+		<item type="php">validator.php</item>
+		<item type="php">validator/hasvalue.php</item>
+		<item type="php">validator/hasupload.php</item>
+		<item type="php">validator/isdate.php</item>
+		<item type="php">validator/isemail.php</item>
+		<item type="php">validator/isnumeric.php</item>
+		<item type="php">validator/range.php</item>
+		<item type="php">formatter.php</item>
+		<item type="php">converter.php</item>
+		<item type="php">converter/decimal.php</item>
+		<item type="php">converter/mysqldate.php</item>
+		<item type="php">module.php</item>
+		<item type="php">migrator.php</item>
+		<item type="php">sessionhandler.php</item>
+		<item type="php">sessionhandler/apc.php</item>
+		<item type="php">sessionhandler/database.php</item>
+		<item type="php">sessionhandler/memory.php</item>
+	</load>
+</root>

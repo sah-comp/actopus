@@ -1,0 +1,47 @@
+# S .htaccess file.
+#
+# If you are able to change your webservers configuration it would be
+# better to define all the things in your apache configuration instead
+# of using this .htaccess file.
+
+# Charset defaults to utf-8
+AddDefaultCharset utf-8
+
+# utf-8 charset for common filetypes
+AddCharset utf-8 .html .css .js .xml .json .rss
+
+#
+# Use index.php as directory index and index.html as second choice
+#
+DirectoryIndex index.php index.html
+
+<files *.ini>
+    order deny,allow
+    deny from all
+</files>
+
+#
+# Rewrite
+#
+<IfModule mod_rewrite.c>
+	# Allow rewriting
+	RewriteEngine On
+	
+	# Do not allow hidden directories, beginning with a dot, e.g. subversion directories
+	RewriteRule "(^|/)\." - [F]
+    
+	# Do not rewrite existing files, dir or symbolic links
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-l
+
+	# Do not redirect images
+	RewriteCond %{REQUEST_URI} !\.jpg$
+	RewriteCond %{REQUEST_URI} !\.jpeg$
+	RewriteCond %{REQUEST_URI} !\.gif$
+	RewriteCond %{REQUEST_URI} !\.png$
+	RewriteCond %{REQUEST_URI} !\.ico$
+
+	# Route everything through the index file of our no-framework framework
+	RewriteRule . index.php [L,NS]
+</IfModule>

@@ -1,0 +1,2072 @@
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.rule' doesn't exist 		SELECT
+			rule.id as id  
+
+		FROM
+			rule
+
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+
+		WHERE 1
+
+		GROUP BY rule.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.rule' doesn't exist 		SELECT
+			rule.id as id  
+
+		FROM
+			rule
+
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+
+		WHERE 1
+
+		GROUP BY rule.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.rule' doesn't exist 		SELECT
+			rule.id as id  
+
+		FROM
+			rule
+
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+
+		WHERE 1
+
+		GROUP BY rule.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.rule' doesn't exist 		SELECT
+			rule.id as id  
+
+		FROM
+			rule
+
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+
+		WHERE 1
+
+		GROUP BY rule.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.rule' doesn't exist 		SELECT
+			rule.id as id  
+
+		FROM
+			rule
+
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+
+		WHERE 1
+
+		GROUP BY rule.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.fee' doesn't exist 		SELECT
+			fee.id as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		GROUP BY fee.id
+
+		ORDER BY country.iso ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND invoicetype.name like ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND invoicetype.name like ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND invoicetype.name like ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND invoicetype.name like ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND invoicetype.name like ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND invoicetype.name like ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'order clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoice ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.name ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invoice.invoice' in 'where clause' 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoice = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter number: no parameters were bound 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoicedate = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoicedate DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter number: no parameters were bound 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoicedate = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoicedate DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter number: no parameters were bound 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoicedate = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.invoicedate DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter number: no parameters were bound 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoicedate = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter number: no parameters were bound 		SELECT
+			invoice.id as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.invoicedate = ?
+
+		GROUP BY invoice.id
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter number: no parameters were bound 		SELECT
+			user.id as id  
+		FROM
+			user
+		WHERE name like ?
+		GROUP BY user.id
+		ORDER BY email ASC
+		LIMIT 0, 23
+Scaffold Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter number: no parameters were bound 		SELECT
+			user.id as id  
+		FROM
+			user
+		WHERE name like ?
+		GROUP BY user.id
+		ORDER BY email ASC
+		LIMIT 0, 23
+Scaffold Collection has issues: [23000] - SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'name' in where clause is ambiguous 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE name like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [23000] - SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'name' in where clause is ambiguous 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE name like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'pricetype.description' in 'order clause' 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY pricetype.description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [23000] - SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'description' in order clause is ambiguous 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [23000] - SQLSTATE[23000]: Integrity constraint violation: 1052 Column 'description' in order clause is ambiguous 		SELECT
+			DISTINCT(fee.id) as id  
+
+		FROM
+			fee
+
+        LEFT JOIN rule ON rule.id = fee.rule_id
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+		LEFT JOIN pricetype ON pricetype.id = fee.pricetype_id
+
+		WHERE 1
+
+		ORDER BY description DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'cardtype.description' in 'order clause' 		SELECT
+			DISTINCT(rule.id) as id  
+
+		FROM
+			rule
+
+		LEFT JOIN country ON country.id = rule.country_id
+		LEFT JOIN cardtype ON cardtype.id = rule.cardtype_id
+
+		WHERE 1
+
+		ORDER BY cardtype.description ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.paymentstyle' doesn't exist 		SELECT
+            DISTINCT(id)  
+		FROM
+			paymentstyle
+		WHERE 1
+		ORDER BY name ASC
+		LIMIT 0, 23
+Scaffold Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '0 country.iso like '%de%' 0 attorney.name like '%h%'
+
+		ORDER BY card.sortnumber' at line 13 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE card.name like ? 0 country.iso like ? 0 attorney.name like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign ON foreign.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = car' at line 11 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS foreign ON foreign.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE 1
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign ON foreign.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = car' at line 11 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS foreign ON foreign.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE 1
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign ON foreign.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = car' at line 11 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS foreign ON foreign.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE 1
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign ON foreign.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = ca' at line 11 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS foreign ON foreign.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE 1
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'foreign.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE foreign.nickname = ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'foreign.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE foreign.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'foreign.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE foreign.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invreiceiver.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE invreiceiver.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'foreign.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE foreign.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'foreign.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE foreign.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'foreign.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE foreign.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'client.nickname' in 'having clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		HAVING client.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'client.nickname' in 'having clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		HAVING client.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'client.nickname' in 'having clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		HAVING client.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'client.nickname' in 'having clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		HAVING client.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'having clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		HAVING applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invreceiver.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE invreceiver.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+		LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+		LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+		LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id  
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON ( person.id = card.client_id OR person.id = card.applicant_id OR person.id = card.invreceiver_id OR person.id = card.foreign_id)
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id,
+			person.nickname
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON ( person.id = card.client_id OR person.id = card.applicant_id OR person.id = card.invreceiver_id OR person.id = card.foreign_id)
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id,
+			person.nickname
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON ( person.id = card.client_id OR person.id = card.applicant_id OR person.id = card.invreceiver_id OR person.id = card.foreign_id)
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON ( person.id = card.client_id OR person.id = card.applicant_id OR person.id = card.invreceiver_id OR person.id = card.foreign_id)
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON ( card.client_id = person.id)
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON ( card.client_id = person.id)
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON card.client_id = person.id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON card.client_id = person.id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+	    LEFT JOIN person ON card.client_id = person.id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'person.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+        LEFT JOIN person AS client ON client.id = card.client_id
+        LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+        LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+        LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE person.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invreceiver.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+        LEFT JOIN person AS client ON client.id = card.client_id
+        LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+        LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+        LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE invreceiver.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'invreceiver.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+        LEFT JOIN person AS client ON client.id = card.client_id
+        LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+        LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+        LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE invreceiver.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+        LEFT JOIN person AS client ON client.id = card.client_id
+        LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+        LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+        LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'applicant.nickname' in 'where clause' 		SELECT
+			DISTINCT(card.id) as id
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+        LEFT JOIN person AS client ON client.id = card.client_id
+        LEFT JOIN person AS applicant ON applicant.id = card.applicant_id
+        LEFT JOIN person AS invreceiver ON invreceiver.id = card.invreceiver_id
+        LEFT JOIN person AS `foreign` ON `foreign`.id = card.foreign_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+
+		WHERE applicant.nickname like ?
+
+		ORDER BY card.sortnumber DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'order clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		ORDER BY user.name ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'order clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		ORDER BY user.name DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'order clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		ORDER BY user.name ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'order clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		ORDER BY user.name DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'order clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		ORDER BY user.name DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'order clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE 1
+
+		ORDER BY user.name ASC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE user.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE user.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user ON user.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE user.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user ON user.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE user.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23

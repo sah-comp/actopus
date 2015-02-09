@@ -1,0 +1,25 @@
+Cinnebar is a leightweight no-framework framework written in PHP by Stephan Hombergs.
+
+I started this a few years ago as a learning project and the code-base has evolved
+throughtout the years. By now it has matured to something i use on a regular basis
+to quickly build sites and web applications. It is just another framework, but it
+is mine. Just kidding.
+
+Maybe it is useful to someone else, so i put it up into the open source world.
+
+- Have fun
+- Keep it simple, stupid
+- Do not repeat yourself
+- Assume nothing
+- Convention over configuration
+- Don't call us, we'll call you
+- Beware of automation
+- Refactor on green
+- Read, write and refine documentation often
+- Find someone to proof-read all you have written yourself
+- Do not follow rules!
+
+Sincerly,
+
+Stephan A. Hombergs
+Winter 2013
