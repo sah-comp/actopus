@@ -24,9 +24,9 @@ class Controller_Search extends Cinnebar_Controller
      * @var array
      */
     public $types = array(
+        'person',
         'card',
-        'priority',
-        'person'
+        'priority'
     );
 
     /**
