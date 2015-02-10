@@ -34,6 +34,6 @@ class Viewhelper_Url extends Cinnebar_Viewhelper
     public function execute($url = '', $type = 'href')
     {
         if ($type == 'href') return $this->view()->basehref().$url;
-        return '/themes/'.S_THEME.'/'.$type.'/'.$url.'.'.$type;
+        return $this->view()->basehref().'/../themes/'.S_THEME.'/'.$type.'/'.$url.'.'.$type;
     }
 }

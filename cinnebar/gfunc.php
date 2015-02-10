@@ -19,7 +19,7 @@
  * @param string (optional) $desc may describe the token, e.g. to help the translation team
  * @return string
  */
-function __($text, $replacements = null, $lng = 'de', $mode = null, $desc = null)
+function __($text, $replacements = null, $lng = null, $mode = null, $desc = null)
 {
     global $language;
     if (empty($lng)) $lng = $language;
