@@ -133,7 +133,7 @@ interface iModule
  * @param string (optional) $desc may describe the token, e.g. to help the translation team
  * @return string
  */
-function __($text, $replacements = null, $lng = null, $mode = null, $desc = null)
+function __($text, $replacements = null, $lng = 'de', $mode = null, $desc = null)
 {
     global $language;
     if (empty($lng)) $lng = $language;
@@ -4910,7 +4910,7 @@ class Viewhelper_Url extends Cinnebar_Viewhelper
     public function execute($url = '', $type = 'href')
     {
         if ($type == 'href') return $this->view()->basehref().$url;
-        return $this->view()->basehref().'/../themes/'.S_THEME.'/'.$type.'/'.$url.'.'.$type;
+        return '/themes/'.S_THEME.'/'.$type.'/'.$url.'.'.$type;
     }
 }
 
