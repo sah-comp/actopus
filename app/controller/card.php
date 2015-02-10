@@ -399,7 +399,7 @@ class Controller_Card extends Controller_Scaffold
 		
 		$fields_hidden = array();
 		$fields_readonly = array();
-		$pdf_filename = utf8_decode(__('dpma_renewal_pdfname', array($card->name, $cardfeestep->sequence), 'en'));
+		$pdf_filename = utf8_decode(__('dpma_renewal_pdfname', array($card->name, 2+$cardfeestep->sequence), 'en'));
 		$pdf_original = $config['upload']['dir'].'EPA-Abbuchung-EN-04_14_helv.pdf';
 		//$pdf_original = $config['upload']['dir'].'EPA-Abbuchung-EN-04_14.pdf';// wont work because Arial
 		// Finally make the actual PDF file!
