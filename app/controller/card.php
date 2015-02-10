@@ -33,6 +33,36 @@ class Controller_Card extends Controller_Scaffold
     public $type = 'card';
     
     /**
+     * dup(licate) a record and redirect to edit it
+     */
+    public function duplicate($id)
+    {
+        $this->cache()->deactivate();
+        
+        session_start();
+        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        
+        if ( ! $this->permission()->allowed($this->user(), $this->type, 'add')) {
+			return $this->error('403');
+		}
+		
+		$record = R::load($this->type, $id);
+		$dup = R::dup($record);
+		//error_log($dup->name . ' Copy');
+		$dup->name = $dup->name . ' Kopie';
+		$dup->ownInvoice = array();
+		try {
+		    $dup->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
+		    R::store($dup);
+		} catch (Exception $e) {
+            Cinnebar_Logger::instance()->log($e, 'exceptions');
+		}
+	    // goto to edit the duplicate
+	    $_SESSION['copy'] = true;
+	    $this->redirect(sprintf('/%s/edit/%d/', $dup->getMeta('type'), $dup->getId()));
+    }
+    
+    /**
      * Displays a page with a (paginated) selection of beans.
      *
      * Default order dir is descending.
