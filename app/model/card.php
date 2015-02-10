@@ -1155,6 +1155,7 @@ SQL;
         //$this->bean->feeinactive = false;
         
         $this->addValidator('name', 'isunique', array('bean' => $this->bean, 'attribute' => 'name'));
+        $this->addValidator('name', 'pregmatch', array('regex' => "/\\d{2}[.]\\d{4}.?/"));
         $this->addConverter('applicationdate', 'mySQLDate');
         $this->addConverter('issuedate', 'mySQLDate');
         $this->addConverter('disclosuredate', 'mySQLDate');
