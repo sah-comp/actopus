@@ -39,6 +39,19 @@
     </div>
     <div class="row">
         <label
+            for="user-shortname"
+            class="<?php echo ($record->hasError('shortname')) ? 'error' : ''; ?>">
+            <?php echo __('user_label_shortname') ?>
+        </label>
+        <input
+            id="user-shortname"
+            type="text"
+            name="dialog[shortname]"
+            value="<?php echo htmlspecialchars($record->shortname) ?>"
+            required="required" />
+    </div>
+    <div class="row">
+        <label
             for="user-num"
             class="<?php echo ($record->hasError('num')) ? 'error' : ''; ?>">
             <?php echo __('user_label_num') ?>
