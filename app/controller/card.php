@@ -373,7 +373,7 @@ class Controller_Card extends Controller_Scaffold
             'Address line 1' => utf8_decode($setting->houseaddr1),
             'Address line 2' => utf8_decode($setting->houseaddr2 . ' ' . $setting->houseaddr3),
             'Address line 3' => utf8_decode($setting->houseaddr4),
-            'Reference of payer' => utf8_decode($card->name . '.' . $card->user()->num . '.' .$cuser->name. ' (' . $card->client()->nickname . ')'),
+            'Reference of payer' => utf8_decode($card->name . '.' . $card->user()->num . '.' .$cuser->shortname. ' (' . $card->client()->nickname . ')'),
             'EP Number' => utf8_decode($card->applicationnumber),
             'Place and Date' => utf8_decode($setting->houseaddr3 . ', ' . strftime('%B %e, %Y')),
             'Fee no. x11' => utf8_decode('0' . (32 + $cardfeestep->sequence)),
