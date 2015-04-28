@@ -1070,8 +1070,16 @@ SQL;
 	            __('card_label_attorney'),
 	            __('person_label_nickname'),
 	            __('card_label_client'),
+	            __('card_label_clientcode'),
 	            __('card_label_title'),
-	            __('card_label_codeword')
+	            __('card_label_codeword'),
+	            __('card_label_note'),
+	            __('card_label_applicationdate'),
+	            __('card_label_applicationnumber'),
+	            __('card_label_issuedate'),
+	            __('card_label_issuenumber'),
+	            __('card_label_disclosuredate'),
+	            __('card_label_disclosurenumber')
 	        );
 	    }
         return array(
@@ -1082,8 +1090,16 @@ SQL;
             $this->bean->user->name,
             $this->bean->client()->nickname,
             $this->bean->client()->name,
+            $this->bean->clientcode,
             $this->bean->title,
-            $this->bean->codeword
+            $this->bean->codeword,
+            $this->bean->note,
+            $this->bean->applicationdate,
+            $this->bean->applicationnumber,
+            $this->bean->issuedate,
+            $this->bean->issuenumber,
+            $this->bean->disclosuredate,
+            $this->bean->disclosurenumber
         );
 	}
 	
