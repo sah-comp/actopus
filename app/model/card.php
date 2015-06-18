@@ -518,7 +518,7 @@ SQL;
 	        $priorities .= sprintf('%s %s %s', $priority->country->name, $priority->number, $view->date($priority->date))."\n";
 	    }
 	    $arr = array(
-	        'client' => $this->bean->clientaddress,
+	        'client' => $this->bean->clientName() . "\n" . $this->bean->clientaddress,
 	        'title' => $this->bean->title,
 	        'codeword' => $this->bean->codeword,
 	        'note' => $this->bean->note,
