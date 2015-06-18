@@ -384,24 +384,27 @@ class Controller_Card extends Controller_Scaffold
 		$fdf_data_names = array();
 		
 		// Setup checkboxes for mode of payment K1 = bank payment, K2 = debit from deposit
-		if ($setting->houseepoaccount) {
+		
+		if ($setting->houseepoaccount != '') {
 		    // mode of payment is K2
-		    $fdf_data_names['K1'] = 'Off';
+		    //$fdf_data_names['K1'] = 'Off';
     		$fdf_data_names['K2'] = 'Ja';
     		$fdf_data_strings['Deposit account no'] = utf8_decode($setting->houseepoaccount);
 		} else {
 		    // mode of payment is K1
 		    $fdf_data_names['K1'] = 'Ja';
-    		$fdf_data_names['K2'] = 'Off';
+    		//$fdf_data_names['K2'] = 'Off';
     		$fdf_data_strings['Name of EPO bank'] = utf8_decode($setting->houseepobank);
 		}
 		
+		//$fdf_data_names['K1'] = 'Ja';
+		//$fdf_data_names['K2'] = 'Off';
 		
 		$fields_hidden = array();
 		$fields_readonly = array();
 		$pdf_filename = utf8_decode(__('dpma_renewal_pdfname', array($card->name, 2+$cardfeestep->sequence), 'en'));
-		//$pdf_original = $config['upload']['dir'].'EPA-Abbuchung-EN-04_14_helv.pdf';// this works
-		$pdf_original = $config['upload']['dir'].'EPA-Abbuchung-EN-03_15_arial.pdf';//this is new, arial
+		$pdf_original = $config['upload']['dir'].'150618-F1010_Gebühren_DE_4-14.pdf';// ??
+		//$pdf_original = $config['upload']['dir'].'EPA-Abbuchung-EN-03_15_arial.pdf';//this is new, arial
 		// Finally make the actual PDF file!
 		$pdfmaker->make_pdf($fdf_data_strings, $fdf_data_names, $fields_hidden, $fields_readonly, $pdf_original, $pdf_filename);
 		exit;
