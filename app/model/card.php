@@ -1044,9 +1044,9 @@ SQL;
         			    'attribute' => 'feeinactive',
         			    'orderclause' => 'card.feeinactive',
         			    'class' => 'bool',
-        			    'viewhelper' => 'bool',
+        			    'viewhelper' => 'boolperv',
         				'filter' => array(
-        				    'tag' => 'bool'
+        				    'tag' => 'boolperv'
         				)
         			)
         		);

@@ -53,7 +53,7 @@
         <label
             for="card-fee-inactive"
             class="<?php echo ($record->hasError('noannuals')) ? 'error' : ''; ?>">
-            <?php echo __('card_label_feeinactive') ?>
+            <?php echo __('card_label_feeinactive_perv') ?>
         </label>
     </div>
 </div>

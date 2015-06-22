@@ -51,6 +51,25 @@
         </option>
         <?php endforeach ?>
     </select>
+    <?php elseif ($_criteria->tag == 'boolperv'): ?>
+    <select
+        class="filter-select"
+        name="filter[ownCriteria][<?php echo $_i ?>][value]">
+        <option
+            value="">
+            <?php echo __('filter_placeholder_any') ?>
+        </option>
+        <?php foreach (array(
+            0 => __('boolperv_on'),
+            1 => __('boolperv_off')
+            ) as $_bool_val => $_bool_text): ?>
+        <option
+            value="<?php echo $_bool_val ?>"
+            <?php echo ($_criteria->value != '' && $_bool_val == (int)$_criteria->value) ? 'selected="selected"' : '' ?>>
+            <?php echo $_bool_text ?>
+        </option>
+        <?php endforeach ?>
+    </select>
     <?php else: ?>
     <input
         type="text"

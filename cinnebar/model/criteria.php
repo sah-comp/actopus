@@ -52,7 +52,8 @@ class Model_Criteria extends Cinnebar_Model
          'textarea' => array('bw', 'ew', 'eq', 'neq', 'like', 'notlike'),
          'in' => array('in'),
          'select' => array('eq'),
-         'bool' => array('eq')
+         'bool' => array('eq'),
+         'boolperv' => array('eq')
      );
 
      /**

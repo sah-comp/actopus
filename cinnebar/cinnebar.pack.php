@@ -823,7 +823,7 @@ class Controller_Scaffold extends Cinnebar_Controller
                 $this->limit = $real_limit;
         $this->offset = $real_offset;
         $data = array();
-        foreach ($this->view->records as $id => $record) {
+        $data[] = $record->exportToCSV(true);         foreach ($this->view->records as $id => $record) {
             $data[] = $record->exportToCSV();
         }
         require_once BASEDIR.'/vendors/parsecsv-0.3.2/parsecsv.lib.php';
@@ -3283,7 +3283,8 @@ class Model_Criteria extends Cinnebar_Model
          'textarea' => array('bw', 'ew', 'eq', 'neq', 'like', 'notlike'),
          'in' => array('in'),
          'select' => array('eq'),
-         'bool' => array('eq')
+         'bool' => array('eq'),
+         'boolperv' => array('eq')
      );
      public $pat = array('%', '_');
      public $rep = array('\%', '\_');
