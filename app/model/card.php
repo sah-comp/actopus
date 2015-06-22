@@ -284,7 +284,7 @@ SQL;
      */
     public function attorneyName()
     {
-        return $this->bean->user()->name;
+        return $this->bean->user()->shortname;
     }
 
     /**
@@ -603,7 +603,7 @@ SQL;
         			),
         			array(
         			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.name',
+        			    'orderclause' => 'attorney.shortname',
         			    'class' => 'text',
         			    'callback' => array(
         			        'name' => 'attorneyName'
@@ -687,7 +687,7 @@ SQL;
         			),
         			array(
         			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.name',
+        			    'orderclause' => 'attorney.shortname',
         			    'class' => 'text',
         			    'callback' => array(
         			        'name' => 'attorneyName'
@@ -779,7 +779,7 @@ SQL;
         			),
         			array(
         			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.name',
+        			    'orderclause' => 'attorney.shortname',
         			    'class' => 'text',
         			    'callback' => array(
         			        'name' => 'attorneyName'
@@ -1004,7 +1004,7 @@ SQL;
         			),
         			array(
         			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.name',
+        			    'orderclause' => 'attorney.shortname',
         			    'class' => 'text',
         			    'callback' => array(
         			        'name' => 'attorneyName'
