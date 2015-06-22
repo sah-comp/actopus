@@ -69,6 +69,19 @@ SQL;
 	}
 	
 	/**
+	 * Returns formattedaddress and builds it if not yet generated.
+	 *
+	 * @return string
+	 */
+	public function getFormattedAddress()
+	{
+        if ( ! $this->bean->formattedaddress ) {
+            $this->bean->formattedaddress = $this->formatAddress();
+        }
+        return $this->bean->formattedaddress;
+	}
+	
+	/**
 	 * update.
 	 *
 	 * @uses formatAddress() to format the postal address depending on the country code

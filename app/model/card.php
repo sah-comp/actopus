@@ -517,8 +517,9 @@ SQL;
         foreach ($this->bean->ownPriority as $id=>$priority) {
 	        $priorities .= sprintf('%s %s %s', $priority->country->name, $priority->number, $view->date($priority->date))."\n";
 	    }
+	    $_client = $this->bean->client();
 	    $arr = array(
-	        'client' => $this->bean->clientName() . "\n" . $this->bean->clientaddress,
+	        'client' => $_client->name . "\n" . $_client->addressLabelByType()->getFormattedAddress(),
 	        'title' => $this->bean->title,
 	        'codeword' => $this->bean->codeword,
 	        'note' => $this->bean->note,
