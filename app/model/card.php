@@ -1055,6 +1055,41 @@ SQL;
 	}
 	
 	/**
+	 * Returns a humanreadable status for a client.
+	 *
+	 * @return string
+	 */
+	public function clientstatus()
+	{
+        if ( $this->bean->cardstatus_id == 2 ) return __('humanreadable_status_dead');
+        if ( $this->bean->issuenumber || $this->bean->issuedate != '0000-00-00') return __('humanreadable_status_issued');
+        if ( $this->bean->applicationnumber || $this->bean->applicationdate != '0000-00-00') return __('humandreadable_status_applied');
+	}
+	
+	/**
+	 * Returns either the codeword or if not set the title.
+	 *
+	 * @return string
+	 */
+	public function codewordOrTitle()
+	{
+        if ( $this->bean->codeword ) return $this->bean->codeword;
+        return $this->bean->title;
+	}
+	
+	/**
+	 * Returns an empty string or the next fee due date if valid.
+	 *
+	 * @return string
+	 */
+	public function getFeeduedate()
+	{
+        if ( $this->bean->feeduedate == '' || $this->bean->feeduedate == '1970-01-01' ||
+                $this->bean->feeduedate == '0000-00-00') return '';
+        return $this->bean->feeduedate;
+	}
+	
+	/**
 	 * Returns an array of the bean.
 	 *
 	 * @param bool $header defaults to false, if true then column headers are returned
@@ -1062,6 +1097,31 @@ SQL;
 	 */
 	public function exportToCSV($header = false)
 	{
+	    if ( $header == true ) {
+	        return array(
+                __('card_label_card.name'),
+                __('card_label_country'),
+                __('card_label_cardtype'),
+                __('card_label_applicationnumber'),
+	            __('card_label_applicationdate'),
+	            __('card_label_clientstatus'),
+	            __('card_label_codewordortitle'),
+	            __('card_label_feedudate')
+                
+	        );
+	    }
+	    return array(
+            $this->bean->name,
+            $this->bean->country->name,
+            $this->bean->cardtype->name,
+            $this->bean->applicationnumber,
+            $this->bean->applicationdate,
+            $this->bean->clientstatus(),
+            $this->bean->codewordOrTitle(),
+            $this->bean->getFeeduedate()
+            
+	    );
+	    /* standard list stuff
 	    if ($header === true) {
 	        return array(
 	            __('card_label_card.name'),
@@ -1102,6 +1162,7 @@ SQL;
             $this->bean->disclosuredate,
             $this->bean->disclosurenumber
         );
+        */
 	}
 	
 	/**

@@ -823,7 +823,7 @@ class Controller_Scaffold extends Cinnebar_Controller
                 $this->limit = $real_limit;
         $this->offset = $real_offset;
         $data = array();
-        $data[] = $record->exportToCSV(true);         foreach ($this->view->records as $id => $record) {
+                foreach ($this->view->records as $id => $record) {
             $data[] = $record->exportToCSV();
         }
         require_once BASEDIR.'/vendors/parsecsv-0.3.2/parsecsv.lib.php';

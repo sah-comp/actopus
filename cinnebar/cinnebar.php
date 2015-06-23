@@ -2281,7 +2281,7 @@ class Controller_Scaffold extends Cinnebar_Controller
         $this->offset = $real_offset;
         
         $data = array();
-        $data[] = $record->exportToCSV(true); //this will give us a header line
+        //$data[] = $this->view->record->exportToCSV(true);
         foreach ($this->view->records as $id => $record) {
             $data[] = $record->exportToCSV();
         }
