@@ -1063,7 +1063,7 @@ SQL;
 	{
         if ( $this->bean->cardstatus_id == 2 ) return __('humanreadable_status_dead');
         if ( $this->bean->issuenumber || $this->bean->issuedate != '0000-00-00') return __('humanreadable_status_issued');
-        if ( $this->bean->applicationnumber || $this->bean->applicationdate != '0000-00-00') return __('humandreadable_status_applied');
+        if ( $this->bean->applicationnumber || $this->bean->applicationdate != '0000-00-00') return __('humanreadable_status_applied');
 	}
 	
 	/**
@@ -1106,7 +1106,7 @@ SQL;
 	            __('card_label_applicationdate'),
 	            __('card_label_clientstatus'),
 	            __('card_label_codewordortitle'),
-	            __('card_label_feedudate')
+	            __('card_label_feeduedate')
                 
 	        );
 	    }
