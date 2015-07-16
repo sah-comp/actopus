@@ -1112,12 +1112,12 @@ SQL;
 	    }
 	    return array(
             $this->bean->name,
-            $this->bean->country->name,
+            strtoupper($this->bean->country->iso),
             $this->bean->cardtype->name,
             $this->bean->applicationnumber,
             $this->bean->applicationdate,
             $this->bean->clientstatus(),
-            $this->bean->codewordOrTitle(),
+            str_replace('"', '', $this->bean->codewordOrTitle()),
             $this->bean->getFeeduedate()
             
 	    );
