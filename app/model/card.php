@@ -1103,7 +1103,7 @@ SQL;
                 __('card_label_country'),
                 __('card_label_cardtype'),
                 __('card_label_applicationnumber'),
-	            __('card_label_applicationdate'),
+	            __('card_label_applicationdate_short'),
 	            __('card_label_clientstatus'),
 	            __('card_label_codewordortitle'),
 	            __('card_label_feeduedate')
