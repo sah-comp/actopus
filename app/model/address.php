@@ -93,6 +93,15 @@ SQL;
 	}
 	
 	/**
+	 * dispense.
+	 *
+	 */
+	public function dispense()
+	{
+        $this->bean->label = 'work';
+	}
+	
+	/**
 	 * Generates a formatted address using a cinnebar formatter.
 	 *
 	 * The formmatter to be used is determined by the country code (iso) of this postal address.
