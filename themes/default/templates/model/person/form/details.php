@@ -317,7 +317,7 @@
     	</div>
     
         <div id="address-container" class="container attachable detachable address">
-        <?php foreach ($record->own('address', true) as $_n => $_record): ?>
+        <?php foreach ($record->own('address', false) as $_n => $_record): ?>
             <?php echo $this->partial(sprintf('model/%s/form/own/%s', $record->getMeta('type'), 'address'), array('n' => $_n, 'address' => $_record)) ?>
         <?php endforeach ?>    
     	    <a
