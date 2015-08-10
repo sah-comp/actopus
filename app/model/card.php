@@ -1291,7 +1291,7 @@ SQL;
             $this->bean->invreceiveraddress = null;
             $this->bean->invreceivercode = null;
         }
-        if ( ! $this->bean->customeraccount) {
+        if ( ! $this->bean->customeraccount || $this->bean->hasChanged('invreceiver_id') || $this->bean->hasChanged('client_id')) {
             if ( $this->bean->invreceiver_id ) {
                 $this->bean->customeraccount = $this->bean->invreceiver()->account;
             } elseif ( $this->bean->client_id ) {
