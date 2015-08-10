@@ -553,12 +553,12 @@ class Controller_Scaffold extends Cinnebar_Controller
         $data = array();
         //$data[] = $this->view->record->exportToCSV(true);
         foreach ($this->view->records as $id => $record) {
-            $data[] = $record->exportToCSV();
+            $data[] = $record->exportToCSV(false, $layout);
         }
         
         require_once BASEDIR.'/vendors/parsecsv-0.3.2/parsecsv.lib.php';
         $csv = new ParseCSV();
-        $csv->output(true, __($this->view->record->getMeta('type').'_head_title').'.csv', $data, $this->view->record->exportToCSV(true));
+        $csv->output(true, __($this->view->record->getMeta('type').'_head_title').'.csv', $data, $this->view->record->exportToCSV(true, $layout));
         exit;
     }
     

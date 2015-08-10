@@ -498,8 +498,10 @@ SQL;
             $menu->add(__('card_pdf'), $view->url(sprintf('/card/pdf/%d/%d/%d/%s/%d/%d', $this->bean->getId(), $view->page, $view->limit, $view->layout, $view->order, $view->dir)), 'scaffold-pdf');
             $menu->add(__('card_family_pdf'), $view->url(sprintf('/card/pdf/%d/%d/%d/%s/%d/%d/family', $this->bean->getId(), $view->page, $view->limit, $view->layout, $view->order, $view->dir)), 'scaffold-pdf');
         } else {
-            // add CSV export action
-            $menu->add(__('scaffold_csv'), $view->url(sprintf('/%s/press/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), $view->page, $view->limit, $view->layout, $view->order, $view->dir)), 'scaffold_csv');
+            // add CSV export action: vrone - export list type one
+            $menu->add(__('scaffold_csv_card_one'), $view->url(sprintf('/%s/press/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), $view->page, $view->limit, 'vrone', $view->order, $view->dir)), 'scaffold_csv');
+            // add CSV export action: vrone - export list type one
+            $menu->add(__('scaffold_csv_card_two'), $view->url(sprintf('/%s/press/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), $view->page, $view->limit, 'vrtwo', $view->order, $view->dir)), 'scaffold_csv');
         }
         return $menu;
     }
@@ -1093,76 +1095,116 @@ SQL;
 	 * Returns an array of the bean.
 	 *
 	 * @param bool $header defaults to false, if true then column headers are returned
+	 * @param string $layout
 	 * @return array
 	 */
-	public function exportToCSV($header = false)
+	public function exportToCSV($header = false, $layout = 'default')
 	{
-	    if ( $header == true ) {
-	        return array(
-                __('card_label_card.name'),
-                __('card_label_country'),
-                __('card_label_cardtype'),
-                __('card_label_applicationnumber'),
-	            __('card_label_applicationdate_short'),
-	            __('card_label_clientstatus'),
-	            __('card_label_codewordortitle'),
-	            __('card_label_feeduedate')
+	    // layout vrone
+	    if ( $layout == 'vrone' ) {
+    	    if ( $header == true ) {
+    	        return array(
+                    __('card_label_card.name'),
+                    __('card_label_country'),
+                    __('card_label_cardtype'),
+                    __('card_label_applicationnumber'),
+    	            __('card_label_applicationdate_short'),
+    	            __('card_label_clientstatus'),
+    	            __('card_label_codewordortitle'),
+    	            __('card_label_feeduedate')
                 
-	        );
-	    }
-	    return array(
-            $this->bean->name,
-            strtoupper($this->bean->country->iso),
-            $this->bean->cardtype->name,
-            $this->bean->applicationnumber,
-            $this->bean->applicationdate,
-            $this->bean->clientstatus(),
-            str_replace('"', '', $this->bean->codewordOrTitle()),
-            $this->bean->getFeeduedate()
+    	        );
+    	    }
+    	    return array(
+                $this->bean->name,
+                strtoupper($this->bean->country->iso),
+                $this->bean->cardtype->name,
+                $this->bean->applicationnumber,
+                $this->bean->applicationdate,
+                $this->bean->clientstatus(),
+                str_replace('"', '', $this->bean->codewordOrTitle()),
+                $this->bean->getFeeduedate()
             
-	    );
-	    /* standard list stuff
-	    if ($header === true) {
-	        return array(
-	            __('card_label_card.name'),
-	            __('card_label_country'),
-	            __('card_label_cardtype'),
-	            __('card_label_cardstatus'),
-	            __('card_label_attorney'),
-	            __('person_label_nickname'),
-	            __('card_label_client'),
-	            __('card_label_clientcode'),
-	            __('card_label_title'),
-	            __('card_label_codeword'),
-	            __('card_label_note'),
-	            __('card_label_applicationdate'),
-	            __('card_label_applicationnumber'),
-	            __('card_label_issuedate'),
-	            __('card_label_issuenumber'),
-	            __('card_label_disclosuredate'),
-	            __('card_label_disclosurenumber')
-	        );
-	    }
-        return array(
-            $this->bean->name,
-            $this->bean->country->name,
-            $this->bean->cardtype->name,
-            $this->bean->cardstatus->name,
-            $this->bean->user->name,
-            $this->bean->client()->nickname,
-            $this->bean->client()->name,
-            $this->bean->clientcode,
-            $this->bean->title,
-            $this->bean->codeword,
-            $this->bean->note,
-            $this->bean->applicationdate,
-            $this->bean->applicationnumber,
-            $this->bean->issuedate,
-            $this->bean->issuenumber,
-            $this->bean->disclosuredate,
-            $this->bean->disclosurenumber
-        );
-        */
+    	    );
+    	}
+    	
+    	// layout vrtwo
+	    if ( $layout == 'vrtwo' ) {
+    	    if ( $header == true ) {
+    	        return array(
+                    __('card_label_card.name'),
+                    __('card_label_country'),
+                    __('card_label_cardtype'),
+                    __('card_label_applicationnumber'),
+    	            __('card_label_applicationdate_short'),
+    	            __('card_label_clientstatus'),
+                    __('card_label_issuenumber'),
+    	            __('card_label_issuedate_short'),
+    	            __('card_label_clientcode'),
+    	            __('card_label_title'),
+                    __('card_label_codeword'),
+                    __('card_label_note')
+    	        );
+    	    }
+    	    return array(
+                $this->bean->name,
+                strtoupper($this->bean->country->iso),
+                $this->bean->cardtype->name,
+                $this->bean->applicationnumber,
+                $this->bean->applicationdate,
+                $this->bean->clientstatus(),
+                $this->bean->issuenumber,
+                $this->bean->issuedate,
+                $this->bean->clientcode,
+                str_replace('"', '', $this->bean->title),
+                str_replace('"', '', $this->bean->codeword),
+                $this->bean->note
+    	    );
+    	}
+    	
+    	// layout default
+        if ( $layout == 'default' ) {
+    	    if ($header === true) {
+    	        return array(
+    	            __('card_label_card.name'),
+    	            __('card_label_country'),
+    	            __('card_label_cardtype'),
+    	            __('card_label_cardstatus'),
+    	            __('card_label_attorney'),
+    	            __('person_label_nickname'),
+    	            __('card_label_client'),
+    	            __('card_label_clientcode'),
+    	            __('card_label_title'),
+    	            __('card_label_codeword'),
+    	            __('card_label_note'),
+    	            __('card_label_applicationdate'),
+    	            __('card_label_applicationnumber'),
+    	            __('card_label_issuedate'),
+    	            __('card_label_issuenumber'),
+    	            __('card_label_disclosuredate'),
+    	            __('card_label_disclosurenumber')
+    	        );
+    	    }
+            return array(
+                $this->bean->name,
+                $this->bean->country->name,
+                $this->bean->cardtype->name,
+                $this->bean->cardstatus->name,
+                $this->bean->user->name,
+                $this->bean->client()->nickname,
+                $this->bean->client()->name,
+                $this->bean->clientcode,
+                $this->bean->title,
+                $this->bean->codeword,
+                $this->bean->note,
+                $this->bean->applicationdate,
+                $this->bean->applicationnumber,
+                $this->bean->issuedate,
+                $this->bean->issuenumber,
+                $this->bean->disclosuredate,
+                $this->bean->disclosurenumber
+            );
+        }
 	}
 	
 	/**
