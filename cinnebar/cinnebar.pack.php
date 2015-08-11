@@ -53,6 +53,7 @@ class Cinnebar_Factory
 }
 class Cinnebar_Facade extends Cinnebar_Element
 {
+    const RELEASE = '1.00';
     private $cycle;
     public function cli()
     {

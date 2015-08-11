@@ -16,6 +16,6 @@
     <?php echo $this->partial('shared/master/pagination') ?>
     <?php echo $this->textile(__('app_footer', null, null, 'textile')) ?>
     <p class="sys-credit"><?php echo __('app_credit') ?></p>
-    <p class="sys-usage"><?php echo __('app_name') ?></p>
+    <p class="sys-usage"><?php echo __('app_name'), ' ', Cinnebar_Facade::RELEASE ?></p>
 </footer>
 <!-- End of the master footer -->
