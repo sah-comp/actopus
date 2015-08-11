@@ -446,7 +446,8 @@ SQL;
 		WHERE
 		    YEAR(card.feeduedate) = ? AND
 		    MONTH(card.feeduedate) = ? AND
-		    card.user_id = ?
+		    card.user_id = ? AND
+		    card.feeinactive = 0
 
 		ORDER BY card.feeduedate
 SQL;
