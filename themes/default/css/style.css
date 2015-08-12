@@ -1921,6 +1921,10 @@ a.avatar figure figcaption {
 /* Print styles!
 -------------------------------------------------------------------------------*/
 @media print {
+    
+    @page {
+        size: landscape;
+    }
 
     .master-header,
     .master-footer,
