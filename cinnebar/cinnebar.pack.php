@@ -53,7 +53,7 @@ class Cinnebar_Factory
 }
 class Cinnebar_Facade extends Cinnebar_Element
 {
-    const RELEASE = '1.00';
+    const RELEASE = '1.01';
     private $cycle;
     public function cli()
     {
@@ -2313,6 +2313,10 @@ SQL;
     {
         return $this->hasError();
     }
+    public function getErrors()
+    {
+        return $this->errors;
+    }
     public function convert()
     {
         if (empty($this->converters)) return;
@@ -2360,7 +2364,7 @@ SQL;
                 $validator = new $validator_name($param['options']);
                 if ( ! $validator->execute($this->bean->$attribute)) {
                     $state = false;
-                    $this->addError(sprintf($this->bean->getMeta('type').'_invalid_%s_%s', strtolower($param['validator']), strtolower($attribute)), $attribute);
+                    $this->addError(sprintf('%s_invalid', strtolower($param['validator'])), $attribute);
                 }
             }
         }

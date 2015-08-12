@@ -19,5 +19,19 @@
         <?php echo $this->textile($_notification->payload) ?>
     </div>
 <?php endforeach ?>
+
+<?php if (isset($record) && $record->hasErrors()): ?>
+<div class="alert alert-error validation-errors">
+    <?php foreach ($record->getErrors() as $_attribute => $_errors): ?>
+        <h1><?php echo __($record->getMeta('type') . '_label_' . $_attribute) ?></h1>
+        <ul>
+        <?php foreach ($_errors as $_error_id => $_error): ?>
+            <li><?php echo $_error ?></li>
+        <?php endforeach ?>
+        </ul>
+    <?php endforeach ?>
+</div>
+<?php endif ?>
+
 </section>
 <!-- End of notifications -->

@@ -787,6 +787,16 @@ SQL;
     }
     
     /**
+     * Returns an array with errors.
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+    
+    /**
      * Calls the converters of this bean.
      */
     public function convert()
@@ -878,7 +888,7 @@ SQL;
                 $validator = new $validator_name($param['options']);
                 if ( ! $validator->execute($this->bean->$attribute)) {
                     $state = false;
-                    $this->addError(sprintf($this->bean->getMeta('type').'_invalid_%s_%s', strtolower($param['validator']), strtolower($attribute)), $attribute);
+                    $this->addError(sprintf('%s_invalid', strtolower($param['validator'])), $attribute);
                 }
             }
         }
