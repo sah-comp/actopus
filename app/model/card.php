@@ -1283,6 +1283,19 @@ SQL;
         $this->addConverter('feeduedate', 'mySQLDate');
         if ( ! $this->bean->getId()) $this->bean->feeinactive = 1;
     }
+    
+    /**
+     * Prepare this bean for duplication.
+     *
+     * Deletes related invoices and feesteps after duplication and
+     * sets the annual fee details to inactive.
+     */
+    public function prepareForDuplication()
+    {
+        $this->bean->feeinactive = 1;
+        $this->bean->ownInvoice = array();
+        $this->bean->ownCardfeestep = array();
+    }
 
     /**
      * Update.
@@ -1296,10 +1309,8 @@ SQL;
         $this->bean->issuenumberflat = $this->alphanumericonly( $this->bean->issuenumber );
         $this->bean->disclosurenumberflat = $this->alphanumericonly( $this->bean->disclosurenumber );
         if ($this->bean->feeinactive || ! $this->bean->getId()) {
-            //if ( ! isset($_SESSION['copy'])) {
-                unset($this->bean->pricetype);
-                unset($this->bean->feetype);
-            //}
+            unset($this->bean->pricetype);
+            unset($this->bean->feetype);
         }
         if ( ! $this->bean->country_id) $this->bean->country_id = null;
         if ( !$this->bean->originalname) {

@@ -582,12 +582,12 @@ class Controller_Scaffold extends Cinnebar_Controller
 		$dup->name = $dup->name . ' Kopie';
 		try {
 		    $dup->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
+		    $dup->prepareForDuplication();
 		    R::store($dup);
 		} catch (Exception $e) {
             Cinnebar_Logger::instance()->log($e, 'exceptions');
 		}
 	    // goto to edit the duplicate
-	    $_SESSION['copy'] = true;
 	    $this->redirect(sprintf('/%s/edit/%d/', $dup->getMeta('type'), $dup->getId()));
     }
     
