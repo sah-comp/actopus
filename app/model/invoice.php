@@ -476,7 +476,6 @@ SQL;
         $this->bean->m = date('m', strtotime($this->bean->invoicedate));
         $this->bean->d = date('d', strtotime($this->bean->invoicedate));
         $this->bean->yearname = $this->bean->year.$this->bean->name;
-        //error_log('My client id is '.$this->bean->client->getId());
         parent::update();
     }
 }

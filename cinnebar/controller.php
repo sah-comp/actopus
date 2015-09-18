@@ -86,7 +86,6 @@ class Cinnebar_Controller extends Cinnebar_Element
      */
     public function auth()
     {
-        //error_log('Set session ts here?');
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > MAX_SESS_LIFETIME)) {
             session_unset();
             session_destroy();

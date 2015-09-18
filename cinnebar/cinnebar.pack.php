@@ -53,7 +53,7 @@ class Cinnebar_Factory
 }
 class Cinnebar_Facade extends Cinnebar_Element
 {
-    const RELEASE = '1.01';
+    const RELEASE = '1.03';
     private $cycle;
     public function cli()
     {
@@ -511,7 +511,7 @@ class Cinnebar_Controller extends Cinnebar_Element
     }
     public function auth()
     {
-                if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > MAX_SESS_LIFETIME)) {
+        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > MAX_SESS_LIFETIME)) {
             session_unset();
             session_destroy();
             return false;

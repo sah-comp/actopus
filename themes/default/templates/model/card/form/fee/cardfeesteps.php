@@ -67,8 +67,7 @@
         <div class="row">
             <div class="span3"><?php echo __('cardfeestep_label_date') ?></div>
             <div class="span3"><?php echo __('cardfeestep_label_net') ?></div>
-            <div class="span4"><?php echo __('cardfeestep_label_paymentstyle') ?></div>
-            <div class="span2"><?php echo __('cardfeestep_label_paymenthold') ?></div>
+            <div class="span6"><?php echo __('cardfeestep_label_paymentstyle') ?></div>
         </div>
     </div>
 </div>
@@ -202,20 +201,10 @@
                     <?php endforeach ?>
                 </select>
             </div>
-            <div class="span1">
+            <div class="span3">
                 <?php echo $_cardfeestep->genLink($this) ?>
             </div>
-            <div class="span2">
-                <input
-                    type="hidden"
-                    name="dialog[ownCardfeestep][<?php echo $_id ?>][paymenthold]"
-                    value="0" />
-                <input
-                    type="checkbox"
-                    name="dialog[ownCardfeestep][<?php echo $_id ?>][paymenthold]"
-                    <?php echo ($_cardfeestep->paymenthold) ? self::CHECKED : '' ?>
-                    value="1" />
-            </div>
+
         </div>
     </div>
 </div>

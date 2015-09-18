@@ -19,7 +19,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     /**
      * Holds the release version tag
      */
-    const RELEASE = '1.02';
+    const RELEASE = '1.03';
 
     /**
      * Holds an instance of a cycle bean.

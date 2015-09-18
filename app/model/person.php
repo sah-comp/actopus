@@ -386,7 +386,6 @@ SQL;
                         R::store($record);
                     }
                     catch (Exception $e) {
-                        error_log('Failed to update card after person changed');
                     }
                 }
             }
@@ -417,7 +416,6 @@ SQL;
                         R::store($record);
                     }
                     catch (Exception $e) {
-                        error_log('Failed to update invoice after person changed');
                     }
                 }
             }

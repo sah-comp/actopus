@@ -712,6 +712,7 @@ a.dpma-form {
     background-size: 16px 16px;
     width: 16px;
     height: 16px;
+    vertical-align: middle;
 }
 
 /* main menu */
@@ -1391,6 +1392,7 @@ select {
     position: static;
     left: auto;
     width: auto;
+    vertical-align: middle;
 }
 
 .row select {
@@ -1458,6 +1460,7 @@ input[type=radio] {
     margin: 0 0.222em 0 2%;
     width: auto;
     padding: 0;
+    vertical-align: middle;
 }
 input[type=number],
 input.number,
@@ -1470,7 +1473,8 @@ input.monetary {
     position: absolute;
     left: 23.404255317%;
     /*left: 28%;*/
-    top: 0.6em;
+    /*top: 0.6em;*/
+    vertical-align: middle;
 }
 
 .panel .container {
@@ -1485,6 +1489,7 @@ input.monetary {
 .panel .container input[type=radio] {
     position: static;
     left: auto;
+    vertical-align: middle;
 }
 
 section.biglistsmalltext {

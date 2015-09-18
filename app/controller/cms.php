@@ -202,9 +202,7 @@ class Controller_Cms extends Controller_Page
                 $aka = R::load('article', $this->input()->post('aka_id'));
                 $article->aka = $aka;
             }
-            //$articlei18n = $article->i18n();
             $articlei18n->import($this->input()->post('dialog'));
-            //error_log('New name for article '.$articlei18n->name);
             R::store($articlei18n);
             R::store($article);
         } catch (Exception $e) {

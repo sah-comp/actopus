@@ -125,7 +125,6 @@ class Controller_Invoice extends Controller_Scaffold
             R::begin();
             try {
                 $this->view->record->setInvoiceNumber();
-                //error_log('Client ID is '.$this->view->record->client_id);
                 R::store($this->view->record);
                 R::commit();
                 $_SESSION['scaffold']['add']['followup'] = $followup = $this->input()->post('action');

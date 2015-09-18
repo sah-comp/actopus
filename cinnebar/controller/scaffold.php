@@ -215,13 +215,6 @@ class Controller_Scaffold extends Cinnebar_Controller
      */
     protected function record($id = null)
     {
-        /*
-        if ($this->action == 'add' && $id) {
-            error_log('Duplicate '.$id);
-            $record = R::load($this->type, $id);
-            return R::dup($record);
-        }
-        */
         return R::load($this->type, $id);
     }
     

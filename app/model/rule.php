@@ -38,7 +38,6 @@ class Model_Rule extends Cinnebar_Model
      */
     public function setupCard(RedBean_OODBbean $card, RedBean_OODBbean $fee = null, RedBean_OODBbean $feebase = null)
     {
-        error_log('Setup card');
         if ( $this->bean->style == 0) return $this->setup_limit_workhorse($card, $fee, $feebase);
         if ( $this->bean->style == 1) return $this->setup_perpetual_workhorse($card, $fee, $feebase);
         return array();
@@ -59,7 +58,6 @@ class Model_Rule extends Cinnebar_Model
      */
     protected function setup_limit_workhorse(RedBean_OODBBean $card, RedBean_OODBbean $fee = null, RedBean_OODBbean $feebase = null)
     {
-        error_log('limited rule...');
         if ( ! $card->applicationdate) return array();
         if ( ! $rulesteps = $this->own('rulestep', false)) return array();
         // there are steps, there is a date: lets setup a timeframe for this jolly
@@ -85,7 +83,6 @@ class Model_Rule extends Cinnebar_Model
             //$cardfeestep->feestep = $feestep;
             // make the year
             $cardfeestep->fy = $fy_app_date + $rulestep->offset - 1;
-            error_log('New year: ' . $cardfeestep->fy);
             // and date
             $due_date = $this->make_due_date($cardfeestep->fy, $fm_app_date, $fd_app_date);
             $cardfeestep->duedate = date('Y-m-d', $due_date);
@@ -112,7 +109,6 @@ class Model_Rule extends Cinnebar_Model
             $cardfeesteps[] = $cardfeestep;
         }
         $card->feeduedate = date('Y-m-d', $next_due_date);
-        error_log('New due date is ' . $card->feeduedate);
         try {
             $card->setAutoInfo(false);
             $card->setAutoTAg(false);
@@ -139,7 +135,6 @@ class Model_Rule extends Cinnebar_Model
      */
     protected function setup_perpetual_workhorse(RedBean_OODBBean $card, RedBean_OODBbean $fee = null, RedBean_OODBbean $feebase = null)
     {
-        error_log('perpetual rule...');
         if ( ! $card->applicationdate) return array();
         $current_date = time();
         list($fy_app_date, $fm_app_date, $fd_app_date) = $this->split_date($card->applicationdate);

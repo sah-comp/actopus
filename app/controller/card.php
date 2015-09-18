@@ -431,13 +431,7 @@ class Controller_Card extends Controller_Scaffold
         $this->before_edit();
         $card = R::load('card', $card_id);
         $cardfeesteps = $card->own('cardfeestep', false);
-        if ( $card_rerule) {
-            //kill all existing cardfeestep beans
-            error_log('Kill existing fee steps');
-            $cardfeesteps = array();
-        }
         if ( ! $cardfeesteps ) {
-            error_log('Build fee steps');
             // do we have a rule?
             if ( ! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
                 $rule = R::dispense('rule');
@@ -450,6 +444,11 @@ class Controller_Card extends Controller_Scaffold
                 $feebase = R::dispense('fee');
             }
             $cardfeesteps = $rule->setupCard($card, $fee, $feebase);   
+        }
+        if ( $card_rerule) {
+            //kill all existing cardfeestep beans
+            //$cardfeesteps = array();
+            $cardfeesteps = $card->updateCardfeesteps($country_id, $cardtype_id, $pricetype_id);
         }
         $this->view->cardfeesteps = $cardfeesteps;
         //$card->cardtype_id = $cardtype_id;

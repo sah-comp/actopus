@@ -19,6 +19,49 @@
 class Model_Card extends Cinnebar_Model
 {
     /**
+     * Update the cardfeestep beans according to the country, cardtype and pricing and
+     * returns an array of cardfeestep beans.
+     *
+     * @param int country_id
+     * @param int cardtype_id
+     * @param int pricetype_id
+     * @return array
+     */
+    public function updateCardfeesteps($country_id = null, $cardtype_id = null, $pricetype_id = null)
+    {
+        error_log('I want to update this cards cardfeestep beans...');
+        if ( $this->bean->country->getId() != $country_id ) {
+            error_log('country mismatch');
+        }
+        if ( $this->bean->pricetype->getId() != $pricetype_id ) {
+            error_log('pricetype mismatch');
+        }
+        if ( $this->bean->cardtype->getId() != $cardtype_id ) {
+            error_log('cardtype mismatch');
+        }
+        if ( ! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
+            error_log('No rule found');
+        }
+        if ( $rule->style != 0 ) {
+            error_log('The rule is perpetual, cant handle that by now');
+        }
+        if ( ! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
+            error_log('No fee steps found');
+        }
+        error_log('Rule ' . $rule->getId() . ' and fee ' . $fee->getId());
+        $feesteps = $fee->with(' ORDER BY id ')->ownFeestep;
+        $cardsteps = $this->bean->with(' ORDER BY fy ')->ownCardfeestep;
+        foreach ($cardsteps as $id => $cardstep) {
+            $feestep = array_shift($feesteps);
+            if ( $cardstep->done ) continue; //skip any done step
+            $cardstep->net = $feestep->net;
+            error_log( 'Step ' . $cardstep->fy . ' with feestep ' . $feestep->net );
+        }
+        error_log('Und I did. Ready.');
+        return $cardsteps;
+    }
+    
+    /**
      * Returns a stash bean of this card.
      *
      * The stash bean  holds attributes that were stashed here.
@@ -129,7 +172,6 @@ SQL;
 
 		LIMIT {$offset}, {$limit}
 SQL;
-        //error_log('SQL ' . $sql);
         return $sql;
     }
 

@@ -234,7 +234,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     /**
      * Holds the release version tag
      */
-    const RELEASE = '1.01';
+    const RELEASE = '1.03';
 
     /**
      * Holds an instance of a cycle bean.
@@ -1601,7 +1601,6 @@ class Cinnebar_Controller extends Cinnebar_Element
      */
     public function auth()
     {
-        //error_log('Set session ts here?');
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > MAX_SESS_LIFETIME)) {
             session_unset();
             session_destroy();
@@ -1950,13 +1949,6 @@ class Controller_Scaffold extends Cinnebar_Controller
      */
     protected function record($id = null)
     {
-        /*
-        if ($this->action == 'add' && $id) {
-            error_log('Duplicate '.$id);
-            $record = R::load($this->type, $id);
-            return R::dup($record);
-        }
-        */
         return R::load($this->type, $id);
     }
     
