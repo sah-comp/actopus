@@ -1735,7 +1735,7 @@ mark {background-color: #fcd700; color: #000; font-style: italic; font-weight: b
 .drop,
 .droprelated,
 .attachremote,
-.card-rerule {
+.xcard-rerule {
     display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0;
     width: 26px;
     height: 26px;
@@ -1750,7 +1750,7 @@ mark {background-color: #fcd700; color: #000; font-style: italic; font-weight: b
     right: 36px;
     bottom: 3px;
 }
-.card-rerule {
+.xcard-rerule {
     background-image: url(../images/glyphicons/glyphicons_023_cogwheels.png);
 }
 

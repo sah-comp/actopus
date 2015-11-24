@@ -63,13 +63,25 @@
         <button
             id="card-rerule"
             type="button"
-            class="ir updateonclick card-rerule ask"
+            class="updateonclick card-rerule ask"
             name="rerule"
             title="<?php echo __('card_rerule_hint') ?>"
             data-target="card-fee-lineitems"
             data-href="<?php echo $this->url(sprintf('/card/fee/%d/', $record->getId())) ?>"
             data-fragments='<?php echo json_encode(array('card-pricetype' => 'on', 'card-country' => 'on', 'card-cardtype' => 'on', 'card-rerule-switch' => 'on')) ?>'>
             <?php echo __('card_rerule') ?>
+        </button>
+        <input type="hidden" id="card-rerule-switch" name="card-rerule-switch" value="1" />
+        <button
+            id="card-rerule"
+            type="button"
+            class="updateonclick card-rerule ask"
+            name="rerule"
+            title="<?php echo __('card_rerule_hint') ?>"
+            data-target="card-fee-lineitems"
+            data-href="<?php echo $this->url(sprintf('/card/feeupd/%d/', $record->getId())) ?>"
+            data-fragments='<?php echo json_encode(array('card-pricetype' => 'on', 'card-country' => 'on', 'card-cardtype' => 'on', 'card-rerule-switch' => 'on')) ?>'>
+            <?php echo __('card_rerule_upd') ?>
         </button>
     </div>
     <div class="span2">

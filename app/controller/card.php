@@ -409,7 +409,7 @@ class Controller_Card extends Controller_Scaffold
 		$pdfmaker->make_pdf($fdf_data_strings, $fdf_data_names, $fields_hidden, $fields_readonly, $pdf_original, $pdf_filename);
 		exit;
     }
-
+    
     /**
      * Displays a partial dialog to set up fee according to pricetype, country and cardtype.
      *
@@ -422,7 +422,7 @@ class Controller_Card extends Controller_Scaffold
      * @param int (optional) $card_rerule flag that decides wether to overwrite existings steps or not
      * @return void
      */
-    public function fee($card_id = null, $pricetype_id = null, $country_id = null, $cardtype_id = null,
+    public function feeupd($card_id = null, $pricetype_id = null, $country_id = null, $cardtype_id = null,
                         $card_rerule = null)
     {
         session_start();
@@ -449,6 +449,55 @@ class Controller_Card extends Controller_Scaffold
             //kill all existing cardfeestep beans
             //$cardfeesteps = array();
             $cardfeesteps = $card->updateCardfeesteps($country_id, $cardtype_id, $pricetype_id);
+        }
+        $this->view->cardfeesteps = $cardfeesteps;
+        //$card->cardtype_id = $cardtype_id;
+        //$card->feetype_id = $feetype_id;
+        //$card->pricetype_id = $pricetype_id;
+        $this->view->record = $card;
+        echo $this->view->partial('model/card/form/fee/cardfeesteps');
+        return;
+    }
+
+    /**
+     * Displays a partial dialog to set up fee according to pricetype, country and cardtype.
+     *
+     * This is called from a ajax post request.
+     *
+     * @param int (optional) $card_id of the card
+     * @param int (optional) $pricetype_id of the pricetype
+     * @param int (optional) $country_id of the country
+     * @param int (optional) $cardtype_id of the cardtype
+     * @param int (optional) $card_rerule flag that decides wether to overwrite existings steps or not
+     * @return void
+     */
+    public function fee($card_id = null, $pricetype_id = null, $country_id = null, $cardtype_id = null,
+                        $card_rerule = null)
+    {
+        session_start();
+        $this->cache()->deactivate();
+        $this->view = $this->makeView(null);
+        $this->before_edit();
+        $card = R::load('card', $card_id);
+        $cardfeesteps = $card->own('cardfeestep', false);
+        if ( $card_rerule) {
+            //kill all existing cardfeestep beans
+            $cardfeesteps = array();
+            //$cardfeesteps = $card->updateCardfeesteps($country_id, $cardtype_id, $pricetype_id);
+        }
+        if ( ! $cardfeesteps ) {
+            // do we have a rule?
+            if ( ! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
+                $rule = R::dispense('rule');
+            }
+            if ( ! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
+                $fee = R::dispense('fee');
+            }
+            $setting = R::load('setting', 1);
+            if ( ! $feebase = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $setting->feebase()->getId()))) {
+                $feebase = R::dispense('fee');
+            }
+            $cardfeesteps = $rule->setupCard($card, $fee, $feebase);   
         }
         $this->view->cardfeesteps = $cardfeesteps;
         //$card->cardtype_id = $cardtype_id;
