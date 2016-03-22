@@ -318,6 +318,16 @@ SQL;
     {
         return $this->bean->foreign()->nickname;
     }
+
+    /**
+     * Returns a team name.
+     *
+     * @return RedBean_OODBBean
+     */
+    public function teamName()
+    {
+        return $this->bean->teammashup;
+    }
     
     /**
      * Returns a attorney name.
@@ -476,7 +486,7 @@ SQL;
      *
      * @return string
      */
-    public function sqlForAnnuity()
+    public function sqlForAnnuityComplete()
     {
 		$sql = <<<SQL
 		SELECT
@@ -488,7 +498,82 @@ SQL;
 		WHERE
 		    YEAR(card.feeduedate) = ? AND
 		    MONTH(card.feeduedate) = ? AND
+		    card.feeinactive = 0 AND
 		    card.user_id = ? AND
+		    card.teammashup like ?
+
+		ORDER BY card.feeduedate
+SQL;
+        return $sql;
+    }
+    
+    /**
+     * Returns SQL to retrieve cards where annuity is due
+     *
+     * @return string
+     */
+    public function sqlForAnnuityAttorney()
+    {
+		$sql = <<<SQL
+		SELECT
+			card.id
+
+		FROM
+			card
+
+		WHERE
+		    YEAR(card.feeduedate) = ? AND
+		    MONTH(card.feeduedate) = ? AND
+		    card.feeinactive = 0 AND
+		    card.user_id = ?
+
+		ORDER BY card.feeduedate
+SQL;
+        return $sql;
+    }
+    
+    /**
+     * Returns SQL to retrieve cards where annuity is due
+     *
+     * @return string
+     */
+    public function sqlForAnnuityTeam()
+    {
+		$sql = <<<SQL
+		SELECT
+			card.id
+
+		FROM
+			card
+
+		WHERE
+		    YEAR(card.feeduedate) = ? AND
+		    MONTH(card.feeduedate) = ? AND
+		    card.feeinactive = 0 AND
+		    card.teammashup like ?
+
+		ORDER BY card.feeduedate
+SQL;
+        return $sql;
+    }
+    
+    /**
+     * Returns SQL to retrieve cards where annuity is due
+     *
+     * @return string
+     */
+    public function sqlForAnnuityNone()
+    {
+		$sql = <<<SQL
+		SELECT
+			card.id
+
+		FROM
+			card
+
+		WHERE
+		    YEAR(card.feeduedate) = ? AND
+		    MONTH(card.feeduedate) = ? AND
 		    card.feeinactive = 0
 
 		ORDER BY card.feeduedate
@@ -834,6 +919,17 @@ SQL;
         				)
         			),
         			array(
+        			    'attribute' => 'teammashup',
+        			    'orderclause' => 'card.teammashup',
+        			    'class' => 'text',
+        			    'callback' => array(
+        			        'name' => 'teamName'
+        			    ),
+        				'filter' => array(
+        				    'tag' => 'text'
+        				)
+        			),
+        			array(
         			    'attribute' => 'client_id',
         			    'orderclause' => 'client.nickname',
         			    'class' => 'text',
@@ -1053,6 +1149,17 @@ SQL;
         			    'class' => 'text',
         			    'callback' => array(
         			        'name' => 'attorneyName'
+        			    ),
+        				'filter' => array(
+        				    'tag' => 'text'
+        				)
+        			),
+        			array(
+        			    'attribute' => 'teammashup',
+        			    'orderclause' => 'card.teammashup',
+        			    'class' => 'text',
+        			    'callback' => array(
+        			        'name' => 'teamName'
         			    ),
         				'filter' => array(
         				    'tag' => 'text'
@@ -1395,6 +1502,12 @@ SQL;
             } else {
                 $this->bean->customeraccount = '';
             }
+        }
+        $this->bean->sharedTeam = array();
+        $this->bean->teammashup = '';
+        foreach ($this->bean->user->sharedTeam as $id => $team) {
+            $this->bean->teammashup .= $team->name . ' ';
+            $this->bean->sharedTeam[] = $team;
         }
         if ( ( strtolower( $this->bean->cardtype->name ) == 'marke' || strtolower( $this->bean->cardtype->name ) == 'gsm' ) && strtolower( $this->bean->country->iso ) == 'wo' ) {
             $this->addError('card_error_country_type_mismatch', 'country_id');

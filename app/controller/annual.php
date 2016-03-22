@@ -71,7 +71,8 @@ class Controller_Annual extends Controller_Card
             $_SESSION['annual'] = array(
                 'year' => date('Y'),
                 'month' => date('m'),
-                'attorney' => null
+                'attorney' => null,
+                'team' => null
             );
         }
         
@@ -82,7 +83,8 @@ class Controller_Annual extends Controller_Card
             $_SESSION['annual'] = array(
                 'year' => $dialog['year'],
                 'month' => $dialog['month'],
-                'attorney' => $dialog['attorney']
+                'attorney' => $dialog['attorney'],
+                'team' => $dialog['team']
             );
             $this->trigger('index', 'after');
             $this->redirect('/annual/index/');
@@ -91,6 +93,7 @@ class Controller_Annual extends Controller_Card
         $this->view->year = $_SESSION['annual']['year'];
         $this->view->month = $_SESSION['annual']['month'];
         $this->view->attorney = $_SESSION['annual']['attorney'];
+        $this->view->team = $_SESSION['annual']['team'];
 
         $this->collection();
         
@@ -122,13 +125,30 @@ class Controller_Annual extends Controller_Card
     {
     	//$whereClause = $this->view->filter->buildWhereClause();
 		//$orderClause = $this->view->attributes[$this->order]['orderclause'].' '.$this->sortdir($this->dir);
-		$sql = $this->view->record->sqlForAnnuity();
+		$tokens = array(
+            $_SESSION['annual']['year'],
+            $_SESSION['annual']['month']
+		);
+		if ( $_SESSION['annual']['attorney'] && $_SESSION['annual']['team'] ) {
+		    $sql = $this->view->record->sqlForAnnuityComplete();
+		    $tokens[] = $_SESSION['annual']['attorney'];
+		    $tokens[] = '%'.$_SESSION['annual']['team'].'%';
+		} elseif ( $_SESSION['annual']['attorney'] && ! $_SESSION['annual']['team']) {
+		    $tokens[] = $_SESSION['annual']['attorney'];
+		    $sql = $this->view->record->sqlForAnnuityAttorney();
+		} elseif ( $_SESSION['annual']['team'] && ! $_SESSION['annual']['attorney'] ) {
+		    $tokens[] = '%'.$_SESSION['annual']['team'].'%';
+		    $sql = $this->view->record->sqlForAnnuityTeam();
+		} else {
+		    $sql = $this->view->record->sqlForAnnuityNone();
+		}
+
 		
 		$this->view->total = 0;
 		
 		try {
 			//R::debug(true);
-			$assoc = R::$adapter->getAssoc($sql, array($_SESSION['annual']['year'], $_SESSION['annual']['month'], $_SESSION['annual']['attorney']));
+			$assoc = R::$adapter->getAssoc($sql, $tokens);
 			//R::debug(false);
 			$this->view->records = R::batch($this->type, array_keys($assoc));
 			//R::debug(true);

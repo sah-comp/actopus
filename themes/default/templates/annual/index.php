@@ -46,10 +46,23 @@
                 <select
                     id="annual-user"
                     name="dialog[attorney]">
+                    <option
+                        value=""><?php echo __('annual_attorney_please_select') ?></option>
                     <?php foreach ($attorneys as $_attorney_id => $_attorney): ?>
                     <option
                         value="<?php echo $_attorney->getId() ?>"
                         <?php echo ($attorney == $_attorney->getId()) ? self::SELECTED : '' ?>><?php echo $_attorney->name ?></option>
+                    <?php endforeach ?>
+                </select>
+                <select
+                    id="annual-team"
+                    name="dialog[team]">
+                    <option
+                        value=""><?php echo __('annual_team_please_select') ?></option>
+                    <?php foreach (R::find('team', ' ORDER BY sequence') as $_team_id => $_team): ?>
+                    <option
+                        value="<?php echo $_team->name ?>"
+                        <?php echo ($team == $_team->name) ? self::SELECTED : '' ?>><?php echo $_team->name ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
