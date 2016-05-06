@@ -280,6 +280,16 @@ SQL;
     }
     
     /**
+     * Returns status humanreadable.
+     *
+     * @return string
+     */
+    public function cardStatusInternal()
+    {
+        return __( 'annual_label_' . $this->bean->status );
+    }
+    
+    /**
      * Returns a client name.
      *
      * @return RedBean_OODBBean
@@ -482,8 +492,32 @@ SQL;
     }
     
     /**
+     * Returns SQL to retrieve cards in controller annual on the index page.
+     *
+     * @param string
+     * @return string
+     */
+    public function sqlForAnnuity($where_clause = '1')
+    {
+		$sql = <<<SQL
+		SELECT
+			card.id
+
+		FROM
+			card
+
+		WHERE
+            {$where_clause}
+
+		ORDER BY card.feeduedate
+SQL;
+        return $sql;
+    }
+    
+    /**
      * Returns SQL to retrieve cards where annuity is due
      *
+     * @deprecated
      * @return string
      */
     public function sqlForAnnuityComplete()
@@ -510,6 +544,7 @@ SQL;
     /**
      * Returns SQL to retrieve cards where annuity is due
      *
+     * @deprecated
      * @return string
      */
     public function sqlForAnnuityAttorney()
@@ -535,6 +570,7 @@ SQL;
     /**
      * Returns SQL to retrieve cards where annuity is due
      *
+     * @deprecated
      * @return string
      */
     public function sqlForAnnuityTeam()
@@ -560,6 +596,7 @@ SQL;
     /**
      * Returns SQL to retrieve cards where annuity is due
      *
+     * @deprecated
      * @return string
      */
     public function sqlForAnnuityNone()
@@ -688,6 +725,17 @@ SQL;
         				'viewhelper' => 'date',
         				'filter' => array(
         				    'tag' => 'date'
+        				)
+        			),
+        			array(
+        				'attribute' => 'status',
+        				'orderclause' => 'card.status',
+        				'class' => 'text',
+        				'callback' => array(
+        				    'name' => 'cardStatusInternal'
+        				),
+        				'filter' => array(
+        				    'tag' => 'text'
         				)
         			),
         			array(
@@ -1511,9 +1559,80 @@ SQL;
         }
         if ( ( strtolower( $this->bean->cardtype->name ) == 'marke' || strtolower( $this->bean->cardtype->name ) == 'gsm' ) && strtolower( $this->bean->country->iso ) == 'wo' ) {
             $this->addError('card_error_country_type_mismatch', 'country_id');
-            throw new Exception('card_error_update');
+            if (self::VALIDATION_MODE_IMPLICIT === self::$validation_mode) {
+                $this->invalid = true;
+            } else {
+                throw new Exception('card_error_update');
+            }
         }
+        
+        $this->checkAndSetCurrentState();
         parent::update();
+    }
+    
+    /**
+     * The card status is checked and set accordingly.
+     *
+     * The cardfeestep beans of this card will be checked and the card bean will
+     * set it's status to either done, paid, ordered, awareness or maintain as
+     * well as the feeduedate is updated. If the feestep is not marked as done and
+     * the due date was made either paid, awareness or ordered and the date lies
+     * behind today the card is marked as overdue.
+     */
+    public function checkAndSetCurrentState()
+    {
+        error_log('Check and set current state');
+        $this->bean->overdue = false;
+        $this->bean->status = 'inactive';
+        if ( $this->bean->feeinactive ) return false;
+        $this->bean->status = 'onhold';
+        if ( $this->bean->onhold ) return false;
+        $this->bean->status = 'due';
+        $was_already_set = false;
+        foreach ($this->bean->ownCardfeestep as $id => $feestep) {
+            if ( $feestep->done ) {
+                error_log('Oh, '.$feestep->fy.' is already done...');
+                $this->bean->status = 'done';
+            } else {
+                if ( ! $was_already_set ) {
+                    $was_already_set = true;
+                    $this->bean->status = 'due';
+                    //set next feeduedate to this feesteps fy.
+                    $ts = strtotime($this->bean->applicationdate);
+                    list($year, $month, $day) = array(date('Y', $ts), date('m', $ts), date('d', $ts));
+                    $this->bean->feeduedate = date('Y-m-d', strtotime($feestep->fy.'-'.$month.'-'.$day));
+                    error_log('and will next be due on '.$this->bean->feeduedate);
+                    
+                    error_log($feestep->fy.' is pending and ...');
+                    if ( $feestep->paymentdate ) {
+                        $this->bean->status = 'paid'; //the DPMA was paided, all smile please
+                        error_log('was paid');
+                    }
+                    elseif ( $feestep->invoicedate ) {
+                        $this->bean->status = 'billed'; //the customer was billed
+                        error_log('was billed');
+                    }
+                    elseif ( $feestep->orderdate ) {
+                        $this->bean->status = 'ordered';
+                        error_log('is called to order');
+                    }
+                    elseif ( $feestep->awarenessdate ) {
+                        $this->bean->status = 'awareness';
+                        error_log('was made aware');
+                    }
+                    else {
+                        $this->bean->status = 'due';
+                        error_log('is simply due');
+                    }
+                    
+                }
+            }
+        }
+        if ( ! $was_already_set ) {
+            $this->bean->status = 'maintain';
+            error_log('and somehow someone should check this one');
+        }
+        return true;
     }
     
     /**

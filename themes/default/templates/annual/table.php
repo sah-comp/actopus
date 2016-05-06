@@ -23,7 +23,7 @@
                 <tr>
                     <th class="switch">&nbsp;</th>
                     <th class="scaffold-action">&nbsp;</th>
-                    <?php echo $this->partial(sprintf('model/%s/table/thead/columns', $record->getMeta('type'))) ?>
+                    <?php echo $this->partial(sprintf('model/%s/table/thead/columnsannual', $record->getMeta('type'))) ?>
                 </tr>
             </thead>
     

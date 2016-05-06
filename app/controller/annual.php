@@ -19,6 +19,11 @@
 class Controller_Annual extends Controller_Card
 {
     /**
+     * Default layout for index.
+     */
+    const LAYOUT = 'annual';
+    
+    /**
      * Holds the name of the attorney role.
      *
      * @const
@@ -72,7 +77,8 @@ class Controller_Annual extends Controller_Card
                 'year' => date('Y'),
                 'month' => date('m'),
                 'attorney' => null,
-                'team' => null
+                'team' => null,
+                'status' => null
             );
         }
         
@@ -84,7 +90,8 @@ class Controller_Annual extends Controller_Card
                 'year' => $dialog['year'],
                 'month' => $dialog['month'],
                 'attorney' => $dialog['attorney'],
-                'team' => $dialog['team']
+                'team' => $dialog['team'],
+                'status' => $dialog['status']
             );
             $this->trigger('index', 'after');
             $this->redirect('/annual/index/');
@@ -94,7 +101,8 @@ class Controller_Annual extends Controller_Card
         $this->view->month = $_SESSION['annual']['month'];
         $this->view->attorney = $_SESSION['annual']['attorney'];
         $this->view->team = $_SESSION['annual']['team'];
-
+        $this->view->status = $_SESSION['annual']['status'];
+        
         $this->collection();
         
         /*
@@ -123,8 +131,10 @@ class Controller_Annual extends Controller_Card
      */
     protected function collection()
     {
-    	//$whereClause = $this->view->filter->buildWhereClause();
-		//$orderClause = $this->view->attributes[$this->order]['orderclause'].' '.$this->sortdir($this->dir);
+    	list($whereClause, $tokens) = $this->buildWhereClause();
+		$orderClause = $this->view->attributes[$this->order]['orderclause'].' '.$this->sortdir($this->dir);
+		
+		/*
 		$tokens = array(
             $_SESSION['annual']['year'],
             $_SESSION['annual']['month']
@@ -142,6 +152,9 @@ class Controller_Annual extends Controller_Card
 		} else {
 		    $sql = $this->view->record->sqlForAnnuityNone();
 		}
+		*/
+		
+		$sql = $this->view->record->sqlForAnnuity($whereClause);
 
 		
 		$this->view->total = 0;
@@ -164,6 +177,44 @@ class Controller_Annual extends Controller_Card
     }
     
     /**
+     * Builds the where clause for annual index.
+     *
+     * @return string
+     */
+    public function buildWhereClause()
+    {
+        if ( empty($_SESSION['annual'])) return '1';
+        
+        $where = '';
+        $values = array();
+        
+        $where .= ' card.feeinactive = 0 ';
+        
+        if ( $_SESSION['annual']['year'] ) {
+            $where .= ' AND YEAR(card.feeduedate) = ? ';
+            $values[] = $_SESSION['annual']['year'];
+        };
+        if ( $_SESSION['annual']['month'] ) {
+            $where .= ' AND MONTH(card.feeduedate) = ? ';
+            $values[] = $_SESSION['annual']['month'];
+        };
+        if ( $_SESSION['annual']['attorney'] ) {
+            $where .= ' AND card.user_id = ? ';
+            $values[] = $_SESSION['annual']['attorney'];
+        };
+        if ( $_SESSION['annual']['team'] ) {
+            $where .= ' AND card.teammashup LIKE ? ';
+            $values[] = '%' . $_SESSION['annual']['team'] . '%';
+        };
+        if ( $_SESSION['annual']['status'] ) {
+            $where .= ' AND card.status = ? ';
+            $values[] = $_SESSION['annual']['status'];
+        };
+        //$where = implode(' ', $where);
+        return array($where, $values);
+    }
+    
+    /**
      * This will run before scaffold add performs.
      *
      * @return void
@@ -173,6 +224,7 @@ class Controller_Annual extends Controller_Card
         $this->pushMonthsToView();
         $this->pushPossibleYearsToView();
         $this->pushEnabledAttorneysToView();
+        $this->pushStatiToView();
     }
     
     /**
@@ -210,6 +262,24 @@ class Controller_Annual extends Controller_Card
             '10' => __('month_label_10'),
             '11' => __('month_label_11'),
             '12' => __('month_label_12')
+        );
+    }
+    
+    /**
+     * Pushes stati to view.
+     */
+    public function pushStatiToView()
+    {
+        $this->view->stati = array(
+            'due' => __('annual_label_due'),
+            'inactive' => __('annual_label_inactive'),
+            'onhold' => __('annual_label_onhold'),
+            'done' => __('annual_label_done'),
+            'paid' => __('annual_label_paid'),
+            'billed' => __('annual_label_billed'),
+            'ordered' => __('annual_label_ordered'),
+            'awareness' => __('annual_label_awareness'),
+            'maintain' => __('annual_label_maintain')
         );
     }
 }

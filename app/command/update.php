@@ -14,7 +14,7 @@
  *
  * Usage examle from the command line for updating to revision 17
  * <code>
- * php -f index.php -- -c update -v 17
+ * php -f index.php -- -c update -rev 17
  * </code>
  *
  * @package Cinnebar
@@ -36,7 +36,10 @@ class Command_Update extends Cinnebar_Command
         5 => array('updRevision24'),
         6 => array('updRevision25'),
         7 => array('updCardCleanup'),
-        8 => array('updCardRegex')
+        8 => array('updCardRegex'),
+        9 => array('updCardTeam'),
+        10 => array('updDummy'),
+        11 => array('UpdCardTeamAndStatus')
     );
 
     /**
@@ -310,6 +313,101 @@ class Command_Update extends Cinnebar_Command
             R::rollback();
         }
         //R::freeze(true);
+    }
+    
+    /**
+     * Update card team.
+     *
+     * This will update card beans, population the team relation according to the selected attorney.
+     *
+     */
+    protected function updCardTeam()
+    {
+        R::begin();
+        try {
+            echo 'Akten: Teamzuordnung aller Akten aktualisieren'."\n";
+            $cards = R::findAll('card');
+            foreach ($cards as $id => $card) {
+                // update card so the team relation will be generated.
+                echo 'Akte '.$card->name."\n";
+            }
+            R::storeAll($cards);
+            R::commit();
+            echo 'Erfolgreich beendet'."\n";
+        } catch ( Exception $e ) {
+            echo $e;
+            R::rollback();
+            echo 'Konnte nicht durchgeführt werden'."\n";
+        }
+    }
+    
+    /**
+     * Dummy update loop.
+     *
+     * Demonstrates a loop through all records in packages of n.
+     * Copy this, rename, specify a certain criteria for beans to update
+     * and hook it up into the command list to use it from the shell to
+     * update many records without running into memory limits.
+     *
+     */
+    protected function updDummy()
+    {
+        $cards = R::find('card', ' status IS NULL LIMIT 10 ');
+        if ( empty($cards) ) {
+            echo 'Ready';
+            exit;
+        }
+        $i = 0;
+        R::begin();
+        try {
+            echo 'Dummy started...'."\n";
+            foreach ($cards as $id => $card) {
+                $i++;
+                echo $i . ' ' . $card->name ."\n";
+                $card->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
+                $card->dummy = 'init';
+            }
+            R::storeAll($cards);
+            R::commit();
+            echo 'Success'."\n";
+        } catch ( Exception $e ) {
+            echo $e;
+            R::rollback();
+            echo 'Fail.'."\n";
+            exit;
+        }
+        $this->updDummy();
+    }
+    
+    /**
+     * UpdCardTeamAndStatus
+    */
+    protected function UpdCardTeamAndStatus()
+    {
+        $cards = R::find('card', ' status IS NULL LIMIT 100 ');
+        if ( empty($cards) ) {
+            echo 'Ready';
+            exit;
+        }
+        $i = 0;
+        R::begin();
+        try {
+            echo 'UpdCardTeamAndStatus started...'."\n";
+            foreach ($cards as $id => $card) {
+                $i++;
+                echo $i . ' ' . $card->name ."\n";
+                $card->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
+            }
+            R::storeAll($cards);
+            R::commit();
+            echo 'Success'."\n";
+        } catch ( Exception $e ) {
+            echo $e;
+            R::rollback();
+            echo 'Fail.'."\n";
+            exit;
+        }
+        $this->updDummy();
     }
     
     /**
