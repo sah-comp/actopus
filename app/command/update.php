@@ -323,22 +323,7 @@ class Command_Update extends Cinnebar_Command
      */
     protected function updCardTeam()
     {
-        R::begin();
-        try {
-            echo 'Akten: Teamzuordnung aller Akten aktualisieren'."\n";
-            $cards = R::findAll('card');
-            foreach ($cards as $id => $card) {
-                // update card so the team relation will be generated.
-                echo 'Akte '.$card->name."\n";
-            }
-            R::storeAll($cards);
-            R::commit();
-            echo 'Erfolgreich beendet'."\n";
-        } catch ( Exception $e ) {
-            echo $e;
-            R::rollback();
-            echo 'Konnte nicht durchgeführt werden'."\n";
-        }
+        echo 'Please update to revision 11 --rev 11 to update team relations on cards';
     }
     
     /**
@@ -407,7 +392,7 @@ class Command_Update extends Cinnebar_Command
             echo 'Fail.'."\n";
             exit;
         }
-        $this->updDummy();
+        $this->UpdCardTeamAndStatus();
     }
     
     /**
