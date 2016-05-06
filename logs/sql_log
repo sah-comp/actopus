@@ -395,3 +395,23 @@ Annual Collection has issues: [HY093] - SQLSTATE[HY093]: Invalid parameter numbe
 		    card.teammashup like ?
 
 		ORDER BY card.feeduedate
+Annual Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY card.feeduedate' at line 10 		SELECT
+			card.id
+
+		FROM
+			card
+
+		WHERE
+            
+
+		ORDER BY card.feeduedate
+Annual Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY card.feeduedate' at line 10 		SELECT
+			card.id
+
+		FROM
+			card
+
+		WHERE
+            
+
+		ORDER BY card.feeduedate
