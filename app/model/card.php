@@ -1557,6 +1557,7 @@ SQL;
             $this->bean->teammashup .= $team->name . ' ';
             $this->bean->sharedTeam[] = $team;
         }
+        $this->checkAndSetCurrentState();
         if ( ( strtolower( $this->bean->cardtype->name ) == 'marke' || strtolower( $this->bean->cardtype->name ) == 'gsm' ) && strtolower( $this->bean->country->iso ) == 'wo' ) {
             $this->addError('card_error_country_type_mismatch', 'country_id');
             if (self::VALIDATION_MODE_IMPLICIT === self::$validation_mode) {
@@ -1565,8 +1566,6 @@ SQL;
                 throw new Exception('card_error_update');
             }
         }
-        
-        $this->checkAndSetCurrentState();
         parent::update();
     }
     

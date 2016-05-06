@@ -392,6 +392,7 @@ class Command_Update extends Cinnebar_Command
             echo 'Fail.'."\n";
             exit;
         }
+        unset($cards);
         $this->UpdCardTeamAndStatus();
     }
     
