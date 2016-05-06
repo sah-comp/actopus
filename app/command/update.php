@@ -382,6 +382,7 @@ class Command_Update extends Cinnebar_Command
                 $i++;
                 echo $i . ' ' . $card->name ."\n";
                 $card->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
+                $card->status = 'maintain';
             }
             R::storeAll($cards);
             R::commit();
