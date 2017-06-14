@@ -84,7 +84,7 @@ class Model_Card extends Cinnebar_Model
     {
         $searchphrase = '%'.$searchphrase.'%';
         $searchphraseflat = '%'.$this->alphanumericonly($searchphrase).'%';
-        return R::find('card', ' name LIKE :f OR title LIKE :f OR codeword LIKE :f OR note LIKE :f OR clientcode LIKE :f OR clientnickname LIKE :f OR clientaddress LIKE :f OR pattern LIKE :f OR issuenumber LIKE :f OR disclosurenumber LIKE :f OR applicantnickname LIKE :f OR applicantaddress LIKE :f OR applicantcode LIKE :f OR foreignnickname LIKE :f OR foreignaddress LIKE :f OR foreigncode LIKE :f OR invreceivernickname LIKE :f OR invreceiveraddress LIKE :f OR invreceivercode LIKE :f OR feesubject LIKE :f OR revenueaccount LIKE :f OR customeraccount LIKE :f OR applicationnumberflat LIKE :fan OR issuenumberflat LIKE :fan OR disclosurenumberflat LIKE :fan', array(':f' => $searchphrase, ':fan' => $searchphraseflat));
+        return R::find('card', ' name LIKE :f OR searchname LIKE :fan OR title LIKE :f OR codeword LIKE :f OR note LIKE :f OR clientcode LIKE :f OR clientnickname LIKE :f OR clientaddress LIKE :f OR pattern LIKE :f OR issuenumber LIKE :f OR disclosurenumber LIKE :f OR applicantnickname LIKE :f OR applicantaddress LIKE :f OR applicantcode LIKE :f OR foreignnickname LIKE :f OR foreignaddress LIKE :f OR foreigncode LIKE :f OR invreceivernickname LIKE :f OR invreceiveraddress LIKE :f OR invreceivercode LIKE :f OR feesubject LIKE :f OR revenueaccount LIKE :f OR customeraccount LIKE :f OR applicationnumberflat LIKE :fan OR issuenumberflat LIKE :fan OR disclosurenumberflat LIKE :fan OR titleflat LIKE :fan OR codewordflat LIKE :fan OR noteflat LIKE :fan', array(':f' => $searchphrase, ':fan' => $searchphraseflat));
     }
 
     /**
@@ -1356,7 +1356,7 @@ SQL;
                 $this->bean->clientcode,
                 str_replace('"', '', $this->bean->title),
                 str_replace('"', '', $this->bean->codeword),
-                $this->bean->note
+                str_replace('"', '', $this->bean->note)
     	    );
     	}
     	
@@ -1493,18 +1493,34 @@ SQL;
         $this->bean->ownInvoice = array();
         $this->bean->ownCardfeestep = array();
     }
+    
+    /**
+     * Strip non alphanumeric characters from certain fields and make the card more easy to find.
+     *
+     * @uses alphanumericonly() to strip non alphanumeric characters from certain fields
+     * @return void
+     */
+    public function makeBetterSearchable()
+    {
+        $this->bean->searchname = $this->alphanumericonly( $this->bean->name );
+        $this->bean->applicationnumberflat = $this->alphanumericonly( $this->bean->applicationnumber );
+        $this->bean->issuenumberflat = $this->alphanumericonly( $this->bean->issuenumber );
+        $this->bean->disclosurenumberflat = $this->alphanumericonly( $this->bean->disclosurenumber );
+        $this->bean->titleflat = $this->alphanumericonly( $this->bean->title );
+        $this->bean->codewordflat = $this->alphanumericonly( $this->bean->codeword );
+        $this->bean->noteflat = $this->alphanumericonly( $this->bean->note );
+    }
 
     /**
      * Update.
      *
-     * @uses makeSortnumber() to derive a sortable name from the name
+     * @uses makeSortnumber() to build a sortable field based on the year part of card.name
+     * @uses makeBetterSearchable() to derive a sortable name from the name
      */
     public function update()
     {
         $this->makeSortnumber();
-        $this->bean->applicationnumberflat = $this->alphanumericonly( $this->bean->applicationnumber );
-        $this->bean->issuenumberflat = $this->alphanumericonly( $this->bean->issuenumber );
-        $this->bean->disclosurenumberflat = $this->alphanumericonly( $this->bean->disclosurenumber );
+        $this->makeBetterSearchable();
         if ($this->bean->feeinactive || ! $this->bean->getId()) {
             unset($this->bean->pricetype);
             unset($this->bean->feetype);

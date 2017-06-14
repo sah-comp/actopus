@@ -14,7 +14,7 @@
  *
  * Usage examle from the command line for updating to revision 17
  * <code>
- * php -f index.php -- -c update -rev 17
+ * php -f index.php -- -c update --rev 17
  * </code>
  *
  * @package Cinnebar
@@ -39,7 +39,8 @@ class Command_Update extends Cinnebar_Command
         8 => array('updCardRegex'),
         9 => array('updCardTeam'),
         10 => array('updDummy'),
-        11 => array('UpdCardTeamAndStatus')
+        11 => array('UpdCardTeamAndStatus'),
+        12 => array('UpdCardSearchable')
     );
 
     /**
@@ -51,7 +52,7 @@ class Command_Update extends Cinnebar_Command
     public function execute()
     {
         if ($this->flag('h')) return $this->help();
-        if ( ! $this->flag('rev')) return $this->error('Missing parameter -rev');
+        if ( ! $this->flag('rev')) return $this->error('Missing parameter --rev');
         if ($this->flag('rev')) return $this->result();
         return true;
     }
@@ -395,6 +396,49 @@ class Command_Update extends Cinnebar_Command
         }
         unset($cards);
         $this->UpdCardTeamAndStatus();
+    }
+    
+    /**
+     * UpdCardSearchable
+     */
+    protected function UpdCardSearchable()
+    {
+        $cards = R::find('card', ' searchname IS NULL LIMIT 100 ');
+        if ( empty($cards) ) {
+            echo 'Ready';
+            exit;
+        }
+        $i = 0;
+        R::begin();
+        try {
+            echo 'UpdCardSearchable started...'."\n";
+            foreach ($cards as $id => $card) {
+                $i++;
+                echo $i . ' ' . $card->name ."\n";
+                $card->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
+                $card->makeBetterSearchable();
+                R::exec("UPDATE card set searchname = :searchname, titleflat = :titleflat, codewordflat = :codewordflat, noteflat = :noteflat, applicationnumberflat = :applicationnumberflat, issuenumberflat = :issuenumberflat, disclosurenumberflat = :disclosurenumberflat WHERE id = :id", array(
+                        ':id' => $id,
+                        ':searchname' => $card->searchname,
+                        ':titleflat' => $card->titleflat,
+                        ':codewordflat' => $card->codewordflat,
+                        ':noteflat' => $card->noteflat,
+                        ':applicationnumberflat' => $card->applicationnumberflat,
+                        ':issuenumberflat' => $card->issuenumberflat,
+                        ':disclosurenumberflat' => $card->disclosurenumberflat
+                    )
+                );
+            }
+            R::commit();
+            echo 'Success'."\n";
+        } catch ( Exception $e ) {
+            echo $e . "\n";
+            R::rollback();
+            echo 'Fail.'."\n";
+            exit;
+        }
+        unset($cards);
+        $this->UpdCardSearchable();
     }
     
     /**
