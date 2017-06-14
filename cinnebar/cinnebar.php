@@ -234,7 +234,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     /**
      * Holds the release version tag
      */
-    const RELEASE = '1.04';
+    const RELEASE = '1.05';
 
     /**
      * Holds an instance of a cycle bean.
@@ -2508,6 +2508,11 @@ class Controller_Scaffold extends Cinnebar_Controller
                     $this->redirect(sprintf('/%s/edit/%d/%d/%d/%s/%d/%d/', $this->type, $id, $this->page - 1, 1, $this->layout, $this->order, $this->dir));
                 }
                 if ($followup == 'list') {
+                    $this->redirect(sprintf('/%s/index/%d/%d/%s/%d/%d/', $this->type, 1, self::LIMIT, $this->layout, $this->order, $this->dir));
+                }
+                
+                if ($followup == 'listandreset') {
+                    unset($_SESSION['filter'][$this->type]['id']);
                     $this->redirect(sprintf('/%s/index/%d/%d/%s/%d/%d/', $this->type, 1, self::LIMIT, $this->layout, $this->order, $this->dir));
                 }
                 

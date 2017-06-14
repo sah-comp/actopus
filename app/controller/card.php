@@ -33,6 +33,17 @@ class Controller_Card extends Controller_Scaffold
     public $type = 'card';
     
     /**
+     * Container for actions.
+     *
+     * @var array
+     */
+    public $actions = array(
+        'table' => array('expunge'),
+        'edit' => array('next', 'prev', 'update', 'list', 'listandreset'),
+        'add' => array('continue', 'update', 'list')
+    );
+    
+    /**
      * Displays a page with a (paginated) selection of beans.
      *
      * Default order dir is descending.

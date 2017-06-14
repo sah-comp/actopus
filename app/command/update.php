@@ -417,7 +417,7 @@ class Command_Update extends Cinnebar_Command
                 echo $i . ' ' . $card->name ."\n";
                 $card->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
                 $card->makeBetterSearchable();
-                R::exec("UPDATE card set searchname = :searchname, titleflat = :titleflat, codewordflat = :codewordflat, noteflat = :noteflat, applicationnumberflat = :applicationnumberflat, issuenumberflat = :issuenumberflat, disclosurenumberflat = :disclosurenumberflat WHERE id = :id", array(
+                R::exec("UPDATE card set searchname = :searchname, titleflat = :titleflat, codewordflat = :codewordflat, noteflat = :noteflat, applicationnumberflat = :applicationnumberflat, issuenumberflat = :issuenumberflat, disclosurenumberflat = :disclosurenumberflat, clientcodeflat = :clientcodeflat, applicantcodeflat = :applicantcodeflat, foreigncodeflat = :foreigncodeflat, invreceivercodeflat = :invreceivercodeflat WHERE id = :id", array(
                         ':id' => $id,
                         ':searchname' => $card->searchname,
                         ':titleflat' => $card->titleflat,
@@ -425,7 +425,11 @@ class Command_Update extends Cinnebar_Command
                         ':noteflat' => $card->noteflat,
                         ':applicationnumberflat' => $card->applicationnumberflat,
                         ':issuenumberflat' => $card->issuenumberflat,
-                        ':disclosurenumberflat' => $card->disclosurenumberflat
+                        ':disclosurenumberflat' => $card->disclosurenumberflat,
+                        ':clientcodeflat' => $card->clientcodeflat,
+                        ':applicantcodeflat' => $card->applicantcodeflat,
+                        ':foreigncodeflat' => $card->foreigncodeflat,
+                        ':invreceivercodeflat' => $card->invreceivercodeflat
                     )
                 );
             }

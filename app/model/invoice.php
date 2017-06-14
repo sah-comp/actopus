@@ -402,6 +402,7 @@ SQL;
 			invoice
 
 		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
 		LEFT JOIN person AS client ON client.id = invoice.client_id
 		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
 

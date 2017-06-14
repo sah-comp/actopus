@@ -777,6 +777,11 @@ class Controller_Scaffold extends Cinnebar_Controller
                     $this->redirect(sprintf('/%s/index/%d/%d/%s/%d/%d/', $this->type, 1, self::LIMIT, $this->layout, $this->order, $this->dir));
                 }
                 
+                if ($followup == 'listandreset') {
+                    unset($_SESSION['filter'][$this->type]['id']);
+                    $this->redirect(sprintf('/%s/index/%d/%d/%s/%d/%d/', $this->type, 1, self::LIMIT, $this->layout, $this->order, $this->dir));
+                }
+                
                 $this->redirect(sprintf('/%s/edit/%d/%d/%d/%s/%d/%d/', $this->type, $this->view->record->getId(), $this->page, $this->limit, $this->layout, $this->order, $this->dir));
 
             } catch (Exception $e) {

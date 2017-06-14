@@ -64,9 +64,15 @@ class Model_Person extends Cinnebar_Model
      */
     public function expunge()
     {
-        $this->bean->deleted = true;
+        $cards = R::find('card', ' client_id = :pid OR invreceiver_id = :pid OR applicant_id = :pid OR foreign_id = :pid LIMIT 1 ', array(':pid' => $this->bean->getId()));
+        $invoices = R::find('invoice', ' client_id = ? LIMIT 1', array($this->bean->getId()));
         try {
-            R::store($this->bean);
+            if ( ! $cards && ! $invoices ) {
+                R::trash($this->bean);
+            } else {
+                $this->bean->deleted = true;
+                R::store($this->bean);
+            }
             return true;
         } catch (Exception $e) {
             Cinnebar_Logger::instance()->log($e, 'exceptions');

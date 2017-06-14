@@ -84,7 +84,7 @@ class Model_Card extends Cinnebar_Model
     {
         $searchphrase = '%'.$searchphrase.'%';
         $searchphraseflat = '%'.$this->alphanumericonly($searchphrase).'%';
-        return R::find('card', ' name LIKE :f OR searchname LIKE :fan OR title LIKE :f OR codeword LIKE :f OR note LIKE :f OR clientcode LIKE :f OR clientnickname LIKE :f OR clientaddress LIKE :f OR pattern LIKE :f OR issuenumber LIKE :f OR disclosurenumber LIKE :f OR applicantnickname LIKE :f OR applicantaddress LIKE :f OR applicantcode LIKE :f OR foreignnickname LIKE :f OR foreignaddress LIKE :f OR foreigncode LIKE :f OR invreceivernickname LIKE :f OR invreceiveraddress LIKE :f OR invreceivercode LIKE :f OR feesubject LIKE :f OR revenueaccount LIKE :f OR customeraccount LIKE :f OR applicationnumberflat LIKE :fan OR issuenumberflat LIKE :fan OR disclosurenumberflat LIKE :fan OR titleflat LIKE :fan OR codewordflat LIKE :fan OR noteflat LIKE :fan', array(':f' => $searchphrase, ':fan' => $searchphraseflat));
+        return R::find('card', ' name LIKE :f OR searchname LIKE :fan OR title LIKE :f OR codeword LIKE :f OR note LIKE :f OR clientcode LIKE :f OR clientnickname LIKE :f OR clientaddress LIKE :f OR pattern LIKE :f OR issuenumber LIKE :f OR disclosurenumber LIKE :f OR applicantnickname LIKE :f OR applicantaddress LIKE :f OR applicantcode LIKE :f OR foreignnickname LIKE :f OR foreignaddress LIKE :f OR foreigncode LIKE :f OR invreceivernickname LIKE :f OR invreceiveraddress LIKE :f OR invreceivercode LIKE :f OR feesubject LIKE :f OR revenueaccount LIKE :f OR customeraccount LIKE :f OR applicationnumberflat LIKE :fan OR issuenumberflat LIKE :fan OR disclosurenumberflat LIKE :fan OR titleflat LIKE :fan OR codewordflat LIKE :fan OR noteflat LIKE :fan OR clientcodeflat LIKE :fan OR applicantcodeflat LIKE :fan OR foreigncodeflat LIKE :fan OR invreceivercodeflat LIKE :fan', array(':f' => $searchphrase, ':fan' => $searchphraseflat));
     }
 
     /**
@@ -654,6 +654,8 @@ SQL;
     public function makeMenu($action, Cinnebar_View $view, Cinnebar_Menu $menu = null)
     {
         $menu = parent::makeMenu($action, $view, $menu);
+
+        $menu->add(__('layout_list2'), $view->url(sprintf('/%s/index/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'table2', $view->order, $view->dir)), 'scaffold_card_list2');
         
         $menu->add(__('layout_report'), $view->url(sprintf('/%s/report/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'table', $view->order, $view->dir)), 'scaffold_report');
         
@@ -716,6 +718,107 @@ SQL;
 	public function attributes($layout = 'table')
 	{
 	    switch ($layout) {
+	        case 'table2':
+                $ret = array(
+                	array(
+                		'attribute' => 'name',
+                		'orderclause' => 'card.sortnumber',
+                		'class' => 'text',
+                		'filter' => array(
+                		    'tag' => 'text',
+                		    'orderclause' => 'card.name'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'country_id',
+                	    'orderclause' => 'country.iso',
+                	    'class' => 'text',
+                	    'callback' => array(
+                	        'name' => 'countryIso'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'cardtype_id',
+                	    'orderclause' => 'cardtype.name',
+                	    'class' => 'text',
+                	    'callback' => array(
+                	        'name' => 'cardtypeName'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                    array(
+                	    'attribute' => 'cardstatus_id',
+                	    'orderclause' => 'cardstatus.name',
+                	    'class' => 'text',
+                	    'callback' => array(
+                	        'name' => 'clientstatus'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'user_id',
+                	    'orderclause' => 'attorney.shortname',
+                	    'class' => 'text',
+                	    'callback' => array(
+                	        'name' => 'attorneyName'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'applicationnumber',
+                	    'orderclause' => 'card.applicationnumber',
+                	    'class' => 'text',
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'client_id',
+                	    'orderclause' => 'client.nickname',
+                	    'class' => 'text',
+                	    'callback' => array(
+                	        'name' => 'clientNickname'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'title',
+                	    'orderclause' => 'card.title',
+                	    'class' => 'text',
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'codeword',
+                	    'orderclause' => 'card.codeword',
+                	    'class' => 'text',
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'feeinactive',
+                	    'orderclause' => 'card.feeinactive',
+                	    'class' => 'bool',
+                	    'viewhelper' => 'boolperv',
+                		'filter' => array(
+                		    'tag' => 'boolperv'
+                		)
+                	)
+                );
+	            break;
 	        case 'annual':
                 $ret = array(
                     array(
@@ -1509,6 +1612,10 @@ SQL;
         $this->bean->titleflat = $this->alphanumericonly( $this->bean->title );
         $this->bean->codewordflat = $this->alphanumericonly( $this->bean->codeword );
         $this->bean->noteflat = $this->alphanumericonly( $this->bean->note );
+        $this->bean->clientcodeflat = $this->alphanumericonly( $this->bean->clientcode );
+        $this->bean->applicantcodeflat = $this->alphanumericonly( $this->bean->applicantcode );
+        $this->bean->foreigncodeflat = $this->alphanumericonly( $this->bean->foreigncode );
+        $this->bean->invreceivercodeflat = $this->alphanumericonly( $this->bean->invreceivercode );
     }
 
     /**
