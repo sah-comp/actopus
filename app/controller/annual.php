@@ -77,7 +77,7 @@ class Controller_Annual extends Controller_Card
                 'year' => date('Y'),
                 'month' => date('m'),
                 'attorney' => null,
-                'team' => null,
+                'team' => R::dispense('user')->current()->getFirstTeam()->name,
                 'status' => null
             );
         }
@@ -191,11 +191,11 @@ class Controller_Annual extends Controller_Card
         $where .= ' card.feeinactive = 0 ';
         
         if ( $_SESSION['annual']['year'] ) {
-            $where .= ' AND YEAR(card.feeduedate) = ? ';
+            $where .= ' AND YEAR(card.feeduedate) <= ? ';
             $values[] = $_SESSION['annual']['year'];
         };
         if ( $_SESSION['annual']['month'] ) {
-            $where .= ' AND MONTH(card.feeduedate) = ? ';
+            $where .= ' AND MONTH(card.feeduedate) <= ? ';
             $values[] = $_SESSION['annual']['month'];
         };
         if ( $_SESSION['annual']['attorney'] ) {

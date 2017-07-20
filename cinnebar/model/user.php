@@ -86,6 +86,17 @@ class Model_User extends Cinnebar_Model
     }
     
     /**
+     * Returns the first team of this user.
+     *
+     * @return RedBean_OODBBean $team
+     */
+    public function getFirstTeam()
+    {
+        $teams = $this->bean->sharedTeam;
+        return array_shift( $teams );
+    }
+    
+    /**
      * Returns an array of active user beans which belong to a certain role.
      *
      * @param mixed $role is either a int or an array of integers

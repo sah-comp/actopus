@@ -53,7 +53,7 @@ class Cinnebar_Factory
 }
 class Cinnebar_Facade extends Cinnebar_Element
 {
-    const RELEASE = '1.05';
+    const RELEASE = '1.06';
     private $cycle;
     public function cli()
     {
@@ -2790,6 +2790,11 @@ class Model_User extends Cinnebar_Model
     {
         if ( ! $role = R::findOne('role', ' name = ? LIMIT 1', array($role))) return false;
         return R::areRelated($this->bean, $role);
+    }
+    public function getFirstTeam()
+    {
+        $teams = $this->bean->sharedTeam;
+        return array_shift( $teams );
     }
     public function belongsToRole($roles)
     {
