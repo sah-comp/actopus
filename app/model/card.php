@@ -1575,6 +1575,8 @@ SQL;
         
         //$this->bean->feeinactive = false;
         
+        $this->bean->patterncount = 0;
+        
         $this->addValidator('name', 'isunique', array('bean' => $this->bean, 'attribute' => 'name'));
         $this->addValidator('name', 'pregmatch', array('regex' => "/\\d{2}[.]\\d{4}.?/"));
         $this->addConverter('applicationdate', 'mySQLDate');
