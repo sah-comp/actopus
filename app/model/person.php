@@ -90,6 +90,17 @@ class Model_Person extends Cinnebar_Model
         if ( ! $this->bean->user) $this->bean->user = R::dispense('user');
         return $this->bean->user;
     }
+    
+    /**
+     * Returns a pricetype bean.
+     *
+     * @return RedBean_OODBBean
+     */
+    public function pricetype()
+    {
+        if ( ! $this->bean->pricetype) $this->bean->pricetype = R::dispense('pricetype');
+        return $this->bean->pricetype;
+    }
 
     /**
      * Returns SQL for filtering these beans.
@@ -360,6 +371,31 @@ SQL;
     private function rebuildCardWithPerson()
     {   
         $addrLabel = $this->addressLabelByType()->formatAddress();
+        $sql = "UPDATE card set clientnickname = :cnick, clientaddress = :caddr WHERE client_id = :pid";
+        R::exec($sql, array(
+            ':pid' => $this->bean->getId(),
+            ':cnick' => $this->bean->nickname,
+            ':caddr' => $addrLabel
+        ));
+        $sql = "UPDATE card set invreceivernickname = :cnick, invreceiveraddress = :caddr WHERE invreceiver_id = :pid";
+        R::exec($sql, array(
+            ':pid' => $this->bean->getId(),
+            ':cnick' => $this->bean->nickname,
+            ':caddr' => $addrLabel
+        ));
+        $sql = "UPDATE card set applicantnickname = :cnick, applicantaddress = :caddr WHERE applicant_id = :pid";
+        R::exec($sql, array(
+            ':pid' => $this->bean->getId(),
+            ':cnick' => $this->bean->nickname,
+            ':caddr' => $addrLabel
+        ));
+        $sql = "UPDATE card set foreignnickname = :cnick, foreignaddress = :caddr WHERE foreign_id = :pid";
+        R::exec($sql, array(
+            ':pid' => $this->bean->getId(),
+            ':cnick' => $this->bean->nickname,
+            ':caddr' => $addrLabel
+        ));
+        /*
         $offset = 0;
         $limit = 500;
         while ($records = R::findAll('card', ' client_id = :pid OR invreceiver_id =:pid OR applicant_id = :pid OR foreign_id = :pid ORDER BY id LIMIT '.$limit.' OFFSET '.$offset, array(':pid' => $this->bean->getId()))) {
@@ -397,6 +433,7 @@ SQL;
             }
             $offset = $offset + $limit;    
         }
+        */
     }
     
     /**
@@ -405,6 +442,13 @@ SQL;
     private function rebuildInvoiceWithPerson()
     {
         $addrLabel = $this->addressLabelByType()->formatAddress();
+        $sql = "UPDATE card set clientnickname = :cnick, clientaddress = :caddr WHERE client_id = :pid";
+        R::exec($sql, array(
+            ':pid' => $this->bean->getId(),
+            ':cnick' => $this->bean->nickname,
+            ':caddr' => $addrLabel
+        ));
+        /*
         $offset = 0;
         $limit = 500;
         while ($records = R::findAll('card', ' client_id = :pid ORDER BY id LIMIT '.$limit.' OFFSET '.$offset, array(':pid' => $this->bean->getId()))) {
@@ -427,6 +471,7 @@ SQL;
             }
             $offset = $offset + $limit;    
         }
+        */
     }
 
 }

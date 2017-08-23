@@ -11,6 +11,8 @@
 <div>
     <input type="hidden" name="dialog[user][type]" value="user" />
     <input type="hidden" name="dialog[user][id]" value="" />
+    <input type="hidden" name="dialog[pricetype][type]" value="pricetype" />
+    <input type="hidden" name="dialog[pricetype][id]" value="" />
 </div>
 <fieldset
     class="sticky">
@@ -228,6 +230,24 @@
             name="dialog[department]"
             value="<?php echo htmlspecialchars($record->department) ?>" />
     </div>
+    
+    <div class="row">
+        <label
+            for="person-pricetype"
+            class="<?php echo ($record->hasError('pricetype_id')) ? 'error' : ''; ?>">
+            <?php echo __('person_label_pricetype') ?>
+        </label>        
+        <select
+            id="person-pricetype"
+            name="dialog[pricetype][id]">
+            <?php foreach ($pricetypes as $_pricetype_id => $_pricetype): ?>
+            <option
+                value="<?php echo $_pricetype->getId() ?>"
+                <?php echo ($record->pricetype()->getId() == $_pricetype->getId()) ? self::SELECTED : '' ?>><?php echo $_pricetype->name ?></option>
+            <?php endforeach ?>
+        </select>
+    </div>
+    
 </fieldset>
 <div id="person-tabs" class="bar tabbed">
     <?php echo $this->tabbed('person-tabs', array(

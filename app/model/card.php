@@ -1631,7 +1631,12 @@ SQL;
         $this->makeSortnumber();
         $this->makeBetterSearchable();
         if ($this->bean->feeinactive || ! $this->bean->getId()) {
-            unset($this->bean->pricetype);
+            //unset($this->bean->pricetype);
+            if ( $this->bean->client() ) {
+                $this->bean->pricetype = $this->bean->client()->pricetype();
+            } else {
+                unset($this->bean->pricetype);
+            }
             unset($this->bean->feetype);
         }
         if ( ! $this->bean->country_id) $this->bean->country_id = null;

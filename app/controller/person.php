@@ -34,6 +34,7 @@ class Controller_Person extends Controller_Scaffold
     {
         $this->pushEnabledUsersToView();
         $this->pushEnabledLanguagesToView();
+        $this->pushEnabledPricetypesToView();
     }
     
     /**
@@ -45,6 +46,7 @@ class Controller_Person extends Controller_Scaffold
     {
         $this->pushEnabledUsersToView();
         $this->pushEnabledLanguagesToView();
+        $this->pushEnabledPricetypesToView();
     }
     
     /**
@@ -53,5 +55,13 @@ class Controller_Person extends Controller_Scaffold
     public function pushEnabledUsersToView()
     {
         $this->view->users = R::find('user', ' deleted = 0 AND banned = 0 ORDER BY name');
+    }
+    
+    /**
+     * Pushes enabled pricetypes to the view.
+     */
+    public function pushEnabledPricetypesToView()
+    {
+        $this->view->pricetypes = R::findAll('pricetype', ' ORDER BY name');
     }
 }
