@@ -808,6 +808,34 @@ class Controller_Scaffold extends Cinnebar_Controller
         $this->trigger('index', 'after');
         echo $this->view->render();
     }
+    public function htmlpdf($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
+    {
+        $this->cache()->deactivate();
+        session_start();
+        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        if ( ! $this->permission()->allowed($this->user(), $this->type, 'index')) {
+			return $this->error('403');
+		}
+        $this->env($page, $limit, $layout, $order, $dir, null, 'index');
+                $real_limit = $this->limit;
+        $real_offset = $this->offset;
+                $this->limit = R::count($this->type);        $this->offset = 0;
+                $this->collection();
+                $this->limit = $real_limit;
+        $this->offset = $real_offset;
+        $data = array();
+        $docname = 'Cards as PDF';
+        $mpdf = new mPDF('c', 'A4');
+        $mpdf->SetTitle($docname);
+        $mpdf->SetAuthor( 'von Rohr' );
+        $mpdf->SetDisplayMode('fullpage');
+        ob_start();
+        echo '<h1>Hi Folks!</h1>';
+        $html = ob_get_contents();
+        ob_end_clean();
+        $mpdf->WriteHTML( $html );
+        return $mpdf;
+    }
     public function press($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
         $this->cache()->deactivate();

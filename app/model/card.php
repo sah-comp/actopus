@@ -669,6 +669,8 @@ SQL;
             $menu->add(__('scaffold_csv_card_one'), $view->url(sprintf('/%s/press/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), $view->page, $view->limit, 'vrone', $view->order, $view->dir)), 'scaffold_csv');
             // add CSV export action: vrone - export list type one
             $menu->add(__('scaffold_csv_card_two'), $view->url(sprintf('/%s/press/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), $view->page, $view->limit, 'vrtwo', $view->order, $view->dir)), 'scaffold_csv');
+            // add a link which generates a PDF and downloads it for printing
+            $menu->add(__('scaffold_html_to_pdf'), $view->url(sprintf('/%s/htmlpdf/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), $view->page, $view->limit, $view->layout, $view->order, $view->dir)), 'scaffold_htmlpdf');
         }
         return $menu;
     }

@@ -2242,6 +2242,63 @@ class Controller_Scaffold extends Cinnebar_Controller
     }
     
     /**
+     * Creates a PDF from a HTML using FPDF.
+     *
+     * This is basically the same as index but limit and offset are manipulated to start from
+     * zero (0) offset and use all records possible.
+     *
+     * @param int $page
+     * @param int $limit
+     * @param string $layout
+     * @param int $order
+     */
+    public function htmlpdf($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
+    {
+        $this->cache()->deactivate();
+        
+        session_start();
+        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        
+        if ( ! $this->permission()->allowed($this->user(), $this->type, 'index')) {
+			return $this->error('403');
+		}
+
+        $this->env($page, $limit, $layout, $order, $dir, null, 'index');
+        
+        // memorize limit and offset
+        $real_limit = $this->limit;
+        $real_offset = $this->offset;
+        // use offset and limit...
+        $this->limit = R::count($this->type);//10000000;
+        $this->offset = 0;
+        // ... to get a collection of all records
+        $this->collection();
+        // and then go back to what is used on the screen
+        $this->limit = $real_limit;
+        $this->offset = $real_offset;
+        
+        $data = array();
+        /*
+        foreach ($this->view->records as $id => $record) {
+            $data[] = $record->exportToCSV(false, $layout);
+        }
+        */
+        $docname = 'Cards as PDF';
+        $mpdf = new mPDF('c', 'A4');
+        $mpdf->SetTitle($docname);
+        $mpdf->SetAuthor( 'von Rohr' );
+        $mpdf->SetDisplayMode('fullpage');
+        ob_start();
+        
+        echo '<h1>Hi Folks!</h1>';
+        
+        $html = ob_get_contents();
+        ob_end_clean();
+        $mpdf->WriteHTML( $html );
+        return $mpdf;
+    }
+    
+    /**
      * Prints selection of beans.
      *
      * This is basically the same as index but limit and offset are manipulated to start from
