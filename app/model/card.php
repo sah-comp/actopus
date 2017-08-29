@@ -726,6 +726,7 @@ SQL;
                 		'attribute' => 'name',
                 		'orderclause' => 'card.sortnumber',
                 		'class' => 'text',
+        				'width' => '10%',
                 		'filter' => array(
                 		    'tag' => 'text',
                 		    'orderclause' => 'card.name'
@@ -735,6 +736,7 @@ SQL;
                 	    'attribute' => 'country_id',
                 	    'orderclause' => 'country.iso',
                 	    'class' => 'text',
+        				'width' => '5%',
                 	    'callback' => array(
                 	        'name' => 'countryIso'
                 	    ),
@@ -746,6 +748,7 @@ SQL;
                 	    'attribute' => 'cardtype_id',
                 	    'orderclause' => 'cardtype.name',
                 	    'class' => 'text',
+        				'width' => '5%',
                 	    'callback' => array(
                 	        'name' => 'cardtypeName'
                 	    ),
@@ -757,6 +760,7 @@ SQL;
                 	    'attribute' => 'cardstatus_id',
                 	    'orderclause' => 'cardstatus.name',
                 	    'class' => 'text',
+        				'width' => '10%',
                 	    'callback' => array(
                 	        'name' => 'clientstatus'
                 	    ),
@@ -768,6 +772,7 @@ SQL;
                 	    'attribute' => 'user_id',
                 	    'orderclause' => 'attorney.shortname',
                 	    'class' => 'text',
+        				'width' => '10%',
                 	    'callback' => array(
                 	        'name' => 'attorneyName'
                 	    ),
@@ -779,6 +784,7 @@ SQL;
                 	    'attribute' => 'applicationnumber',
                 	    'orderclause' => 'card.applicationnumber',
                 	    'class' => 'text',
+        				'width' => '15%',
                 		'filter' => array(
                 		    'tag' => 'text'
                 		)
@@ -787,6 +793,7 @@ SQL;
                 	    'attribute' => 'client_id',
                 	    'orderclause' => 'client.nickname',
                 	    'class' => 'text',
+        				'width' => '15%',
                 	    'callback' => array(
                 	        'name' => 'clientNickname'
                 	    ),
@@ -798,6 +805,7 @@ SQL;
                 	    'attribute' => 'title',
                 	    'orderclause' => 'card.title',
                 	    'class' => 'text',
+        				'width' => '20%',
                 		'filter' => array(
                 		    'tag' => 'text'
                 		)
@@ -806,6 +814,7 @@ SQL;
                 	    'attribute' => 'codeword',
                 	    'orderclause' => 'card.codeword',
                 	    'class' => 'text',
+        				'width' => '20%',
                 		'filter' => array(
                 		    'tag' => 'text'
                 		)
@@ -814,6 +823,7 @@ SQL;
                 	    'attribute' => 'feeinactive',
                 	    'orderclause' => 'card.feeinactive',
                 	    'class' => 'bool',
+        				'width' => '5%',
                 	    'viewhelper' => 'boolperv',
                 		'filter' => array(
                 		    'tag' => 'boolperv'
@@ -1258,6 +1268,7 @@ SQL;
         				'attribute' => 'name',
         				'orderclause' => 'card.sortnumber',
         				'class' => 'text',
+        				'width' => '10%',
         				'filter' => array(
         				    'tag' => 'text',
         				    'orderclause' => 'card.name'
@@ -1267,6 +1278,7 @@ SQL;
         			    'attribute' => 'country_id',
         			    'orderclause' => 'country.iso',
         			    'class' => 'text',
+        				'width' => '5%',
         			    'callback' => array(
         			        'name' => 'countryIso'
         			    ),
@@ -1278,6 +1290,7 @@ SQL;
         			    'attribute' => 'cardtype_id',
         			    'orderclause' => 'cardtype.name',
         			    'class' => 'text',
+        				'width' => '5%',
         			    'callback' => array(
         			        'name' => 'cardtypeName'
         			    ),
@@ -1289,6 +1302,7 @@ SQL;
         			    'attribute' => 'cardstatus_id',
         			    'orderclause' => 'cardstatus.name',
         			    'class' => 'text',
+        				'width' => '10%',
         			    'callback' => array(
         			        'name' => 'cardstatusName'
         			    ),
@@ -1300,6 +1314,7 @@ SQL;
         			    'attribute' => 'user_id',
         			    'orderclause' => 'attorney.shortname',
         			    'class' => 'text',
+        				'width' => '5%',
         			    'callback' => array(
         			        'name' => 'attorneyName'
         			    ),
@@ -1311,6 +1326,7 @@ SQL;
         			    'attribute' => 'teammashup',
         			    'orderclause' => 'card.teammashup',
         			    'class' => 'text',
+        				'width' => '10%',
         			    'callback' => array(
         			        'name' => 'teamName'
         			    ),
@@ -1322,6 +1338,7 @@ SQL;
         			    'attribute' => 'client_id',
         			    'orderclause' => 'client.nickname',
         			    'class' => 'text',
+        				'width' => '20%',
         			    'callback' => array(
         			        'name' => 'clientNickname'
         			    ),
@@ -1333,6 +1350,7 @@ SQL;
         			    'attribute' => 'title',
         			    'orderclause' => 'card.title',
         			    'class' => 'text',
+        				'width' => '20%',
         				'filter' => array(
         				    'tag' => 'text'
         				)
@@ -1341,6 +1359,7 @@ SQL;
         			    'attribute' => 'codeword',
         			    'orderclause' => 'card.codeword',
         			    'class' => 'text',
+        				'width' => '15%',
         				'filter' => array(
         				    'tag' => 'text'
         				)
@@ -1349,6 +1368,7 @@ SQL;
         			    'attribute' => 'feeinactive',
         			    'orderclause' => 'card.feeinactive',
         			    'class' => 'bool',
+        				'width' => '5%',
         			    'viewhelper' => 'boolperv',
         				'filter' => array(
         				    'tag' => 'boolperv'

@@ -531,7 +531,7 @@ class Controller_Scaffold extends Cinnebar_Controller
 			return $this->error('403');
 		}
 
-        $this->env($page, $limit, $layout, $order, $dir, null, 'index');
+        $this->env($page, $limit, $layout, $order, $dir, null, 'htmlpdf');
         
         // memorize limit and offset
         $real_limit = $this->limit;
@@ -544,25 +544,16 @@ class Controller_Scaffold extends Cinnebar_Controller
         // and then go back to what is used on the screen
         $this->limit = $real_limit;
         $this->offset = $real_offset;
-        
-        $data = array();
-        /*
-        foreach ($this->view->records as $id => $record) {
-            $data[] = $record->exportToCSV(false, $layout);
-        }
-        */
     	require_once BASEDIR.'/vendors/mpdf/mpdf.php';
         $docname = 'Cards as PDF';
+        $filename = 'Liste.pdf';
         $mpdf = new mPDF('c', 'A4');
         $mpdf->SetTitle($docname);
         $mpdf->SetAuthor( 'von Rohr' );
         $mpdf->SetDisplayMode('fullpage');
-        ob_start();
-        
-        echo '<h1>Hi Folks!</h1>';
-        
-        $html = ob_get_contents();
-        ob_end_clean();
+
+        $html = $this->view->render();
+
         $mpdf->WriteHTML( $html );
         $mpdf->Output($filename, 'D');
         exit;

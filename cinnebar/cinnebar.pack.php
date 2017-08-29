@@ -53,7 +53,7 @@ class Cinnebar_Factory
 }
 class Cinnebar_Facade extends Cinnebar_Element
 {
-    const RELEASE = '1.06';
+    const RELEASE = '1.07';
     private $cycle;
     public function cli()
     {
@@ -816,25 +816,24 @@ class Controller_Scaffold extends Cinnebar_Controller
         if ( ! $this->permission()->allowed($this->user(), $this->type, 'index')) {
 			return $this->error('403');
 		}
-        $this->env($page, $limit, $layout, $order, $dir, null, 'index');
+        $this->env($page, $limit, $layout, $order, $dir, null, 'htmlpdf');
                 $real_limit = $this->limit;
         $real_offset = $this->offset;
                 $this->limit = R::count($this->type);        $this->offset = 0;
                 $this->collection();
                 $this->limit = $real_limit;
         $this->offset = $real_offset;
-        $data = array();
+    	require_once BASEDIR.'/vendors/mpdf/mpdf.php';
         $docname = 'Cards as PDF';
+        $filename = 'Liste.pdf';
         $mpdf = new mPDF('c', 'A4');
         $mpdf->SetTitle($docname);
         $mpdf->SetAuthor( 'von Rohr' );
         $mpdf->SetDisplayMode('fullpage');
-        ob_start();
-        echo '<h1>Hi Folks!</h1>';
-        $html = ob_get_contents();
-        ob_end_clean();
+        $html = $this->view->render();
         $mpdf->WriteHTML( $html );
-        return $mpdf;
+        $mpdf->Output($filename, 'D');
+        exit;
     }
     public function press($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {

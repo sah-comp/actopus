@@ -234,7 +234,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     /**
      * Holds the release version tag
      */
-    const RELEASE = '1.06';
+    const RELEASE = '1.07';
 
     /**
      * Holds an instance of a cycle bean.
@@ -2171,6 +2171,7 @@ class Controller_Scaffold extends Cinnebar_Controller
      * @param int $limit
      * @param string $layout
      * @param int $order
+     * @param int $dir
      */
     public function index($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
@@ -2251,6 +2252,7 @@ class Controller_Scaffold extends Cinnebar_Controller
      * @param int $limit
      * @param string $layout
      * @param int $order
+     * @param int $dir
      */
     public function htmlpdf($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
@@ -2263,7 +2265,7 @@ class Controller_Scaffold extends Cinnebar_Controller
 			return $this->error('403');
 		}
 
-        $this->env($page, $limit, $layout, $order, $dir, null, 'index');
+        $this->env($page, $limit, $layout, $order, $dir, null, 'htmlpdf');
         
         // memorize limit and offset
         $real_limit = $this->limit;
@@ -2276,26 +2278,19 @@ class Controller_Scaffold extends Cinnebar_Controller
         // and then go back to what is used on the screen
         $this->limit = $real_limit;
         $this->offset = $real_offset;
-        
-        $data = array();
-        /*
-        foreach ($this->view->records as $id => $record) {
-            $data[] = $record->exportToCSV(false, $layout);
-        }
-        */
+    	require_once BASEDIR.'/vendors/mpdf/mpdf.php';
         $docname = 'Cards as PDF';
+        $filename = 'Liste.pdf';
         $mpdf = new mPDF('c', 'A4');
         $mpdf->SetTitle($docname);
         $mpdf->SetAuthor( 'von Rohr' );
         $mpdf->SetDisplayMode('fullpage');
-        ob_start();
-        
-        echo '<h1>Hi Folks!</h1>';
-        
-        $html = ob_get_contents();
-        ob_end_clean();
+
+        $html = $this->view->render();
+
         $mpdf->WriteHTML( $html );
-        return $mpdf;
+        $mpdf->Output($filename, 'D');
+        exit;
     }
     
     /**
