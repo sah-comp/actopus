@@ -53,7 +53,7 @@ class Controller_Multipay extends Controller_Scaffold
         $setting = R::load( 'setting', 1 );
         $multipay = R::load( 'multipay', $id );
         
-        $filename = 'test.xml';
+        $filename = str_replace( ' ', '-', $multipay->name ) . '.xml';
         
         $total_amount = 0;
         $total_records = 0;
