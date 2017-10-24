@@ -62,6 +62,60 @@ class Model_Card extends Cinnebar_Model
     }
     
     /**
+     * Adds this record to a multipay bean.
+     */
+    public function multipay()
+    {
+        $feesteps = $this->bean->getLatestCardfeesteps();
+        $paymentCode = '';
+        $amount = 0;
+        $card = $this->bean;
+        if ( empty( $feesteps )) {
+            $paymentCode = '';
+            $amount = 0;
+        } else {
+            foreach( $feesteps as $id => $feestep) {
+                if ( ! $feestep->done ) {
+                    $paymentCode = '0' . ( 32 + $feestep->sequence );
+                    $amount = $feestep->paymentnet;
+                    break;
+                }
+            }
+        }
+        if ( ! isset( $_SESSION['multipay']['id'] ) ) {
+            $multipay = R::dispense( 'multipay' );
+            R::store( $multipay );
+            $_SESSION['multipay']['id'] = $multipay->getId();
+        }
+        $multipay = R::load( 'multipay', $_SESSION['multipay']['id'] );
+        $multipay->user = R::dispense( 'user' )->current();
+        $mfee = R::dispense( 'multipayfee' );
+        $mfee->card = $this->bean;
+        $mfee->cardname = $this->bean->name;
+        $mfee->applicationnumber = 'EP' . str_replace(' ', '', $this->bean->applicationnumber);
+
+        $ts = strtotime($this->bean->applicationdate);
+        list($fy_app_date, $fm_app_date, $fd_app_date) = array(date('Y', $ts), date('m', $ts), date('d', $ts));
+        $ts = strtotime(sprintf('%s-%s-%s', $feestep->fy, $fm_app_date, $fd_app_date));
+        $mfee->datedue = date('Y-m-d', $ts);
+
+        // to prevent that the card bean gets dirty we load person like this
+        if ( ! $this->bean->applicant_id ) {
+            $person = R::load( 'person', $this->bean->client_id );
+        } else {
+            $person = R::load( 'person', $this->bean->applicant_id );
+        }
+        $mfee->applicantnickname = $person->name;
+        $mfee->paymentcode = $paymentCode;
+        $mfee->amount = $amount;
+        $multipay->ownMultipayfee[] = $mfee;
+        R::store( $multipay );
+        /*
+        error_log( $this->bean->name . ' should be added to multipay with ' . 
+                                                            $paymentCode . ' EUR ' . $amount);*/
+    }
+    
+    /**
      * Returns a stash bean of this card.
      *
      * The stash bean  holds attributes that were stashed here.
@@ -122,6 +176,9 @@ class Model_Card extends Cinnebar_Model
                     IFNULL(card.invreceivernickname, card.clientnickname) AS nickname,
                     IFNULL(card.invreceiveraddress, card.clientaddress) AS address,
                     IFNULL(card.invreceivercode, card.clientcode) AS code,
+                    IFNULL(card.applicant_id, card.client_id) AS applicant_id,
+                    IFNULL(card.applicantnickname, card.clientnickname) AS applicantnickname,
+                    CONCAT('EP', REPLACE(card.applicationnumber, ' ', '')) AS epo,
                     card.user_id AS attorney_id
 
                 FROM
@@ -272,7 +329,7 @@ SQL;
     /**
      * Returns a cardstatus name.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function cardstatusName()
     {
@@ -287,6 +344,34 @@ SQL;
     public function cardStatusInternal()
     {
         return __( 'annual_label_' . $this->bean->status );
+    }
+    
+    /**
+     * Returns the latest feestep year.
+     *
+     * The EPO payment code would be 32 + sequence of the cardfeestep. E.g. if you are about
+     * to pay for the 4th year the code generated had to be '034 Jahresgebühr für das 4. Jahr'.
+     *
+     * @return string
+     */
+    public function feestepMultipay()
+    {
+        $feesteps = $this->bean->getLatestCardfeesteps();
+        if ( ! $feesteps ) return __( 'cardfeestep_undefined' );
+        foreach ( $feesteps as $id => $feestep ) {
+            if ( ! $feestep->done) return $feestep->fy;
+        }
+        return __( 'cardfeestep_over_the_top' );
+    }
+    
+    /**
+     * Returns the latest cardfeestep bean.
+     *
+     * @return mixed Empty array or array of cardfeestep beans or false
+     */
+    public function getLatestCardfeesteps()
+    {
+        return R::find( 'cardfeestep', ' card_id = ? ORDER BY fy', array( $this->bean->getId() ) );
     }
     
     /**
@@ -659,6 +744,8 @@ SQL;
         
         $menu->add(__('layout_report'), $view->url(sprintf('/%s/report/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'table', $view->order, $view->dir)), 'scaffold_report');
         
+        $menu->add(__('layout_multipay'), $view->url(sprintf('/%s/index/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'multipay', $view->order, $view->dir)), 'scaffold_report');
+        
         //$menu->add(__('layout_extended'), $view->url(sprintf('/%s/index/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'extended', $view->order, $view->dir)), 'scaffold_extended');
         if ($this->bean->getId()) {
             $menu->add(__('scaffold_clone'), $view->url(sprintf('/%s/duplicate/%d', $this->bean->getMeta('type'), $this->bean->getId())), 'scaffold-clone');
@@ -720,6 +807,133 @@ SQL;
 	public function attributes($layout = 'table')
 	{
 	    switch ($layout) {
+            case 'multipay':
+                $ret = array(
+                	array(
+                		'attribute' => 'name',
+                		'orderclause' => 'card.sortnumber',
+                		'class' => 'text',
+        				'width' => '10%',
+                		'filter' => array(
+                		    'tag' => 'text',
+                		    'orderclause' => 'card.name'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'country_id',
+                	    'orderclause' => 'country.iso',
+                	    'class' => 'text',
+        				'width' => '5%',
+                	    'callback' => array(
+                	        'name' => 'countryIso'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'cardtype_id',
+                	    'orderclause' => 'cardtype.name',
+                	    'class' => 'text',
+        				'width' => '5%',
+                	    'callback' => array(
+                	        'name' => 'cardtypeName'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                    array(
+        			    'attribute' => 'cardstatus_id',
+        			    'orderclause' => 'cardstatus.name',
+        			    'class' => 'text',
+        				'width' => '10%',
+        			    'callback' => array(
+        			        'name' => 'cardstatusName'
+        			    ),
+        				'filter' => array(
+        				    'tag' => 'text'
+        				)
+        			),
+                	array(
+                	    'attribute' => 'user_id',
+                	    'orderclause' => 'attorney.shortname',
+                	    'class' => 'text',
+        				'width' => '10%',
+                	    'callback' => array(
+                	        'name' => 'attorneyName'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+        			array(
+        			    'attribute' => 'teammashup',
+        			    'orderclause' => 'card.teammashup',
+        			    'class' => 'text',
+        				'width' => '10%',
+        			    'callback' => array(
+        			        'name' => 'teamName'
+        			    ),
+        				'filter' => array(
+        				    'tag' => 'text'
+        				)
+        			),
+                	array(
+                	    'attribute' => 'applicationdate',
+                	    'orderclause' => 'card.applicationdate',
+                	    'class' => 'date',
+        				'viewhelper' => 'date',
+        				'width' => '15%',
+                		'filter' => array(
+                		    'tag' => 'date'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'stash_id',
+                	    'orderclause' => 'card.applicationdate',
+                	    'class' => 'number',
+        				'width' => '15%',
+        				'callback' => array(
+        				    'name' => 'feestepMultipay'
+        				),
+                		'xxx-filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'client_id',
+                	    'orderclause' => 'client.nickname',
+                	    'class' => 'text',
+        				'width' => '10%',
+                	    'callback' => array(
+                	        'name' => 'clientNickname'
+                	    ),
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'codeword',
+                	    'orderclause' => 'card.codeword',
+                	    'class' => 'text',
+        				'width' => '20%',
+                		'filter' => array(
+                		    'tag' => 'text'
+                		)
+                	),
+                	array(
+                	    'attribute' => 'feeinactive',
+                	    'orderclause' => 'card.feeinactive',
+                	    'class' => 'bool',
+        				'width' => '5%',
+                	    'viewhelper' => 'boolperv',
+                		'filter' => array(
+                		    'tag' => 'boolperv'
+                		)
+                	)
+                );
+	            break;
 	        case 'table2':
                 $ret = array(
                 	array(
@@ -1657,7 +1871,7 @@ SQL;
             if ( $this->bean->client() ) {
                 $this->bean->pricetype = $this->bean->client()->pricetype();
             } else {
-                unset($this->bean->pricetype);
+                unset($this->bean->pricetype); 
             }
             unset($this->bean->feetype);
         }

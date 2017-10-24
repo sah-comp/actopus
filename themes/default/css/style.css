@@ -75,7 +75,7 @@ select, input, textarea {font: 99% sans-serif;}
 
 textarea { overflow: auto; } /* www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/ */
 
-table {font-size: inherit; font: 100%;}
+table {font-size: inherit;}
  
 /* Accessible focus treatment
 	people.opera.com/patrickl/experiments/keyboard/test */
@@ -964,7 +964,7 @@ table {
 table caption {
     position: absolute;
     left: 0;
-    top: 5.5em;
+    top: 4.5em;
     right: 0;
     font-size: smaller;
     color: gray;

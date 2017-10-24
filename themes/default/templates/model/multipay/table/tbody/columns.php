@@ -1,6 +1,6 @@
 <?php
 /**
- * Article table row partial.
+ * Multipay table row partial.
  *
  * @package Cinnebar
  * @subpackage Template
@@ -8,4 +8,4 @@
  * @version $Id$
  */
 ?>
-<?php echo $this->beanrow($record, $attributes, true) ?>
+<?php echo $this->beanrow($record, $attributes) ?>

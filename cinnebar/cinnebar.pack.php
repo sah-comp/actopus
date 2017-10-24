@@ -683,9 +683,12 @@ class Controller_Scaffold extends Cinnebar_Controller
         $valid = true;
         foreach ($pointers as $id=>$switch) {
             $record = R::load($this->type, $id);
+            R::begin();
             try {
                 $record->$action();
+                R::commit();
             } catch (Exception $e) {
+                R::rollback();
                 $valid = false;
             }
         }
@@ -797,7 +800,7 @@ class Controller_Scaffold extends Cinnebar_Controller
         }
         $this->collection();
         $this->view->pagination = new Cinnebar_Pagination(
-            $this->view->url(sprintf('/%s/index/', $this->type)),
+            $this->view->url(sprintf('/%s/index/', $this->typeOrTypeAlias() )),
             $this->page,
             $this->limit,
             $this->layout,
@@ -807,6 +810,11 @@ class Controller_Scaffold extends Cinnebar_Controller
         );
         $this->trigger('index', 'after');
         echo $this->view->render();
+    }
+    public function typeOrTypeAlias()
+    {
+        if ( ! $this->typeAlias ) return $this->type;
+        return $this->typeAlias;
     }
     public function htmlpdf($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {

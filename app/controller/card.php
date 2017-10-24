@@ -38,7 +38,7 @@ class Controller_Card extends Controller_Scaffold
      * @var array
      */
     public $actions = array(
-        'table' => array('expunge'),
+        'table' => array('expunge', 'multipay'),
         'edit' => array('next', 'prev', 'update', 'list', 'listandreset'),
         'add' => array('continue', 'update', 'list')
     );

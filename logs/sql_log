@@ -415,3 +415,138 @@ Annual Collection has issues: [42000] - SQLSTATE[42000]: Syntax error or access 
             
 
 		ORDER BY card.feeduedate
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S22] - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'attorney.name' in 'where clause' 		SELECT
+			DISTINCT(invoice.id) as id  
+
+		FROM
+			invoice
+
+		LEFT JOIN card ON card.id = invoice.card_id
+		LEFT JOIN user AS attorney ON attorney.id = invoice.attorney_id
+		LEFT JOIN person AS client ON client.id = invoice.client_id
+		LEFT JOIN invoicetype ON invoicetype.id = invoice.invoicetype_id
+		
+		WHERE invoice.year = ? AND attorney.name like ?
+
+		ORDER BY invoice.year DESC
+
+		LIMIT 0, 23
+Scaffold Collection has issues: [42S02] - SQLSTATE[42S02]: Base table or view not found: 1146 Table 's.multipay' doesn't exist 		SELECT
+            DISTINCT(id)  
+		FROM
+			multipay
+		WHERE 1
+		ORDER BY multipay.name ASC
+		LIMIT 0, 23
