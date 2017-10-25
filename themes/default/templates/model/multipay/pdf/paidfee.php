@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-    <table>
+    <table width="100%">
         <caption>
             <?php echo htmlspecialchars( $record->name ) ?>
         </caption>
