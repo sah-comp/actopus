@@ -44,6 +44,29 @@ class Controller_Multipay extends Controller_Scaffold
     );
     
     /**
+     * Generates a PDF from the multipayfee beans of this bean.
+     *
+     * @param int $id Id of the multipay bean
+     */
+    public function pdf($id)
+    {
+        $multipay = R::load( 'multipay', $id );
+    	require_once BASEDIR.'/vendors/mpdf/mpdf.php';
+        $docname = $multipay->name;
+        $filename = $multipay->name . '.pdf';
+        $mpdf = new mPDF('c', 'A4');
+        $mpdf->SetTitle($docname);
+        $mpdf->SetAuthor( $multipay->user->name );
+        $mpdf->SetDisplayMode('fullpage');
+
+        $html = '<h1>Give me the PDF, please.</h1>';
+
+        $mpdf->WriteHTML( $html );
+        $mpdf->Output($filename, 'D');
+        exit;
+    }
+    
+    /**
      * Generates a XML batch payment file for use with EPA online tool.
      *
      * @param int $id of the multipay bean

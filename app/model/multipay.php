@@ -88,6 +88,7 @@ class Model_Multipay extends Cinnebar_Model
         $menu->add(__('scaffold_add'), $view->url(sprintf('/%s/add', $this->bean->getMeta('type'))), 'scaffold-add');
         if ( $this->bean->getId() ) {
             $menu->add(__('multipay_xml'), $view->url(sprintf('/%s/xmltool/%d', $this->bean->getMeta('type'), $this->bean->getId() )), 'multipay_xml_download');
+            $menu->add(__('multipay_pdf'), $view->url(sprintf('/%s/pdf/%d', $this->bean->getMeta('type'), $this->bean->getId() )), 'multipay_pdf_download');
         }
         $menu->add(__('scaffold_browse'), $view->url(sprintf('/%s/index', $this->bean->getMeta('type'))), 'scaffold-browse');
         return $menu;
