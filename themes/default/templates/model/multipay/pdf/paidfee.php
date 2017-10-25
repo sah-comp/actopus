@@ -41,6 +41,7 @@
                 <th><?php echo __( 'card_label_applicationnumber' ) ?></th>
                 <th><?php echo __( 'card_label_applicant' ) ?></th>
                 <th><?php echo __( 'multipayfee_label_typeoffee' ) ?></th>
+                <th><?php echo __( 'cardfeestep_label_year' ) ?></th>                
                 <th class="number"><?php echo __( 'multipayfee_label_amount' ) ?></th>
                 <th><?php echo __( 'card_label_codeword' ) ?></th>
             </tr>
@@ -63,12 +64,13 @@
                 <td><?php echo htmlspecialchars( $_fee->applicationnumber ) ?></td>
                 <td><?php echo htmlspecialchars( $_person->name ) ?></td>
                 <td><?php echo htmlspecialchars( $_fee->paymentcode ) ?></td>
+                <td><?php echo htmlspecialchars( (int)( $_fee->paymentcode - 32 ) ) ?></td>
                 <td class="number"><?php echo htmlspecialchars( $this->decimal( $_fee->amount, 2 ) ) ?></td>
                 <td><?php echo htmlspecialchars( $_fee->card->codeword ) ?></td>
             </tr>
     <?php endforeach ?>
             <tr>
-                <td colspan="4" class="number emphasize"><?php echo __( 'multipay_label_total_amount', $_total_records ) ?></td>
+                <td colspan="5" class="number emphasize"><?php echo __( 'multipay_label_total_amount', $_total_records ) ?></td>
                 <td class="number emphasize"><?php echo htmlspecialchars( $this->decimal( $_total_amount, 2 ) ) ?></td>
                 <td>&nbsp;</td>
             </tr>

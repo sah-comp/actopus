@@ -890,6 +890,18 @@ SQL;
                 		)
                 	),
                 	array(
+                	    'attribute' => 'applicationdate',
+                	    'orderclause' => 'MONTH( card.applicationdate )',
+                	    'class' => 'number',
+        				'width' => '5%',
+        				'callback' => array(
+        				    'name' => 'monthdue'
+        				),
+                		'filter' => array(
+                		    'tag' => 'number'
+                		)
+                	),
+                	array(
                 	    'attribute' => 'stash_id',
                 	    'orderclause' => 'card.applicationdate',
                 	    'class' => 'number',
@@ -1591,6 +1603,16 @@ SQL;
         		);
         }
         return $ret;
+	}
+	
+	/**
+	 * Return the month of fee due date.
+	 *
+	 * @return string
+	 */
+	public function monthdue()
+	{
+        return date( 'm', strtotime( $this->bean->applicationdate ) );
 	}
 	
 	/**
