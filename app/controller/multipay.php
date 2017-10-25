@@ -51,6 +51,10 @@ class Controller_Multipay extends Controller_Scaffold
     public function pdf($id)
     {
         $multipay = R::load( 'multipay', $id );
+        
+        $view = $this->makeView('model/multipay/pdf/paidfee');
+        $view->record = $multipay;
+        
     	require_once BASEDIR.'/vendors/mpdf/mpdf.php';
         $docname = $multipay->name;
         $filename = $multipay->name . '.pdf';
@@ -59,7 +63,7 @@ class Controller_Multipay extends Controller_Scaffold
         $mpdf->SetAuthor( $multipay->user->name );
         $mpdf->SetDisplayMode('fullpage');
 
-        $html = '<h1>Give me the PDF, please.</h1>';
+        $html = $view->render();
 
         $mpdf->WriteHTML( $html );
         $mpdf->Output($filename, 'D');
