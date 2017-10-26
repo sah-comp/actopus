@@ -890,7 +890,7 @@ SQL;
                 		)
                 	),
                 	array(
-                	    'attribute' => 'applicationdate',
+                	    'attribute' => 'applicationdate AS appmonth',
                 	    'orderclause' => 'MONTH( card.applicationdate )',
                 	    'class' => 'number',
         				'width' => '5%',
