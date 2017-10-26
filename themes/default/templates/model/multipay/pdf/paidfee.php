@@ -64,7 +64,7 @@
                 <td><?php echo htmlspecialchars( $_fee->applicationnumber ) ?></td>
                 <td><?php echo htmlspecialchars( $_person->name ) ?></td>
                 <td><?php echo htmlspecialchars( $_fee->paymentcode ) ?></td>
-                <td><?php echo htmlspecialchars( (int)( $_fee->paymentcode - 32 ) ) ?></td>
+                <td><?php echo htmlspecialchars( (int)( $_fee->paymentcode - 30 ) ) ?></td>
                 <td class="number"><?php echo htmlspecialchars( $this->decimal( $_fee->amount, 2 ) ) ?></td>
                 <td><?php echo htmlspecialchars( $_fee->card->codeword ) ?></td>
             </tr>
