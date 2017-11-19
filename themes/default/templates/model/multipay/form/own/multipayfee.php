@@ -8,7 +8,7 @@
  * @version $Id$
  */
 ?>
-<div id="multipayfee-<?php echo $n ?>" class="item multipayfee">    
+<div id="multipayfee-<?php echo $n ?>" class="item multipayfee">
 	<a
 		href="<?php echo $this->url(sprintf('/multipay/detach/own/multipayfee/%d', $n)) ?>"
 		class="detach ask"
@@ -79,4 +79,11 @@
     	</div>
 
 	</div>
+	<?php if ( $multipayfee->errorcode ): ?>
+	<div class="row">
+			<div class="span12">
+					<p class="info error"><?php echo __( 'multipayfee_errorcode_' . $multipayfee->errorcode ) ?></p>
+			</div>
+	</div>
+	<?php endif; ?>
 </div>

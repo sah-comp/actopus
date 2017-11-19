@@ -6,7 +6,7 @@
  * @author $Author$
  * @version $Id$
  */
- 
+
 /**
  * Facade gives you easy access to several stuff.
  *
@@ -19,7 +19,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     /**
      * Holds the release version tag
      */
-    const RELEASE = '1.08';
+    const RELEASE = '1.09';
 
     /**
      * Holds an instance of a cycle bean.
@@ -27,7 +27,7 @@ class Cinnebar_Facade extends Cinnebar_Element
      * @var RedBean_OODBBean
      */
     private $cycle;
-    
+
     /**
      * Returns true if this was called from the command line.
      *
@@ -39,7 +39,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     {
         return (php_sapi_name() == 'cli');
     }
-    
+
     /**
      * Decides wether to run a cli command or http controller.
      *
@@ -50,8 +50,8 @@ class Cinnebar_Facade extends Cinnebar_Element
         if ($this->cli()) return $this->run_cli();
         return $this->run_http();
     }
-    
-    
+
+
     /**
      * Run a command(-controller) from the command line.
      *
@@ -101,7 +101,7 @@ class Cinnebar_Facade extends Cinnebar_Element
             exit;
         }
         $this->deps['router']->interpret($this->deps['request']->url());
-        
+
         $controller_name = 'Controller_'.ucfirst(strtolower($this->deps['router']->controller()));
         if (class_exists($controller_name, true)) {
             $controller = new $controller_name();
@@ -118,7 +118,7 @@ class Cinnebar_Facade extends Cinnebar_Element
             'input' => $this->deps['input'],
             'permission' => $this->deps['permission']
         ));
-        
+
         $this->deps['response']->start();
         // call app/controller/[name]
         try {
@@ -136,9 +136,9 @@ class Cinnebar_Facade extends Cinnebar_Element
         }
     	// add some replacement tokens
     	$this->deps['response']->addReplacement('remote_addr', $_SERVER['REMOTE_ADDR']);
-    	$this->deps['response']->addReplacement('memory_usage', 
+    	$this->deps['response']->addReplacement('memory_usage',
     	                                round(memory_get_peak_usage(true)/1048576, 2));
-    	$this->deps['response']->addReplacement('execution_time', 
+    	$this->deps['response']->addReplacement('execution_time',
     	                                $this->deps['stopwatch']->mark('stop')->laptime('start', 'stop'));
     	// output response to client
         echo $payload = $this->deps['response']->flush();
@@ -146,7 +146,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     	    $this->deps['cache']->savePage($this->deps['request']->url(), $payload);
     	}
     }
-    
+
     /**
      * Performs stuff after a script ends or is exited.
      *

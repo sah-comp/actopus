@@ -53,7 +53,7 @@ class Cinnebar_Factory
 }
 class Cinnebar_Facade extends Cinnebar_Element
 {
-    const RELEASE = '1.08';
+    const RELEASE = '1.09';
     private $cycle;
     public function cli()
     {
@@ -130,9 +130,9 @@ class Cinnebar_Facade extends Cinnebar_Element
             echo 'An exceptional error has occured, please review logs.';
         }
     	    	$this->deps['response']->addReplacement('remote_addr', $_SERVER['REMOTE_ADDR']);
-    	$this->deps['response']->addReplacement('memory_usage', 
+    	$this->deps['response']->addReplacement('memory_usage',
     	                                round(memory_get_peak_usage(true)/1048576, 2));
-    	$this->deps['response']->addReplacement('execution_time', 
+    	$this->deps['response']->addReplacement('execution_time',
     	                                $this->deps['stopwatch']->mark('stop')->laptime('start', 'stop'));
     	        echo $payload = $this->deps['response']->flush();
     	if ($this->deps['cache']->isActive()) {
