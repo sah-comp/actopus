@@ -60,7 +60,7 @@ class Model_Card extends Cinnebar_Model
         error_log('Und I did. Ready.');
         return $cardsteps;
     }
-    
+
     /**
      * Adds this record to a multipay bean.
      */
@@ -111,10 +111,10 @@ class Model_Card extends Cinnebar_Model
         $multipay->ownMultipayfee[] = $mfee;
         R::store( $multipay );
         /*
-        error_log( $this->bean->name . ' should be added to multipay with ' . 
+        error_log( $this->bean->name . ' should be added to multipay with ' .
                                                             $paymentCode . ' EUR ' . $amount);*/
     }
-    
+
     /**
      * Returns a stash bean of this card.
      *
@@ -127,7 +127,7 @@ class Model_Card extends Cinnebar_Model
         if ( ! $this->bean->stash) $this->bean->stash = R::dispense('stash');
         return $this->bean->stash;
     }
-    
+
     /**
      * Look up searchtext in all fields of a bean.
      *
@@ -163,7 +163,7 @@ class Model_Card extends Cinnebar_Model
      * @return array
      */
     public function clairvoyant($term, $layout = 'default')
-    {   
+    {
         switch ($layout) {
             default:
                 $sql = <<<SQL
@@ -218,7 +218,7 @@ SQL;
 			card
 
 		LEFT JOIN country ON country.id = card.country_id
-        LEFT JOIN person AS client ON client.id = card.client_id
+    LEFT JOIN person AS client ON client.id = card.client_id
 		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
 		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
 		LEFT JOIN user AS attorney ON attorney.id = card.user_id
@@ -271,7 +271,7 @@ SQL;
         if ($add) $own[] = R::dispense('priority');
         return $own;
     }
-    
+
     /**
      * Return ownCardfeestep(s).
      *
@@ -295,7 +295,7 @@ SQL;
         if ( ! $this->bean->country) $this->bean->country = R::dispense('country');
         return $this->bean->country;
     }
-    
+
     /**
      * Returns a country name.
      *
@@ -305,7 +305,7 @@ SQL;
     {
         return '<span class="flag '.$this->bean->country()->iso.'"></span>'.$this->bean->country()->name;
     }
-    
+
     /**
      * Returns a country iso.
      *
@@ -315,7 +315,7 @@ SQL;
     {
         return '<span title="'.$this->bean->country()->name.'" class="flag '.$this->bean->country()->iso.'"></span>'.strtoupper($this->bean->country()->iso);
     }
-    
+
     /**
      * Returns a cardtype name.
      *
@@ -325,7 +325,7 @@ SQL;
     {
         return $this->bean->cardtype()->name;
     }
-    
+
     /**
      * Returns a cardstatus name.
      *
@@ -335,7 +335,7 @@ SQL;
     {
         return $this->bean->cardstatus()->name;
     }
-    
+
     /**
      * Returns status humanreadable.
      *
@@ -345,7 +345,7 @@ SQL;
     {
         return __( 'annual_label_' . $this->bean->status );
     }
-    
+
     /**
      * Returns the latest feestep year.
      *
@@ -363,7 +363,7 @@ SQL;
         }
         return __( 'cardfeestep_over_the_top' );
     }
-    
+
     /**
      * Returns the latest cardfeestep bean.
      *
@@ -373,7 +373,7 @@ SQL;
     {
         return R::find( 'cardfeestep', ' card_id = ? ORDER BY fy', array( $this->bean->getId() ) );
     }
-    
+
     /**
      * Returns a client name.
      *
@@ -383,7 +383,7 @@ SQL;
     {
         return $this->bean->client()->name;
     }
-    
+
     /**
      * Returns a client nickname.
      *
@@ -393,7 +393,7 @@ SQL;
     {
         return $this->bean->client()->nickname;
     }
-    
+
     /**
      * Returns a invoice receivers nickname.
      *
@@ -403,7 +403,7 @@ SQL;
     {
         return $this->bean->invreceiver()->nickname;
     }
-    
+
     /**
      * Returns a foreign nickname.
      *
@@ -423,7 +423,7 @@ SQL;
     {
         return $this->bean->teammashup;
     }
-    
+
     /**
      * Returns a attorney name.
      *
@@ -444,7 +444,7 @@ SQL;
         if ( ! $this->bean->cardstatus) $this->bean->cardstatus = R::dispense('cardstatus');
         return $this->bean->cardstatus;
     }
-    
+
     /**
      * Returns a person as client bean.
      *
@@ -455,7 +455,7 @@ SQL;
         if ( ! $this->bean->fetchAs('person')->client) $this->bean->client = R::dispense('person');
         return $this->bean->fetchAs('person')->client;
     }
-    
+
     /**
      * Returns card as the original card to this one.
      *
@@ -477,7 +477,7 @@ SQL;
         if ( ! $this->bean->fetchAs('person')->applicant) $this->bean->applicant = R::dispense('person');
         return $this->bean->applicant;
     }
-    
+
     /**
      * Returns a applicant nickname.
      *
@@ -498,7 +498,7 @@ SQL;
         if ( ! $this->bean->fetchAs('person')->foreign) $this->bean->foreign = R::dispense('person');
         return $this->bean->foreign;
     }
-    
+
     /**
      * Returns a person as invreceiver bean.
      *
@@ -531,7 +531,7 @@ SQL;
         if ( ! $this->bean->rule) $this->bean->rule = R::dispense('rule');
         return $this->bean->rule;
     }
-    
+
     /**
      * Returns a cardtype bean.
      *
@@ -542,7 +542,7 @@ SQL;
         if ( ! $this->bean->cardtype) $this->bean->cardtype = R::dispense('cardtype');
         return $this->bean->cardtype;
     }
-    
+
     /**
      * Returns a pricetype bean.
      *
@@ -553,7 +553,7 @@ SQL;
         if ( ! $this->bean->pricetype) $this->bean->pricetype = R::dispense('pricetype');
         return $this->bean->pricetype;
     }
-    
+
     /**
      * Returns an array of possible feeduedate years.
      *
@@ -575,7 +575,7 @@ SQL;
 SQL;
         return R::$adapter->getAssoc($sql, array());
     }
-    
+
     /**
      * Returns SQL to retrieve cards in controller annual on the index page.
      *
@@ -598,7 +598,7 @@ SQL;
 SQL;
         return $sql;
     }
-    
+
     /**
      * Returns SQL to retrieve cards where annuity is due
      *
@@ -625,7 +625,7 @@ SQL;
 SQL;
         return $sql;
     }
-    
+
     /**
      * Returns SQL to retrieve cards where annuity is due
      *
@@ -651,7 +651,7 @@ SQL;
 SQL;
         return $sql;
     }
-    
+
     /**
      * Returns SQL to retrieve cards where annuity is due
      *
@@ -677,7 +677,7 @@ SQL;
 SQL;
         return $sql;
     }
-    
+
     /**
      * Returns SQL to retrieve cards where annuity is due
      *
@@ -702,7 +702,7 @@ SQL;
 SQL;
         return $sql;
     }
-    
+
     /**
      * Returns a feetype bean.
      *
@@ -724,7 +724,7 @@ SQL;
         if ( ! $this->bean->user) $this->bean->user = R::dispense('user');
         return $this->bean->user;
     }
-    
+
     /**
      * Returns a customized menu.
      *
@@ -741,11 +741,11 @@ SQL;
         $menu = parent::makeMenu($action, $view, $menu);
 
         $menu->add(__('layout_list2'), $view->url(sprintf('/%s/index/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'table2', $view->order, $view->dir)), 'scaffold_card_list2');
-        
+
         $menu->add(__('layout_report'), $view->url(sprintf('/%s/report/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'table', $view->order, $view->dir)), 'scaffold_report');
-        
+
         $menu->add(__('layout_multipay'), $view->url(sprintf('/%s/index/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'multipay', $view->order, $view->dir)), 'scaffold_report');
-        
+
         //$menu->add(__('layout_extended'), $view->url(sprintf('/%s/index/%d/%d/%s/%d/%d', $this->bean->getMeta('type'), 1, Controller_Scaffold::LIMIT, 'extended', $view->order, $view->dir)), 'scaffold_extended');
         if ($this->bean->getId()) {
             $menu->add(__('scaffold_clone'), $view->url(sprintf('/%s/duplicate/%d', $this->bean->getMeta('type'), $this->bean->getId())), 'scaffold-clone');
@@ -761,7 +761,7 @@ SQL;
         }
         return $menu;
     }
-    
+
 	/**
 	 * Returns an array of this card for use with pdf output.
 	 *
@@ -1604,7 +1604,7 @@ SQL;
         }
         return $ret;
 	}
-	
+
 	/**
 	 * Return the month of fee due date.
 	 *
@@ -1614,7 +1614,7 @@ SQL;
 	{
         return date( 'm', strtotime( $this->bean->applicationdate ) );
 	}
-	
+
 	/**
 	 * Returns a humanreadable status for a client.
 	 *
@@ -1626,7 +1626,7 @@ SQL;
         if ( $this->bean->issuenumber || $this->bean->issuedate != '0000-00-00') return __('humanreadable_status_issued');
         if ( $this->bean->applicationnumber || $this->bean->applicationdate != '0000-00-00') return __('humanreadable_status_applied');
 	}
-	
+
 	/**
 	 * Returns either the codeword or if not set the title.
 	 *
@@ -1637,7 +1637,7 @@ SQL;
         if ( $this->bean->codeword ) return $this->bean->codeword;
         return $this->bean->title;
 	}
-	
+
 	/**
 	 * Returns an empty string or the next fee due date if valid.
 	 *
@@ -1649,7 +1649,7 @@ SQL;
                 $this->bean->feeduedate == '0000-00-00') return '';
         return $this->bean->feeduedate;
 	}
-	
+
 	/**
 	 * Returns an array of the bean.
 	 *
@@ -1671,7 +1671,7 @@ SQL;
     	            __('card_label_clientstatus'),
     	            __('card_label_codewordortitle'),
     	            __('card_label_feeduedate')
-                
+
     	        );
     	    }
     	    return array(
@@ -1683,10 +1683,10 @@ SQL;
                 $this->bean->clientstatus(),
                 str_replace('"', '', $this->bean->codewordOrTitle()),
                 $this->bean->getFeeduedate()
-            
+
     	    );
     	}
-    	
+
     	// layout vrtwo
 	    if ( $layout == 'vrtwo' ) {
     	    if ( $header == true ) {
@@ -1720,7 +1720,7 @@ SQL;
                 str_replace('"', '', $this->bean->note)
     	    );
     	}
-    	
+
     	// layout default
         if ( $layout == 'default' ) {
     	    if ($header === true) {
@@ -1765,7 +1765,7 @@ SQL;
             );
         }
 	}
-	
+
 	/**
 	 * Returns an array with possible layout for list view (index).
 	 *
@@ -1825,16 +1825,16 @@ SQL;
         $this->setAutoInfo(true);
         $this->setAutoTag(true);
         $this->addValidator('name', 'hasvalue');
-        
+
         //$this->addValidator('user_id', 'hasvalue');
         //$this->addValidator('country_id', 'hasvalue');
         //$this->addValidator('cardtype_id', 'hasvalue');
         //$this->addValidator('cardstatus_id', 'hasvalue');
-        
+
         //$this->bean->feeinactive = false;
-        
+
         $this->bean->patterncount = 0;
-        
+
         $this->addValidator('name', 'isunique', array('bean' => $this->bean, 'attribute' => 'name'));
         $this->addValidator('name', 'pregmatch', array('regex' => "/\\d{2}[.]\\d{4}.?/"));
         $this->addConverter('applicationdate', 'mySQLDate');
@@ -1843,7 +1843,7 @@ SQL;
         $this->addConverter('feeduedate', 'mySQLDate');
         if ( ! $this->bean->getId()) $this->bean->feeinactive = 1;
     }
-    
+
     /**
      * Prepare this bean for duplication.
      *
@@ -1856,7 +1856,7 @@ SQL;
         $this->bean->ownInvoice = array();
         $this->bean->ownCardfeestep = array();
     }
-    
+
     /**
      * Strip non alphanumeric characters from certain fields and make the card more easy to find.
      *
@@ -1893,7 +1893,7 @@ SQL;
             if ( $this->bean->client() ) {
                 $this->bean->pricetype = $this->bean->client()->pricetype();
             } else {
-                unset($this->bean->pricetype); 
+                unset($this->bean->pricetype);
             }
             unset($this->bean->feetype);
         }
@@ -1956,7 +1956,7 @@ SQL;
         }
         parent::update();
     }
-    
+
     /**
      * The card status is checked and set accordingly.
      *
@@ -1989,7 +1989,7 @@ SQL;
                     list($year, $month, $day) = array(date('Y', $ts), date('m', $ts), date('d', $ts));
                     $this->bean->feeduedate = date('Y-m-d', strtotime($feestep->fy.'-'.$month.'-'.$day));
                     error_log('and will next be due on '.$this->bean->feeduedate);
-                    
+
                     error_log($feestep->fy.' is pending and ...');
                     if ( $feestep->paymentdate ) {
                         $this->bean->status = 'paid'; //the DPMA was paided, all smile please
@@ -2011,7 +2011,7 @@ SQL;
                         $this->bean->status = 'due';
                         error_log('is simply due');
                     }
-                    
+
                 }
             }
         }
@@ -2021,7 +2021,7 @@ SQL;
         }
         return true;
     }
-    
+
     /**
      * Set a sortnumber from this beans name attribute.
      *
@@ -2044,6 +2044,6 @@ SQL;
 				$sortnumber .= $tmp[1];
 			}
         }
-        $this->bean->sortnumber = $sortnumber;        
+        $this->bean->sortnumber = $sortnumber;
     }
 }
