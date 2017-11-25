@@ -22,13 +22,14 @@ class Model_Token extends Cinnebar_Model implements iToken
      * Returns the payload of the translation in current language or an empty string.
      *
      * @param string $attribute
+     * @param string (optional) $iso code of the language to translate to
      * @return string
      */
-    public function translated($attribute)
+    public function translated($attribute, $iso = null)
     {
-        return $this->in()->$attribute;
+        return $this->in($iso)->$attribute;
     }
-    
+
     /**
      * Creates a new token or updates an existing one.
      *
@@ -42,7 +43,7 @@ class Model_Token extends Cinnebar_Model implements iToken
             $token = R::dispense('token');
             $token->name = $name;
         }
-        
+
         $trans = R::dispense('translation', count($translations));
         foreach ($translations as $i => $translation) {
             $trans[$i]->iso = $translation['iso'];
@@ -116,7 +117,7 @@ class Model_Token extends Cinnebar_Model implements iToken
 SQL;
         return $sql;
     }
-    
+
     /**
      * Returns SQL for filtering these beans.
      *
@@ -137,7 +138,7 @@ SQL;
 			DISTINCT(token.id) as id
 		FROM
 			token
-			
+
 		LEFT JOIN
 		    translation ON translation.token_id = token.id AND translation.iso = '{$language}'
 
@@ -149,7 +150,7 @@ SQL;
 SQL;
         return $sql;
     }
-    
+
 	/**
 	 * Returns an array with possible attributes for order clauses and such.
 	 *
@@ -184,7 +185,7 @@ SQL;
         }
         return $ret;
 	}
-	
+
 	/**
 	 * Returns a customized menu.
 	 *
@@ -198,7 +199,7 @@ SQL;
         $menu = parent::makeMenu($action, $view, $menu);
         return $menu;
 	}
-	
+
 	/**
 	 * Returns an array with possible layout for list view (index).
 	 *

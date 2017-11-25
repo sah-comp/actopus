@@ -45,7 +45,7 @@ class Cinnebar_Viewhelper
     {
         $this->view = $view;
     }
-    
+
     /**
      * Returns an instance of the view from which this helper was called.
      *
@@ -54,15 +54,5 @@ class Cinnebar_Viewhelper
     public function view()
     {
         return $this->view;
-    }
-    
-    /**
-     * Executes the Viewhelper.
-     *
-     * @return bool $alwaysTrue
-     */
-    public function execute()
-    {
-        echo 'Hello, i am a viewhelper.';
     }
 }

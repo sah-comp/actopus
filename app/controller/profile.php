@@ -19,11 +19,17 @@
  * @version $Id$
  */
 class Controller_Profile extends Controller_Scaffold
-{ 
+{
     /**
      * Renders the current users profile page.
+     *
+     * @param int $page
+     * @param int $limit
+     * @param string $layout
+     * @param int $order
+     * @param int $dir
      */
-    public function index()
+    public function index($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
         $this->cache()->deactivate();
         session_start();
@@ -34,23 +40,23 @@ class Controller_Profile extends Controller_Scaffold
         $this->view = $this->makeView('profile/index');
         $this->view->title = __('profile_head_title');
         $this->view->record = $this->view->user = $this->user();
-        
+
         $this->trigger('edit', 'before');
-        
+
         if ($this->input()->post()) {
             $this->view->record = R::graph($this->input()->post('dialog'), true);
             try {
                 R::store($this->view->record);
-                
+
                 $message = __('action_edit_success');
                 with(new Cinnebar_Messenger)->notify($this->user(), $message, 'success');
-                
+
                 $this->trigger('edit', 'after');
-                
+
                 $this->redirect('/profile/index');
 
             } catch (Exception $e) {
-                
+
                 $message = __('action_edit_error');
                 with(new Cinnebar_Messenger)->notify($this->user(), $message, 'error');
 
@@ -61,7 +67,7 @@ class Controller_Profile extends Controller_Scaffold
         $this->view->urhere = with(new Cinnebar_Menu())->add(__('profile_head_title'), $this->view->url('/profile/index'));
         echo $this->view->render();
     }
-    
+
     /**
      * Renders some other users profile page.
      *
@@ -81,7 +87,7 @@ class Controller_Profile extends Controller_Scaffold
             return $this->error('404');
         }
         $this->view->user = $this->user();
-        
+
         $this->trigger('visit', 'before');
         // may do some thing on POST?
         $this->trigger('visit', 'after');
@@ -109,9 +115,9 @@ class Controller_Profile extends Controller_Scaffold
         if (null === $hash) $hash = $this->user()->ego;
         $this->view->record = R::findOne('user', ' ego = ? AND (banned = 0 AND deleted = 0)', array($hash));
         $this->view->user = $this->user();
-        
+
         $this->trigger('edit', 'before');
-        
+
         if ($dialog = $this->input()->post('dialog')) {
             if ($this->view->record->changePassword($dialog['pw'], $dialog['pw_new'], $dialog['pw_repeated'])) {
                 try {
@@ -119,19 +125,19 @@ class Controller_Profile extends Controller_Scaffold
 
                     $message = __('action_changepassword_success');
                     with(new Cinnebar_Messenger)->notify($this->user(), $message, 'success');
-                
+
                     $this->trigger('edit', 'after');
-                
+
                     $this->redirect('/profile/index');
 
                 } catch (Exception $e) {
-                
+
                     $message = $this->view->record->actionAsHumanText('changepassword', 'error', $this->user());
                     with(new Cinnebar_Messenger)->notify($this->user(), $message, 'error');
 
                 }
             } else {
-                
+
                 $message = __('action_changepassword_error');
                 with(new Cinnebar_Messenger)->notify($this->user(), $message, 'error');
             }

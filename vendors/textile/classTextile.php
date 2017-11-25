@@ -218,7 +218,7 @@ class Textile
     var $pnct;
     var $rel;
     var $fn;
-    
+
     var $shelf = array();
     var $restricted = false;
     var $noimage = false;
@@ -226,7 +226,7 @@ class Textile
     var $url_schemes = array();
     var $glyph = array();
     var $hu = '';
-    
+
     var $ver = '2.0.0';
     var $rev = '$Rev: 28 $';
 
@@ -495,7 +495,7 @@ class Textile
         }
         return join("\n", $out);
     }
-    
+
 function fList($m) {
     $text = explode("\n", $m[0]);
     $i = 0;
@@ -988,8 +988,13 @@ function fList($m) {
 // -------------------------------------------------------------
     function footnoteRef($text)
     {
-        return preg_replace('/\b\[([0-9]+)\](\s)?/Ue',
-            '$this->footnoteID(\'\1\',\'\2\')', $text);
+        /*return preg_replace('/\b\[([0-9]+)\](\s)?/Ue',
+            '$this->footnoteID(\'\1\',\'\2\')', $text);*/
+        return preg_replace_callback('/(?<=\S)\[([0-9]+)\](\s)?/U',
+               function ($matches) {
+                 return $this->footnoteID($matches[1],$matches[2]);
+               },
+               $text);
     }
 
 // -------------------------------------------------------------

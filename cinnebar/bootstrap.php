@@ -82,7 +82,7 @@ if (isset($config['db']['active']) && $config['db']['active'] === true) {
  *
  * @since MySQL 5.7
  */
-R::exec( 'SET SESSION sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"' );
+R::exec( 'SET SESSION sql_mode = "ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"' );
 
 // There shall be non url rewriter and session id gets handled by cookies only
 ini_set('url_rewriter.tags', '');

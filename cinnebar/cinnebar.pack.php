@@ -1320,10 +1320,6 @@ class Cinnebar_Plugin
     {
         return $this->controller;
     }
-    public function execute()
-    {
-        echo 'Hello, i am a plugin.';
-    }
 }
 class Plugin_Attach extends Cinnebar_Plugin
 {
@@ -2001,10 +1997,6 @@ class Cinnebar_Viewhelper
     {
         return $this->view;
     }
-    public function execute()
-    {
-        echo 'Hello, i am a viewhelper.';
-    }
 }
 class Viewhelper_Url extends Cinnebar_Viewhelper
 {
@@ -2611,9 +2603,9 @@ class Model_Info extends Cinnebar_Model
 }
 class Model_Token extends Cinnebar_Model implements iToken
 {
-    public function translated($attribute)
+    public function translated($attribute, $iso = null)
     {
-        return $this->in()->$attribute;
+        return $this->in($iso)->$attribute;
     }
     public function createOrUpdate($name, $translations = array())
     {

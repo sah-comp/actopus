@@ -38,7 +38,7 @@ class Cinnebar_Plugin
     {
         $this->controller = $controller;
     }
-    
+
     /**
      * Returns an instance of the controller from which this plugin was called.
      *
@@ -47,15 +47,5 @@ class Cinnebar_Plugin
     public function controller()
     {
         return $this->controller;
-    }
-    
-    /**
-     * Executes the plugin.
-     *
-     * @return bool $alwaysTrue
-     */
-    public function execute()
-    {
-        echo 'Hello, i am a plugin.';
     }
 }
