@@ -1,6 +1,11 @@
 .DS_Store
+
 cache/
+
 logs/
-logs/sql_log
-logs/warn_log
+
 config/default.php
+
+logs/sql_log
+
+logs/warn_log
