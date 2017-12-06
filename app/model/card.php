@@ -30,22 +30,22 @@ class Model_Card extends Cinnebar_Model
     public function updateCardfeesteps($country_id = null, $cardtype_id = null, $pricetype_id = null)
     {
         error_log('I want to update this cards cardfeestep beans...');
-        if ( $this->bean->country->getId() != $country_id ) {
+        if ($this->bean->country->getId() != $country_id) {
             error_log('country mismatch');
         }
-        if ( $this->bean->pricetype->getId() != $pricetype_id ) {
+        if ($this->bean->pricetype->getId() != $pricetype_id) {
             error_log('pricetype mismatch');
         }
-        if ( $this->bean->cardtype->getId() != $cardtype_id ) {
+        if ($this->bean->cardtype->getId() != $cardtype_id) {
             error_log('cardtype mismatch');
         }
-        if ( ! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
+        if (! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
             error_log('No rule found');
         }
-        if ( $rule->style != 0 ) {
+        if ($rule->style != 0) {
             error_log('The rule is perpetual, cant handle that by now');
         }
-        if ( ! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
+        if (! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
             error_log('No fee steps found');
         }
         error_log('Rule ' . $rule->getId() . ' and fee ' . $fee->getId());
@@ -53,9 +53,11 @@ class Model_Card extends Cinnebar_Model
         $cardsteps = $this->bean->with(' ORDER BY fy ')->ownCardfeestep;
         foreach ($cardsteps as $id => $cardstep) {
             $feestep = array_shift($feesteps);
-            if ( $cardstep->done ) continue; //skip any done step
+            if ($cardstep->done) {
+                continue;
+            } //skip any done step
             $cardstep->net = $feestep->net;
-            error_log( 'Step ' . $cardstep->fy . ' with feestep ' . $feestep->net );
+            error_log('Step ' . $cardstep->fy . ' with feestep ' . $feestep->net);
         }
         error_log('Und I did. Ready.');
         return $cardsteps;
@@ -70,29 +72,29 @@ class Model_Card extends Cinnebar_Model
         $paymentCode = '';
         $amount = 0;
         $card = $this->bean;
-        if ( empty( $feesteps )) {
+        if (empty($feesteps)) {
             $paymentCode = '';
             $amount = 0;
         } else {
-            foreach( $feesteps as $id => $feestep) {
-                if ( ! $feestep->done ) {
-                    $paymentCode = '0' . ( 32 + $feestep->sequence );
+            foreach ($feesteps as $id => $feestep) {
+                if (! $feestep->done) {
+                    $paymentCode = '0' . (32 + $feestep->sequence);
                     $amount = $feestep->paymentnet;
                     break;
                 }
             }
         }
-        if ( ! isset( $_SESSION['multipay']['id'] ) ) {
-            $multipay = R::dispense( 'multipay' );
-            R::store( $multipay );
+        if (! isset($_SESSION['multipay']['id'])) {
+            $multipay = R::dispense('multipay');
+            R::store($multipay);
             $_SESSION['multipay']['id'] = $multipay->getId();
         }
-        $multipay = R::load( 'multipay', $_SESSION['multipay']['id'] );
-        $multipay->user = R::dispense( 'user' )->current();
-        $mfee = R::dispense( 'multipayfee' );
+        $multipay = R::load('multipay', $_SESSION['multipay']['id']);
+        $multipay->user = R::dispense('user')->current();
+        $mfee = R::dispense('multipayfee');
         $mfee->card = $this->bean;
         $mfee->cardname = $this->bean->name;
-        $mfee->applicationnumber = 'EP' . str_replace(' ', '', $this->bean->applicationnumber);
+        $mfee->applicationnumber = 'EP' . str_replace(array(' ', 'EP'), array('', ''), $this->bean->applicationnumber);
 
         $ts = strtotime($this->bean->applicationdate);
         list($fy_app_date, $fm_app_date, $fd_app_date) = array(date('Y', $ts), date('m', $ts), date('d', $ts));
@@ -100,16 +102,16 @@ class Model_Card extends Cinnebar_Model
         $mfee->datedue = date('Y-m-d', $ts);
 
         // to prevent that the card bean gets dirty we load person like this
-        if ( ! $this->bean->applicant_id ) {
-            $person = R::load( 'person', $this->bean->client_id );
+        if (! $this->bean->applicant_id) {
+            $person = R::load('person', $this->bean->client_id);
         } else {
-            $person = R::load( 'person', $this->bean->applicant_id );
+            $person = R::load('person', $this->bean->applicant_id);
         }
         $mfee->applicantnickname = $person->name;
         $mfee->paymentcode = $paymentCode;
         $mfee->amount = $amount;
         $multipay->ownMultipayfee[] = $mfee;
-        R::store( $multipay );
+        R::store($multipay);
         /*
         error_log( $this->bean->name . ' should be added to multipay with ' .
                                                             $paymentCode . ' EUR ' . $amount);*/
@@ -124,7 +126,9 @@ class Model_Card extends Cinnebar_Model
      */
     public function stash()
     {
-        if ( ! $this->bean->stash) $this->bean->stash = R::dispense('stash');
+        if (! $this->bean->stash) {
+            $this->bean->stash = R::dispense('stash');
+        }
         return $this->bean->stash;
     }
 
@@ -210,7 +214,7 @@ SQL;
      */
     public function sqlForFilters($where_clause = '1', $order_clause = 'id', $offset = 0, $limit = 1)
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			DISTINCT(card.id) as id
 
@@ -241,7 +245,7 @@ SQL;
      */
     public function sqlForTotal($where_clause = '1')
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			COUNT(DISTINCT(card.id)) as total
 
@@ -268,7 +272,9 @@ SQL;
     public function getownPriority($add = false)
     {
         $own = R::find('priority', ' card_id = ?', array($this->bean->getId()));
-        if ($add) $own[] = R::dispense('priority');
+        if ($add) {
+            $own[] = R::dispense('priority');
+        }
         return $own;
     }
 
@@ -281,7 +287,9 @@ SQL;
     public function getownCardfeestep($add = false)
     {
         $own = R::find('cardfeestep', ' card_id = ? ORDER BY fy', array($this->bean->getId()));
-        if ($add) $own[] = R::dispense('cardfeestep');
+        if ($add) {
+            $own[] = R::dispense('cardfeestep');
+        }
         return $own;
     }
 
@@ -292,7 +300,9 @@ SQL;
      */
     public function country()
     {
-        if ( ! $this->bean->country) $this->bean->country = R::dispense('country');
+        if (! $this->bean->country) {
+            $this->bean->country = R::dispense('country');
+        }
         return $this->bean->country;
     }
 
@@ -343,7 +353,7 @@ SQL;
      */
     public function cardStatusInternal()
     {
-        return __( 'annual_label_' . $this->bean->status );
+        return __('annual_label_' . $this->bean->status);
     }
 
     /**
@@ -357,11 +367,15 @@ SQL;
     public function feestepMultipay()
     {
         $feesteps = $this->bean->getLatestCardfeesteps();
-        if ( ! $feesteps ) return __( 'cardfeestep_undefined' );
-        foreach ( $feesteps as $id => $feestep ) {
-            if ( ! $feestep->done) return $feestep->fy;
+        if (! $feesteps) {
+            return __('cardfeestep_undefined');
         }
-        return __( 'cardfeestep_over_the_top' );
+        foreach ($feesteps as $id => $feestep) {
+            if (! $feestep->done) {
+                return $feestep->fy;
+            }
+        }
+        return __('cardfeestep_over_the_top');
     }
 
     /**
@@ -371,7 +385,7 @@ SQL;
      */
     public function getLatestCardfeesteps()
     {
-        return R::find( 'cardfeestep', ' card_id = ? ORDER BY fy', array( $this->bean->getId() ) );
+        return R::find('cardfeestep', ' card_id = ? ORDER BY fy', array( $this->bean->getId() ));
     }
 
     /**
@@ -441,7 +455,9 @@ SQL;
      */
     public function cardstatus()
     {
-        if ( ! $this->bean->cardstatus) $this->bean->cardstatus = R::dispense('cardstatus');
+        if (! $this->bean->cardstatus) {
+            $this->bean->cardstatus = R::dispense('cardstatus');
+        }
         return $this->bean->cardstatus;
     }
 
@@ -452,7 +468,9 @@ SQL;
      */
     public function client()
     {
-        if ( ! $this->bean->fetchAs('person')->client) $this->bean->client = R::dispense('person');
+        if (! $this->bean->fetchAs('person')->client) {
+            $this->bean->client = R::dispense('person');
+        }
         return $this->bean->fetchAs('person')->client;
     }
 
@@ -463,7 +481,9 @@ SQL;
      */
     public function original()
     {
-        if ( ! $this->bean->fetchAs('card')->original) $this->bean->original = R::dispense('card');
+        if (! $this->bean->fetchAs('card')->original) {
+            $this->bean->original = R::dispense('card');
+        }
         return $this->bean->original;
     }
 
@@ -474,7 +494,9 @@ SQL;
      */
     public function applicant()
     {
-        if ( ! $this->bean->fetchAs('person')->applicant) $this->bean->applicant = R::dispense('person');
+        if (! $this->bean->fetchAs('person')->applicant) {
+            $this->bean->applicant = R::dispense('person');
+        }
         return $this->bean->applicant;
     }
 
@@ -495,7 +517,9 @@ SQL;
      */
     public function foreign()
     {
-        if ( ! $this->bean->fetchAs('person')->foreign) $this->bean->foreign = R::dispense('person');
+        if (! $this->bean->fetchAs('person')->foreign) {
+            $this->bean->foreign = R::dispense('person');
+        }
         return $this->bean->foreign;
     }
 
@@ -506,7 +530,9 @@ SQL;
      */
     public function invreceiver()
     {
-        if ( ! $this->bean->fetchAs('person')->invreceiver) $this->bean->invreceiver = R::dispense('person');
+        if (! $this->bean->fetchAs('person')->invreceiver) {
+            $this->bean->invreceiver = R::dispense('person');
+        }
         return $this->bean->fetchAs('person')->invreceiver;
     }
 
@@ -517,7 +543,9 @@ SQL;
      */
     public function fee()
     {
-        if ( ! $this->bean->fee) $this->bean->fee = R::dispense('fee');
+        if (! $this->bean->fee) {
+            $this->bean->fee = R::dispense('fee');
+        }
         return $this->bean->fee;
     }
 
@@ -528,7 +556,9 @@ SQL;
      */
     public function rule()
     {
-        if ( ! $this->bean->rule) $this->bean->rule = R::dispense('rule');
+        if (! $this->bean->rule) {
+            $this->bean->rule = R::dispense('rule');
+        }
         return $this->bean->rule;
     }
 
@@ -539,7 +569,9 @@ SQL;
      */
     public function cardtype()
     {
-        if ( ! $this->bean->cardtype) $this->bean->cardtype = R::dispense('cardtype');
+        if (! $this->bean->cardtype) {
+            $this->bean->cardtype = R::dispense('cardtype');
+        }
         return $this->bean->cardtype;
     }
 
@@ -550,7 +582,9 @@ SQL;
      */
     public function pricetype()
     {
-        if ( ! $this->bean->pricetype) $this->bean->pricetype = R::dispense('pricetype');
+        if (! $this->bean->pricetype) {
+            $this->bean->pricetype = R::dispense('pricetype');
+        }
         return $this->bean->pricetype;
     }
 
@@ -561,7 +595,7 @@ SQL;
      */
     public function possibleFeeYears()
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			DISTINCT(YEAR(card.feeduedate)) as y
 
@@ -584,7 +618,7 @@ SQL;
      */
     public function sqlForAnnuity($where_clause = '1')
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			card.id
 
@@ -607,7 +641,7 @@ SQL;
      */
     public function sqlForAnnuityComplete()
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			card.id
 
@@ -634,7 +668,7 @@ SQL;
      */
     public function sqlForAnnuityAttorney()
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			card.id
 
@@ -660,7 +694,7 @@ SQL;
      */
     public function sqlForAnnuityTeam()
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			card.id
 
@@ -686,7 +720,7 @@ SQL;
      */
     public function sqlForAnnuityNone()
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			card.id
 
@@ -710,7 +744,9 @@ SQL;
      */
     public function feetype()
     {
-        if ( ! $this->bean->feetype) $this->bean->feetype = R::dispense('feetype');
+        if (! $this->bean->feetype) {
+            $this->bean->feetype = R::dispense('feetype');
+        }
         return $this->bean->feetype;
     }
 
@@ -721,7 +757,9 @@ SQL;
      */
     public function user()
     {
-        if ( ! $this->bean->user) $this->bean->user = R::dispense('user');
+        if (! $this->bean->user) {
+            $this->bean->user = R::dispense('user');
+        }
         return $this->bean->user;
     }
 
@@ -762,919 +800,929 @@ SQL;
         return $menu;
     }
 
-	/**
-	 * Returns an array of this card for use with pdf output.
-	 *
-	 * @param Cinnebar_View $view
-	 * @return array
-	 */
-	public function genDataPdf(Cinnebar_View $view)
-	{
-	    $priorities = '';
-	    // build priors
+    /**
+     * Returns an array of this card for use with pdf output.
+     *
+     * @param Cinnebar_View $view
+     * @return array
+     */
+    public function genDataPdf(Cinnebar_View $view)
+    {
+        $priorities = '';
+        // build priors
         foreach ($this->bean->ownPriority as $id=>$priority) {
-	        $priorities .= sprintf('%s %s %s', $priority->country->name, $priority->number, $view->date($priority->date))."\n";
-	    }
-	    $_client = $this->bean->client();
-	    $arr = array(
-	        'client' => $_client->name . "\n" . $_client->addressLabelByType()->getFormattedAddress(),
-	        'title' => $this->bean->title,
-	        'codeword' => $this->bean->codeword,
-	        'note' => $this->bean->note,
-	        'classes' => $this->bean->pattern,
-	        'priority' => $priorities,
-	        'foreign' => $this->bean->foreignaddress,
-	        'number' => $this->bean->name,
-	        'type' => $this->bean->cardtype()->name,
-	        'country' => $this->bean->country()->name,
-	        'original_number' => $this->bean->original()->name,
-	        'application_date' => $view->date($this->bean->applicationdate),
-	        'application_number' => $this->bean->applicationnumber,
-	        'disclosure_date' => $view->date($this->bean->disclosuredate),
-	        'disclosure_number' => $this->bean->disclosurenumber,
-	        'issue_date' => $view->date($this->bean->issuedate),
-	        'issue_number' => $this->bean->issuenumber
-	    );
+            $priorities .= sprintf('%s %s %s', $priority->country->name, $priority->number, $view->date($priority->date))."\n";
+        }
+        $_client = $this->bean->client();
+        $arr = array(
+            'client' => $_client->name . "\n" . $_client->addressLabelByType()->getFormattedAddress(),
+            'title' => $this->bean->title,
+            'codeword' => $this->bean->codeword,
+            'note' => $this->bean->note,
+            'classes' => $this->bean->pattern,
+            'priority' => $priorities,
+            'foreign' => $this->bean->foreignaddress,
+            'number' => $this->bean->name,
+            'type' => $this->bean->cardtype()->name,
+            'country' => $this->bean->country()->name,
+            'original_number' => $this->bean->original()->name,
+            'application_date' => $view->date($this->bean->applicationdate),
+            'application_number' => $this->bean->applicationnumber,
+            'disclosure_date' => $view->date($this->bean->disclosuredate),
+            'disclosure_number' => $this->bean->disclosurenumber,
+            'issue_date' => $view->date($this->bean->issuedate),
+            'issue_number' => $this->bean->issuenumber
+        );
         return $arr;
-	}
+    }
 
-	/**
-	 * Returns an array with possible attributes for order clauses and such.
-	 *
-	 * @param string (optional) $layout defaults to table and can be of any value
-	 * @return array
-	 */
-	public function attributes($layout = 'table')
-	{
-	    switch ($layout) {
+    /**
+     * Returns an array with possible attributes for order clauses and such.
+     *
+     * @param string (optional) $layout defaults to table and can be of any value
+     * @return array
+     */
+    public function attributes($layout = 'table')
+    {
+        switch ($layout) {
             case 'multipay':
                 $ret = array(
-                	array(
-                		'attribute' => 'name',
-                		'orderclause' => 'card.sortnumber',
-                		'class' => 'text',
-        				'width' => '10%',
-                		'filter' => array(
-                		    'tag' => 'text',
-                		    'orderclause' => 'card.name'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'country_id',
-                	    'orderclause' => 'country.iso',
-                	    'class' => 'text',
-        				'width' => '5%',
-                	    'callback' => array(
-                	        'name' => 'countryIso'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'cardtype_id',
-                	    'orderclause' => 'cardtype.name',
-                	    'class' => 'text',
-        				'width' => '5%',
-                	    'callback' => array(
-                	        'name' => 'cardtypeName'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
                     array(
-        			    'attribute' => 'cardstatus_id',
-        			    'orderclause' => 'cardstatus.name',
-        			    'class' => 'text',
-        				'width' => '10%',
-        			    'callback' => array(
-        			        'name' => 'cardstatusName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-                	array(
-                	    'attribute' => 'user_id',
-                	    'orderclause' => 'attorney.shortname',
-                	    'class' => 'text',
-        				'width' => '10%',
-                	    'callback' => array(
-                	        'name' => 'attorneyName'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-        			array(
-        			    'attribute' => 'teammashup',
-        			    'orderclause' => 'card.teammashup',
-        			    'class' => 'text',
-        				'width' => '10%',
-        			    'callback' => array(
-        			        'name' => 'teamName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-                	array(
-                	    'attribute' => 'applicationdate',
-                	    'orderclause' => 'card.applicationdate',
-                	    'class' => 'date',
-        				'viewhelper' => 'date',
-        				'width' => '15%',
-                		'filter' => array(
-                		    'tag' => 'date'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'applicationdate AS appmonth',
-                	    'orderclause' => 'MONTH( card.applicationdate )',
-                	    'class' => 'number',
-        				'width' => '5%',
-        				'callback' => array(
-        				    'name' => 'monthdue'
-        				),
-                		'filter' => array(
-                		    'tag' => 'number'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'stash_id',
-                	    'orderclause' => 'card.applicationdate',
-                	    'class' => 'number',
-        				'width' => '15%',
-        				'callback' => array(
-        				    'name' => 'feestepMultipay'
-        				),
-                		'xxx-filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'client_id',
-                	    'orderclause' => 'client.nickname',
-                	    'class' => 'text',
-        				'width' => '10%',
-                	    'callback' => array(
-                	        'name' => 'clientNickname'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'codeword',
-                	    'orderclause' => 'card.codeword',
-                	    'class' => 'text',
-        				'width' => '20%',
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'feeinactive',
-                	    'orderclause' => 'card.feeinactive',
-                	    'class' => 'bool',
-        				'width' => '5%',
-                	    'viewhelper' => 'boolperv',
-                		'filter' => array(
-                		    'tag' => 'boolperv'
-                		)
-                	)
-                );
-	            break;
-	        case 'table2':
-                $ret = array(
-                	array(
-                		'attribute' => 'name',
-                		'orderclause' => 'card.sortnumber',
-                		'class' => 'text',
-        				'width' => '10%',
-                		'filter' => array(
-                		    'tag' => 'text',
-                		    'orderclause' => 'card.name'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'country_id',
-                	    'orderclause' => 'country.iso',
-                	    'class' => 'text',
-        				'width' => '5%',
-                	    'callback' => array(
-                	        'name' => 'countryIso'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'cardtype_id',
-                	    'orderclause' => 'cardtype.name',
-                	    'class' => 'text',
-        				'width' => '5%',
-                	    'callback' => array(
-                	        'name' => 'cardtypeName'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
+                        'attribute' => 'name',
+                        'orderclause' => 'card.sortnumber',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'filter' => array(
+                            'tag' => 'text',
+                            'orderclause' => 'card.name'
+                        )
+                    ),
                     array(
-                	    'attribute' => 'cardstatus_id',
-                	    'orderclause' => 'cardstatus.name',
-                	    'class' => 'text',
-        				'width' => '10%',
-                	    'callback' => array(
-                	        'name' => 'clientstatus'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'user_id',
-                	    'orderclause' => 'attorney.shortname',
-                	    'class' => 'text',
-        				'width' => '10%',
-                	    'callback' => array(
-                	        'name' => 'attorneyName'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'applicationnumber',
-                	    'orderclause' => 'card.applicationnumber',
-                	    'class' => 'text',
-        				'width' => '15%',
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'client_id',
-                	    'orderclause' => 'client.nickname',
-                	    'class' => 'text',
-        				'width' => '15%',
-                	    'callback' => array(
-                	        'name' => 'clientNickname'
-                	    ),
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'title',
-                	    'orderclause' => 'card.title',
-                	    'class' => 'text',
-        				'width' => '20%',
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'codeword',
-                	    'orderclause' => 'card.codeword',
-                	    'class' => 'text',
-        				'width' => '20%',
-                		'filter' => array(
-                		    'tag' => 'text'
-                		)
-                	),
-                	array(
-                	    'attribute' => 'feeinactive',
-                	    'orderclause' => 'card.feeinactive',
-                	    'class' => 'bool',
-        				'width' => '5%',
-                	    'viewhelper' => 'boolperv',
-                		'filter' => array(
-                		    'tag' => 'boolperv'
-                		)
-                	)
+                        'attribute' => 'country_id',
+                        'orderclause' => 'country.iso',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'countryIso'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardtype_id',
+                        'orderclause' => 'cardtype.name',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'cardtypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardstatus_id',
+                        'orderclause' => 'cardstatus.name',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'cardstatusName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'user_id',
+                        'orderclause' => 'attorney.shortname',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'attorneyName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'teammashup',
+                        'orderclause' => 'card.teammashup',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'teamName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicationdate',
+                        'orderclause' => 'card.applicationdate',
+                        'class' => 'date',
+                        'viewhelper' => 'date',
+                        'width' => '15%',
+                        'filter' => array(
+                            'tag' => 'date'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicationdate AS appmonth',
+                        'orderclause' => 'MONTH( card.applicationdate )',
+                        'class' => 'number',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'monthdue'
+                        ),
+                        'filter' => array(
+                            'tag' => 'number'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'stash_id',
+                        'orderclause' => 'card.applicationdate',
+                        'class' => 'number',
+                        'width' => '15%',
+                        'callback' => array(
+                            'name' => 'feestepMultipay'
+                        ),
+                        'xxx-filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'client_id',
+                        'orderclause' => 'client.nickname',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'clientNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'codeword',
+                        'orderclause' => 'card.codeword',
+                        'class' => 'text',
+                        'width' => '20%',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'feeinactive',
+                        'orderclause' => 'card.feeinactive',
+                        'class' => 'bool',
+                        'width' => '5%',
+                        'viewhelper' => 'boolperv',
+                        'filter' => array(
+                            'tag' => 'boolperv'
+                        )
+                    )
                 );
-	            break;
-	        case 'annual':
+                break;
+            case 'table2':
                 $ret = array(
                     array(
-        				'attribute' => 'feeduedate',
-        				'orderclause' => 'card.feeduedate',
-        				'class' => 'date',
-        				'viewhelper' => 'date',
-        				'filter' => array(
-        				    'tag' => 'date'
-        				)
-        			),
-        			array(
-        				'attribute' => 'status',
-        				'orderclause' => 'card.status',
-        				'class' => 'text',
-        				'callback' => array(
-        				    'name' => 'cardStatusInternal'
-        				),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        				'attribute' => 'name',
-        				'orderclause' => 'card.name',
-        				'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'country_id',
-        			    'orderclause' => 'country.iso',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'countryIso'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'cardtype_id',
-        			    'orderclause' => 'cardtype.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'cardtypeName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
+                        'attribute' => 'name',
+                        'orderclause' => 'card.sortnumber',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'filter' => array(
+                            'tag' => 'text',
+                            'orderclause' => 'card.name'
+                        )
+                    ),
                     array(
-        			    'attribute' => 'cardstatus_id',
-        			    'orderclause' => 'cardstatus.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'cardstatusName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.shortname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'attorneyName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'client_id',
-        			    'orderclause' => 'client.nickname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'clientNickname'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'title',
-        			    'orderclause' => 'card.title',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'codeword',
-        			    'orderclause' => 'card.codeword',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			)
-        		);
-	            break;
-	        case 'extended':
-        		$ret = array(
-        			array(
-        				'attribute' => 'name',
-        				'orderclause' => 'card.sortnumber',
-        				'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text',
-        				    'orderclause' => 'card.name'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'country_id',
-        			    'orderclause' => 'country.iso',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'countryIso'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'cardtype_id',
-        			    'orderclause' => 'cardtype.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'cardtypeName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
+                        'attribute' => 'country_id',
+                        'orderclause' => 'country.iso',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'countryIso'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
                     array(
-        			    'attribute' => 'cardstatus_id',
-        			    'orderclause' => 'cardstatus.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'cardstatusName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.shortname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'attorneyName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'client_id',
-        			    'orderclause' => 'client.nickname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'clientNickname'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'title',
-        			    'orderclause' => 'card.title',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'codeword',
-        			    'orderclause' => 'card.codeword',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-            		array(
-        			    'attribute' => 'applicationnumber',
-        			    'orderclause' => 'card.applicationnumber',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			)
-        		);
-	            break;
-	        case 'report':
-        		$ret = array(
-        			array(
-        				'attribute' => 'name',
-        				'orderclause' => 'card.sortnumber',
-        				'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text',
-        				    'orderclause' => 'card.name'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'country_id',
-        			    'orderclause' => 'country.iso',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'countryIso'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'cardtype_id',
-        			    'orderclause' => 'cardtype.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'cardtypeName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
+                        'attribute' => 'cardtype_id',
+                        'orderclause' => 'cardtype.name',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'cardtypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
                     array(
-        			    'attribute' => 'cardstatus_id',
-        			    'orderclause' => 'cardstatus.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'cardstatusName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.shortname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'attorneyName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'teammashup',
-        			    'orderclause' => 'card.teammashup',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'teamName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'client_id',
-        			    'orderclause' => 'client.nickname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'clientNickname'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'clientcode',
-        			    'orderclause' => 'card.clientcode',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'applicant_id',
-        			    'orderclause' => 'applicantnickname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'applicantNickname'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'applicantcode',
-        			    'orderclause' => 'card.applicantcode',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'invreceiver_id',
-        			    'orderclause' => 'invreceivernickname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'invreceiverNickname'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'invreceivercode',
-        			    'orderclause' => 'card.invreceivercode',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'foreign_id',
-        			    'orderclause' => 'foreignnickname',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'foreignNickname'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'foreigncode',
-        			    'orderclause' => 'card.foreigncode',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'title',
-        			    'orderclause' => 'card.title',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'codeword',
-        			    'orderclause' => 'card.codeword',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'note',
-        			    'orderclause' => 'card.note',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'pattern',
-        			    'orderclause' => 'card.pattern',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        				'attribute' => 'applicationdate',
-        				'orderclause' => 'card.applicationdate',
-        				'class' => 'date',
-        				'viewhelper' => 'date',
-        				'filter' => array(
-        				    'tag' => 'date'
-        				)
-        			),
-            		array(
-        			    'attribute' => 'applicationnumber',
-        			    'orderclause' => 'card.applicationnumber',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        				'attribute' => 'issuedate',
-        				'orderclause' => 'card.issuedate',
-        				'class' => 'date',
-        				'viewhelper' => 'date',
-        				'filter' => array(
-        				    'tag' => 'date'
-        				)
-        			),
-            		array(
-        			    'attribute' => 'issuenumber',
-        			    'orderclause' => 'card.issuenumber',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        				'attribute' => 'disclosuredate',
-        				'orderclause' => 'card.disclosuredate',
-        				'class' => 'date',
-        				'viewhelper' => 'date',
-        				'filter' => array(
-        				    'tag' => 'date'
-        				)
-        			),
-            		array(
-        			    'attribute' => 'disclosurenumber',
-        			    'orderclause' => 'card.disclosurenumber',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        				'attribute' => 'feeduedate',
-        				'orderclause' => 'card.feeduedate',
-        				'class' => 'date',
-        				'viewhelper' => 'date',
-        				'filter' => array(
-        				    'tag' => 'date'
-        				)
-        			)
-        		);
-	            break;
-	        default:
-        		$ret = array(
-        			array(
-        				'attribute' => 'name',
-        				'orderclause' => 'card.sortnumber',
-        				'class' => 'text',
-        				'width' => '10%',
-        				'filter' => array(
-        				    'tag' => 'text',
-        				    'orderclause' => 'card.name'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'country_id',
-        			    'orderclause' => 'country.iso',
-        			    'class' => 'text',
-        				'width' => '5%',
-        			    'callback' => array(
-        			        'name' => 'countryIso'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'cardtype_id',
-        			    'orderclause' => 'cardtype.name',
-        			    'class' => 'text',
-        				'width' => '5%',
-        			    'callback' => array(
-        			        'name' => 'cardtypeName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
+                        'attribute' => 'cardstatus_id',
+                        'orderclause' => 'cardstatus.name',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'clientstatus'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
                     array(
-        			    'attribute' => 'cardstatus_id',
-        			    'orderclause' => 'cardstatus.name',
-        			    'class' => 'text',
-        				'width' => '10%',
-        			    'callback' => array(
-        			        'name' => 'cardstatusName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'user_id',
-        			    'orderclause' => 'attorney.shortname',
-        			    'class' => 'text',
-        				'width' => '5%',
-        			    'callback' => array(
-        			        'name' => 'attorneyName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'teammashup',
-        			    'orderclause' => 'card.teammashup',
-        			    'class' => 'text',
-        				'width' => '10%',
-        			    'callback' => array(
-        			        'name' => 'teamName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'client_id',
-        			    'orderclause' => 'client.nickname',
-        			    'class' => 'text',
-        				'width' => '20%',
-        			    'callback' => array(
-        			        'name' => 'clientNickname'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'title',
-        			    'orderclause' => 'card.title',
-        			    'class' => 'text',
-        				'width' => '20%',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'codeword',
-        			    'orderclause' => 'card.codeword',
-        			    'class' => 'text',
-        				'width' => '15%',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-            		array(
-        			    'attribute' => 'feeinactive',
-        			    'orderclause' => 'card.feeinactive',
-        			    'class' => 'bool',
-        				'width' => '5%',
-        			    'viewhelper' => 'boolperv',
-        				'filter' => array(
-        				    'tag' => 'boolperv'
-        				)
-        			)
-        		);
+                        'attribute' => 'user_id',
+                        'orderclause' => 'attorney.shortname',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'attorneyName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicationnumber',
+                        'orderclause' => 'card.applicationnumber',
+                        'class' => 'text',
+                        'width' => '15%',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'client_id',
+                        'orderclause' => 'client.nickname',
+                        'class' => 'text',
+                        'width' => '15%',
+                        'callback' => array(
+                            'name' => 'clientNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'title',
+                        'orderclause' => 'card.title',
+                        'class' => 'text',
+                        'width' => '20%',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'codeword',
+                        'orderclause' => 'card.codeword',
+                        'class' => 'text',
+                        'width' => '20%',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'feeinactive',
+                        'orderclause' => 'card.feeinactive',
+                        'class' => 'bool',
+                        'width' => '5%',
+                        'viewhelper' => 'boolperv',
+                        'filter' => array(
+                            'tag' => 'boolperv'
+                        )
+                    )
+                );
+                break;
+            case 'annual':
+                $ret = array(
+                    array(
+                        'attribute' => 'feeduedate',
+                        'orderclause' => 'card.feeduedate',
+                        'class' => 'date',
+                        'viewhelper' => 'date',
+                        'filter' => array(
+                            'tag' => 'date'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'status',
+                        'orderclause' => 'card.status',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardStatusInternal'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'name',
+                        'orderclause' => 'card.name',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'country_id',
+                        'orderclause' => 'country.iso',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'countryIso'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardtype_id',
+                        'orderclause' => 'cardtype.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardtypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardstatus_id',
+                        'orderclause' => 'cardstatus.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardstatusName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'user_id',
+                        'orderclause' => 'attorney.shortname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'attorneyName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'client_id',
+                        'orderclause' => 'client.nickname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'clientNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'title',
+                        'orderclause' => 'card.title',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'codeword',
+                        'orderclause' => 'card.codeword',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    )
+                );
+                break;
+            case 'extended':
+                $ret = array(
+                    array(
+                        'attribute' => 'name',
+                        'orderclause' => 'card.sortnumber',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text',
+                            'orderclause' => 'card.name'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'country_id',
+                        'orderclause' => 'country.iso',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'countryIso'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardtype_id',
+                        'orderclause' => 'cardtype.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardtypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardstatus_id',
+                        'orderclause' => 'cardstatus.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardstatusName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'user_id',
+                        'orderclause' => 'attorney.shortname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'attorneyName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'client_id',
+                        'orderclause' => 'client.nickname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'clientNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'title',
+                        'orderclause' => 'card.title',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'codeword',
+                        'orderclause' => 'card.codeword',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicationnumber',
+                        'orderclause' => 'card.applicationnumber',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    )
+                );
+                break;
+            case 'report':
+                $ret = array(
+                    array(
+                        'attribute' => 'name',
+                        'orderclause' => 'card.sortnumber',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text',
+                            'orderclause' => 'card.name'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'country_id',
+                        'orderclause' => 'country.iso',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'countryIso'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardtype_id',
+                        'orderclause' => 'cardtype.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardtypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardstatus_id',
+                        'orderclause' => 'cardstatus.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardstatusName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'user_id',
+                        'orderclause' => 'attorney.shortname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'attorneyName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'teammashup',
+                        'orderclause' => 'card.teammashup',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'teamName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'client_id',
+                        'orderclause' => 'client.nickname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'clientNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'clientcode',
+                        'orderclause' => 'card.clientcode',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicant_id',
+                        'orderclause' => 'applicantnickname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'applicantNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicantcode',
+                        'orderclause' => 'card.applicantcode',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'invreceiver_id',
+                        'orderclause' => 'invreceivernickname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'invreceiverNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'invreceivercode',
+                        'orderclause' => 'card.invreceivercode',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'foreign_id',
+                        'orderclause' => 'foreignnickname',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'foreignNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'foreigncode',
+                        'orderclause' => 'card.foreigncode',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'title',
+                        'orderclause' => 'card.title',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'codeword',
+                        'orderclause' => 'card.codeword',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'note',
+                        'orderclause' => 'card.note',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'pattern',
+                        'orderclause' => 'card.pattern',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicationdate',
+                        'orderclause' => 'card.applicationdate',
+                        'class' => 'date',
+                        'viewhelper' => 'date',
+                        'filter' => array(
+                            'tag' => 'date'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'applicationnumber',
+                        'orderclause' => 'card.applicationnumber',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'issuedate',
+                        'orderclause' => 'card.issuedate',
+                        'class' => 'date',
+                        'viewhelper' => 'date',
+                        'filter' => array(
+                            'tag' => 'date'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'issuenumber',
+                        'orderclause' => 'card.issuenumber',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'disclosuredate',
+                        'orderclause' => 'card.disclosuredate',
+                        'class' => 'date',
+                        'viewhelper' => 'date',
+                        'filter' => array(
+                            'tag' => 'date'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'disclosurenumber',
+                        'orderclause' => 'card.disclosurenumber',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'feeduedate',
+                        'orderclause' => 'card.feeduedate',
+                        'class' => 'date',
+                        'viewhelper' => 'date',
+                        'filter' => array(
+                            'tag' => 'date'
+                        )
+                    )
+                );
+                break;
+            default:
+                $ret = array(
+                    array(
+                        'attribute' => 'name',
+                        'orderclause' => 'card.sortnumber',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'filter' => array(
+                            'tag' => 'text',
+                            'orderclause' => 'card.name'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'country_id',
+                        'orderclause' => 'country.iso',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'countryIso'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardtype_id',
+                        'orderclause' => 'cardtype.name',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'cardtypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardstatus_id',
+                        'orderclause' => 'cardstatus.name',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'cardstatusName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'user_id',
+                        'orderclause' => 'attorney.shortname',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'attorneyName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'teammashup',
+                        'orderclause' => 'card.teammashup',
+                        'class' => 'text',
+                        'width' => '10%',
+                        'callback' => array(
+                            'name' => 'teamName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'client_id',
+                        'orderclause' => 'client.nickname',
+                        'class' => 'text',
+                        'width' => '20%',
+                        'callback' => array(
+                            'name' => 'clientNickname'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'title',
+                        'orderclause' => 'card.title',
+                        'class' => 'text',
+                        'width' => '20%',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'codeword',
+                        'orderclause' => 'card.codeword',
+                        'class' => 'text',
+                        'width' => '15%',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'feeinactive',
+                        'orderclause' => 'card.feeinactive',
+                        'class' => 'bool',
+                        'width' => '5%',
+                        'viewhelper' => 'boolperv',
+                        'filter' => array(
+                            'tag' => 'boolperv'
+                        )
+                    )
+                );
         }
         return $ret;
-	}
+    }
 
-	/**
-	 * Return the month of fee due date.
-	 *
-	 * @return string
-	 */
-	public function monthdue()
-	{
-        return date( 'm', strtotime( $this->bean->applicationdate ) );
-	}
+    /**
+     * Return the month of fee due date.
+     *
+     * @return string
+     */
+    public function monthdue()
+    {
+        return date('m', strtotime($this->bean->applicationdate));
+    }
 
-	/**
-	 * Returns a humanreadable status for a client.
-	 *
-	 * @return string
-	 */
-	public function clientstatus()
-	{
-        if ( $this->bean->cardstatus_id == 2 ) return __('humanreadable_status_dead');
-        if ( $this->bean->issuenumber || $this->bean->issuedate != '0000-00-00') return __('humanreadable_status_issued');
-        if ( $this->bean->applicationnumber || $this->bean->applicationdate != '0000-00-00') return __('humanreadable_status_applied');
-	}
+    /**
+     * Returns a humanreadable status for a client.
+     *
+     * @return string
+     */
+    public function clientstatus()
+    {
+        if ($this->bean->cardstatus_id == 2) {
+            return __('humanreadable_status_dead');
+        }
+        if ($this->bean->issuenumber || $this->bean->issuedate != '0000-00-00') {
+            return __('humanreadable_status_issued');
+        }
+        if ($this->bean->applicationnumber || $this->bean->applicationdate != '0000-00-00') {
+            return __('humanreadable_status_applied');
+        }
+    }
 
-	/**
-	 * Returns either the codeword or if not set the title.
-	 *
-	 * @return string
-	 */
-	public function codewordOrTitle()
-	{
-        if ( $this->bean->codeword ) return $this->bean->codeword;
+    /**
+     * Returns either the codeword or if not set the title.
+     *
+     * @return string
+     */
+    public function codewordOrTitle()
+    {
+        if ($this->bean->codeword) {
+            return $this->bean->codeword;
+        }
         return $this->bean->title;
-	}
+    }
 
-	/**
-	 * Returns an empty string or the next fee due date if valid.
-	 *
-	 * @return string
-	 */
-	public function getFeeduedate()
-	{
-        if ( $this->bean->feeduedate == '' || $this->bean->feeduedate == '1970-01-01' ||
-                $this->bean->feeduedate == '0000-00-00') return '';
+    /**
+     * Returns an empty string or the next fee due date if valid.
+     *
+     * @return string
+     */
+    public function getFeeduedate()
+    {
+        if ($this->bean->feeduedate == '' || $this->bean->feeduedate == '1970-01-01' ||
+                $this->bean->feeduedate == '0000-00-00') {
+            return '';
+        }
         return $this->bean->feeduedate;
-	}
+    }
 
-	/**
-	 * Returns an array of the bean.
-	 *
-	 * @param bool $header defaults to false, if true then column headers are returned
-	 * @param string $layout
-	 * @return array
-	 */
-	public function exportToCSV($header = false, $layout = 'default')
-	{
-	    // layout vrone
-	    if ( $layout == 'vrone' ) {
-    	    if ( $header == true ) {
-    	        return array(
+    /**
+     * Returns an array of the bean.
+     *
+     * @param bool $header defaults to false, if true then column headers are returned
+     * @param string $layout
+     * @return array
+     */
+    public function exportToCSV($header = false, $layout = 'default')
+    {
+        // layout vrone
+        if ($layout == 'vrone') {
+            if ($header == true) {
+                return array(
                     __('card_label_card.name'),
                     __('card_label_country'),
                     __('card_label_cardtype'),
                     __('card_label_applicationnumber'),
-    	            __('card_label_applicationdate_short'),
-    	            __('card_label_clientstatus'),
-    	            __('card_label_codewordortitle'),
-    	            __('card_label_feeduedate')
+                    __('card_label_applicationdate_short'),
+                    __('card_label_clientstatus'),
+                    __('card_label_codewordortitle'),
+                    __('card_label_feeduedate')
 
-    	        );
-    	    }
-    	    return array(
+                );
+            }
+            return array(
                 $this->bean->name,
                 strtoupper($this->bean->country->iso),
                 $this->bean->cardtype->name,
@@ -1684,28 +1732,28 @@ SQL;
                 str_replace('"', '', $this->bean->codewordOrTitle()),
                 $this->bean->getFeeduedate()
 
-    	    );
-    	}
+            );
+        }
 
-    	// layout vrtwo
-	    if ( $layout == 'vrtwo' ) {
-    	    if ( $header == true ) {
-    	        return array(
+        // layout vrtwo
+        if ($layout == 'vrtwo') {
+            if ($header == true) {
+                return array(
                     __('card_label_card.name'),
                     __('card_label_country'),
                     __('card_label_cardtype'),
                     __('card_label_applicationnumber'),
-    	            __('card_label_applicationdate_short'),
-    	            __('card_label_clientstatus'),
+                    __('card_label_applicationdate_short'),
+                    __('card_label_clientstatus'),
                     __('card_label_issuenumber'),
-    	            __('card_label_issuedate_short'),
-    	            __('card_label_clientcode'),
-    	            __('card_label_title'),
+                    __('card_label_issuedate_short'),
+                    __('card_label_clientcode'),
+                    __('card_label_title'),
                     __('card_label_codeword'),
                     __('card_label_note')
-    	        );
-    	    }
-    	    return array(
+                );
+            }
+            return array(
                 $this->bean->name,
                 strtoupper($this->bean->country->iso),
                 $this->bean->cardtype->name,
@@ -1718,32 +1766,32 @@ SQL;
                 str_replace('"', '', $this->bean->title),
                 str_replace('"', '', $this->bean->codeword),
                 str_replace('"', '', $this->bean->note)
-    	    );
-    	}
+            );
+        }
 
-    	// layout default
-        if ( $layout == 'default' ) {
-    	    if ($header === true) {
-    	        return array(
-    	            __('card_label_card.name'),
-    	            __('card_label_country'),
-    	            __('card_label_cardtype'),
-    	            __('card_label_cardstatus'),
-    	            __('card_label_attorney'),
-    	            __('person_label_nickname'),
-    	            __('card_label_client'),
-    	            __('card_label_clientcode'),
-    	            __('card_label_title'),
-    	            __('card_label_codeword'),
-    	            __('card_label_note'),
-    	            __('card_label_applicationdate'),
-    	            __('card_label_applicationnumber'),
-    	            __('card_label_issuedate'),
-    	            __('card_label_issuenumber'),
-    	            __('card_label_disclosuredate'),
-    	            __('card_label_disclosurenumber')
-    	        );
-    	    }
+        // layout default
+        if ($layout == 'default') {
+            if ($header === true) {
+                return array(
+                    __('card_label_card.name'),
+                    __('card_label_country'),
+                    __('card_label_cardtype'),
+                    __('card_label_cardstatus'),
+                    __('card_label_attorney'),
+                    __('person_label_nickname'),
+                    __('card_label_client'),
+                    __('card_label_clientcode'),
+                    __('card_label_title'),
+                    __('card_label_codeword'),
+                    __('card_label_note'),
+                    __('card_label_applicationdate'),
+                    __('card_label_applicationnumber'),
+                    __('card_label_issuedate'),
+                    __('card_label_issuenumber'),
+                    __('card_label_disclosuredate'),
+                    __('card_label_disclosurenumber')
+                );
+            }
             return array(
                 $this->bean->name,
                 $this->bean->country->name,
@@ -1764,17 +1812,17 @@ SQL;
                 $this->bean->disclosurenumber
             );
         }
-	}
+    }
 
-	/**
-	 * Returns an array with possible layout for list view (index).
-	 *
-	 * @return array
-	 */
-	public function layouts()
-	{
+    /**
+     * Returns an array with possible layout for list view (index).
+     *
+     * @return array
+     */
+    public function layouts()
+    {
         return array('table');
-	}
+    }
 
     /**
      * Returns keywords from this bean for tagging.
@@ -1810,9 +1858,9 @@ SQL;
         $keywords = array_merge($keywords, $this->splitToWords($this->bean->codeword));
         $keywords = array_merge($keywords, $this->splitToWords($this->bean->note));
         $keywords = array_merge($keywords, $this->splitToWords($this->bean->feesubject));
-		//foreach ($this->bean->ownPriority as $id=>$priority) {
-		//	$keywords = array_merge($keywords, $priority->keywords());
-		//}
+        //foreach ($this->bean->ownPriority as $id=>$priority) {
+        //	$keywords = array_merge($keywords, $priority->keywords());
+        //}
         return $keywords;
     }
 
@@ -1841,7 +1889,9 @@ SQL;
         $this->addConverter('issuedate', 'mySQLDate');
         $this->addConverter('disclosuredate', 'mySQLDate');
         $this->addConverter('feeduedate', 'mySQLDate');
-        if ( ! $this->bean->getId()) $this->bean->feeinactive = 1;
+        if (! $this->bean->getId()) {
+            $this->bean->feeinactive = 1;
+        }
     }
 
     /**
@@ -1865,17 +1915,17 @@ SQL;
      */
     public function makeBetterSearchable()
     {
-        $this->bean->searchname = $this->alphanumericonly( $this->bean->name );
-        $this->bean->applicationnumberflat = $this->alphanumericonly( $this->bean->applicationnumber );
-        $this->bean->issuenumberflat = $this->alphanumericonly( $this->bean->issuenumber );
-        $this->bean->disclosurenumberflat = $this->alphanumericonly( $this->bean->disclosurenumber );
-        $this->bean->titleflat = $this->alphanumericonly( $this->bean->title );
-        $this->bean->codewordflat = $this->alphanumericonly( $this->bean->codeword );
-        $this->bean->noteflat = $this->alphanumericonly( $this->bean->note );
-        $this->bean->clientcodeflat = $this->alphanumericonly( $this->bean->clientcode );
-        $this->bean->applicantcodeflat = $this->alphanumericonly( $this->bean->applicantcode );
-        $this->bean->foreigncodeflat = $this->alphanumericonly( $this->bean->foreigncode );
-        $this->bean->invreceivercodeflat = $this->alphanumericonly( $this->bean->invreceivercode );
+        $this->bean->searchname = $this->alphanumericonly($this->bean->name);
+        $this->bean->applicationnumberflat = $this->alphanumericonly($this->bean->applicationnumber);
+        $this->bean->issuenumberflat = $this->alphanumericonly($this->bean->issuenumber);
+        $this->bean->disclosurenumberflat = $this->alphanumericonly($this->bean->disclosurenumber);
+        $this->bean->titleflat = $this->alphanumericonly($this->bean->title);
+        $this->bean->codewordflat = $this->alphanumericonly($this->bean->codeword);
+        $this->bean->noteflat = $this->alphanumericonly($this->bean->note);
+        $this->bean->clientcodeflat = $this->alphanumericonly($this->bean->clientcode);
+        $this->bean->applicantcodeflat = $this->alphanumericonly($this->bean->applicantcode);
+        $this->bean->foreigncodeflat = $this->alphanumericonly($this->bean->foreigncode);
+        $this->bean->invreceivercodeflat = $this->alphanumericonly($this->bean->invreceivercode);
     }
 
     /**
@@ -1890,50 +1940,52 @@ SQL;
         $this->makeBetterSearchable();
         if ($this->bean->feeinactive || ! $this->bean->getId()) {
             //unset($this->bean->pricetype);
-            if ( $this->bean->client() ) {
+            if ($this->bean->client()) {
                 $this->bean->pricetype = $this->bean->client()->pricetype();
             } else {
                 unset($this->bean->pricetype);
             }
             unset($this->bean->feetype);
         }
-        if ( ! $this->bean->country_id) $this->bean->country_id = null;
-        if ( !$this->bean->originalname) {
+        if (! $this->bean->country_id) {
+            $this->bean->country_id = null;
+        }
+        if (!$this->bean->originalname) {
             //$this->bean->original = null;
             $this->bean->original_id = null;
         }
-        if ( ! $this->bean->client_id) {
+        if (! $this->bean->client_id) {
             //$this->bean->client = null;
             $this->bean->client_id = null;
             $this->bean->clientnickname = null;
             $this->bean->clientaddress = null;
             $this->bean->clientcode = null;
         }
-        if ( ! $this->bean->applicant_id) {
+        if (! $this->bean->applicant_id) {
             //$this->bean->applicant = null;
             $this->bean->applicant_id = null;
             $this->bean->applicantnickname = null;
             $this->bean->applicantaddress = null;
             $this->bean->applicantcode = null;
         }
-        if ( ! $this->bean->foreign_id) {
+        if (! $this->bean->foreign_id) {
             //$this->bean->foreign = null;
             $this->bean->foreign_id = null;
             $this->bean->foreignnickname = null;
             $this->bean->foreignaddress = null;
             $this->bean->foreigncode = null;
         }
-        if ( ! $this->bean->invreceiver_id) {
+        if (! $this->bean->invreceiver_id) {
             //$this->bean->invreceiver = null;
             $this->bean->invreceiver_id = null;
             $this->bean->invreceivernickname = null;
             $this->bean->invreceiveraddress = null;
             $this->bean->invreceivercode = null;
         }
-        if ( ! $this->bean->customeraccount || $this->bean->hasChanged('invreceiver_id') || $this->bean->hasChanged('client_id')) {
-            if ( $this->bean->invreceiver_id ) {
+        if (! $this->bean->customeraccount || $this->bean->hasChanged('invreceiver_id') || $this->bean->hasChanged('client_id')) {
+            if ($this->bean->invreceiver_id) {
                 $this->bean->customeraccount = $this->bean->invreceiver()->account;
-            } elseif ( $this->bean->client_id ) {
+            } elseif ($this->bean->client_id) {
                 $this->bean->customeraccount = $this->bean->client()->account;
             } else {
                 $this->bean->customeraccount = '';
@@ -1946,7 +1998,7 @@ SQL;
             $this->bean->sharedTeam[] = $team;
         }
         $this->checkAndSetCurrentState();
-        if ( ( strtolower( $this->bean->cardtype->name ) == 'marke' || strtolower( $this->bean->cardtype->name ) == 'gsm' ) && strtolower( $this->bean->country->iso ) == 'wo' ) {
+        if ((strtolower($this->bean->cardtype->name) == 'marke' || strtolower($this->bean->cardtype->name) == 'gsm') && strtolower($this->bean->country->iso) == 'wo') {
             $this->addError('card_error_country_type_mismatch', 'country_id');
             if (self::VALIDATION_MODE_IMPLICIT === self::$validation_mode) {
                 $this->invalid = true;
@@ -1971,17 +2023,21 @@ SQL;
         error_log('Check and set current state');
         $this->bean->overdue = false;
         $this->bean->status = 'inactive';
-        if ( $this->bean->feeinactive ) return false;
+        if ($this->bean->feeinactive) {
+            return false;
+        }
         $this->bean->status = 'onhold';
-        if ( $this->bean->onhold ) return false;
+        if ($this->bean->onhold) {
+            return false;
+        }
         $this->bean->status = 'due';
         $was_already_set = false;
         foreach ($this->bean->ownCardfeestep as $id => $feestep) {
-            if ( $feestep->done ) {
+            if ($feestep->done) {
                 error_log('Oh, '.$feestep->fy.' is already done...');
                 $this->bean->status = 'done';
             } else {
-                if ( ! $was_already_set ) {
+                if (! $was_already_set) {
                     $was_already_set = true;
                     $this->bean->status = 'due';
                     //set next feeduedate to this feesteps fy.
@@ -1991,31 +2047,26 @@ SQL;
                     error_log('and will next be due on '.$this->bean->feeduedate);
 
                     error_log($feestep->fy.' is pending and ...');
-                    if ( $feestep->paymentdate ) {
+                    if ($feestep->paymentdate) {
                         $this->bean->status = 'paid'; //the DPMA was paided, all smile please
                         error_log('was paid');
-                    }
-                    elseif ( $feestep->invoicedate ) {
+                    } elseif ($feestep->invoicedate) {
                         $this->bean->status = 'billed'; //the customer was billed
                         error_log('was billed');
-                    }
-                    elseif ( $feestep->orderdate ) {
+                    } elseif ($feestep->orderdate) {
                         $this->bean->status = 'ordered';
                         error_log('is called to order');
-                    }
-                    elseif ( $feestep->awarenessdate ) {
+                    } elseif ($feestep->awarenessdate) {
                         $this->bean->status = 'awareness';
                         error_log('was made aware');
-                    }
-                    else {
+                    } else {
                         $this->bean->status = 'due';
                         error_log('is simply due');
                     }
-
                 }
             }
         }
-        if ( ! $was_already_set ) {
+        if (! $was_already_set) {
             $this->bean->status = 'maintain';
             error_log('and somehow someone should check this one');
         }
@@ -2031,18 +2082,18 @@ SQL;
      */
     protected function makeSortnumber()
     {
-		$tmp = explode('.', $this->bean->name);
-		$sortnumber = $this->bean->name;
+        $tmp = explode('.', $this->bean->name);
+        $sortnumber = $this->bean->name;
         if (isset($tmp[0])) {
-			if ($tmp[0] >= 22) {
-				$aYear = '19' . $tmp[0];
+            if ($tmp[0] >= 22) {
+                $aYear = '19' . $tmp[0];
             } else {
-				$aYear = '20' . $tmp[0];
+                $aYear = '20' . $tmp[0];
             }
-			$sortnumber = $aYear;
-			if (isset($tmp[1])) {
-				$sortnumber .= $tmp[1];
-			}
+            $sortnumber = $aYear;
+            if (isset($tmp[1])) {
+                $sortnumber .= $tmp[1];
+            }
         }
         $this->bean->sortnumber = $sortnumber;
     }

@@ -19,7 +19,7 @@ class Cinnebar_Facade extends Cinnebar_Element
     /**
      * Holds the release version tag
      */
-    const RELEASE = '1.09';
+    const RELEASE = '1.10';
 
     /**
      * Holds an instance of a cycle bean.
@@ -47,7 +47,9 @@ class Cinnebar_Facade extends Cinnebar_Element
      */
     public function run()
     {
-        if ($this->cli()) return $this->run_cli();
+        if ($this->cli()) {
+            return $this->run_cli();
+        }
         return $this->run_http();
     }
 
@@ -62,7 +64,7 @@ class Cinnebar_Facade extends Cinnebar_Element
         global $language;
         $language = 'en';
         $options = getopt('c:');
-        if ( ! $options) {
+        if (! $options) {
             echo 'No parameters are given. Please use at least -c [command]';
             echo "\n";
             echo 'Example: php -f index.php -- -c welcome';
@@ -123,28 +125,32 @@ class Cinnebar_Facade extends Cinnebar_Element
         // call app/controller/[name]
         try {
             $result = call_user_func_array(
-        	    array(
-        	        $controller,
-        	        $this->deps['router']->method()
-        	    ),
-        	    $this->deps['router']->params()
-        	);
+                array(
+                    $controller,
+                    $this->deps['router']->method()
+                ),
+                $this->deps['router']->params()
+            );
         } catch (Exception $e) {
             Cinnebar_Logger::instance()->log(date('Y-m-d H:i:s: ').$e, 'exceptions');
             $this->deps['cache']->deactivate();
             echo 'An exceptional error has occured, please review logs.';
         }
-    	// add some replacement tokens
-    	$this->deps['response']->addReplacement('remote_addr', $_SERVER['REMOTE_ADDR']);
-    	$this->deps['response']->addReplacement('memory_usage',
-    	                                round(memory_get_peak_usage(true)/1048576, 2));
-    	$this->deps['response']->addReplacement('execution_time',
-    	                                $this->deps['stopwatch']->mark('stop')->laptime('start', 'stop'));
-    	// output response to client
+        // add some replacement tokens
+        $this->deps['response']->addReplacement('remote_addr', $_SERVER['REMOTE_ADDR']);
+        $this->deps['response']->addReplacement(
+            'memory_usage',
+                                        round(memory_get_peak_usage(true)/1048576, 2)
+        );
+        $this->deps['response']->addReplacement(
+            'execution_time',
+                                        $this->deps['stopwatch']->mark('stop')->laptime('start', 'stop')
+        );
+        // output response to client
         echo $payload = $this->deps['response']->flush();
-    	if ($this->deps['cache']->isActive()) {
-    	    $this->deps['cache']->savePage($this->deps['request']->url(), $payload);
-    	}
+        if ($this->deps['cache']->isActive()) {
+            $this->deps['cache']->savePage($this->deps['request']->url(), $payload);
+        }
     }
 
     /**
