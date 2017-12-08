@@ -4,3 +4,4 @@ logs/
 config/default.php
 logs/sql_log
 logs/warn_log
+backup.sh
