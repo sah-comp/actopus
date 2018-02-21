@@ -27,7 +27,7 @@ class Model_Fee extends Cinnebar_Model
     public function getFeestep($rulestep_id)
     {
         $rulestep = R::load('rulestep', $rulestep_id);
-        if ( ! $feestep = R::findOne('feestep', ' fee_id = ? AND rulestep_id = ? LIMIT 1', array($this->bean->getId(), $rulestep_id))) {
+        if (! $feestep = R::findOne('feestep', ' fee_id = ? AND rulestep_id = ? LIMIT 1', array($this->bean->getId(), $rulestep_id))) {
             $feestep = R::dispense('feestep');
             $feestep->rulestep = $rulestep;
         }
@@ -43,7 +43,9 @@ class Model_Fee extends Cinnebar_Model
     public function getownFeestep($add)
     {
         $own = R::find('feestep', ' fee_id = ?', array($this->bean->getId()));
-        if ($add) $own[] = R::dispense('feestep');
+        if ($add) {
+            $own[] = R::dispense('feestep');
+        }
         return $own;
     }
 
@@ -54,10 +56,12 @@ class Model_Fee extends Cinnebar_Model
      */
     public function rule()
     {
-        if ( ! $this->bean->rule) $this->bean->rule = R::dispense('rule');
+        if (! $this->bean->rule) {
+            $this->bean->rule = R::dispense('rule');
+        }
         return $this->bean->rule;
     }
-    
+
     /**
      * Returns a country bean.
      *
@@ -65,10 +69,12 @@ class Model_Fee extends Cinnebar_Model
      */
     public function country()
     {
-        if ( ! $this->bean->rule()->country) $this->bean->rule()->country = R::dispense('country');
+        if (! $this->bean->rule()->country) {
+            $this->bean->rule()->country = R::dispense('country');
+        }
         return $this->bean->rule()->country;
     }
-    
+
     /**
      * Returns a country name.
      *
@@ -78,7 +84,7 @@ class Model_Fee extends Cinnebar_Model
     {
         return '<span class="flag '.$this->bean->country()->iso.'"></span>'.$this->bean->country()->name;
     }
-    
+
     /**
      * Returns a country iso.
      *
@@ -88,7 +94,7 @@ class Model_Fee extends Cinnebar_Model
     {
         return '<span title="'.$this->bean->country()->name.'" class="flag '.$this->bean->country()->iso.'"></span>'.strtoupper($this->bean->country()->iso);
     }
-    
+
     /**
      * Returns a cardtype bean.
      *
@@ -96,10 +102,12 @@ class Model_Fee extends Cinnebar_Model
      */
     public function cardtype()
     {
-        if ( ! $this->bean->rule()->cardtype) $this->bean->rule()->cardtype = R::dispense('cardtype');
+        if (! $this->bean->rule()->cardtype) {
+            $this->bean->rule()->cardtype = R::dispense('cardtype');
+        }
         return $this->bean->rule()->cardtype;
     }
-    
+
     /**
      * Returns a cardtype name.
      *
@@ -109,7 +117,7 @@ class Model_Fee extends Cinnebar_Model
     {
         return $this->bean->cardtype()->name;
     }
-    
+
     /**
      * Returns a pricetype bean.
      *
@@ -117,7 +125,9 @@ class Model_Fee extends Cinnebar_Model
      */
     public function pricetype()
     {
-        if ( ! $this->bean->pricetype) $this->bean->pricetype = R::dispense('pricetype');
+        if (! $this->bean->pricetype) {
+            $this->bean->pricetype = R::dispense('pricetype');
+        }
         return $this->bean->pricetype;
     }
 
@@ -130,7 +140,7 @@ class Model_Fee extends Cinnebar_Model
     {
         return $this->bean->pricetype()->name;
     }
-    
+
     /**
      * Returns SQL for filtering these beans.
      *
@@ -143,9 +153,9 @@ class Model_Fee extends Cinnebar_Model
      */
     public function sqlForFilters($where_clause = '1', $order_clause = 'id', $offset = 0, $limit = 1)
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
-			DISTINCT(fee.id) as id  
+			DISTINCT(fee.id) as id
 
 		FROM
 			fee
@@ -173,7 +183,7 @@ SQL;
      */
     public function sqlForTotal($where_clause = '1')
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			COUNT(DISTINCT(fee.id)) as total
 
@@ -190,72 +200,72 @@ SQL;
         return $sql;
     }
 
-	/**
-	 * Returns an array with possible attributes for order clauses and such.
-	 *
-	 * @param string (optional) $layout defaults to table and can be of any value
-	 * @return array
-	 */
-	public function attributes($layout = 'table')
-	{
-	    switch ($layout) {
-	        default:
-        		$ret = array(
-        			array(
-        			    'attribute' => 'country_id',
-        			    'orderclause' => 'country.iso',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'countryIso'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'cardtype_id',
-        			    'orderclause' => 'cardtype.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'cardtypeName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'pricetype_id',
-        			    'orderclause' => 'pricetype.name',
-        			    'class' => 'text',
-        			    'callback' => array(
-        			        'name' => 'pricetypeName'
-        			    ),
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			),
-        			array(
-        			    'attribute' => 'description',
-        			    'orderclause' => 'fee.description',
-        			    'class' => 'text',
-        				'filter' => array(
-        				    'tag' => 'text'
-        				)
-        			)
-        		);
+    /**
+     * Returns an array with possible attributes for order clauses and such.
+     *
+     * @param string (optional) $layout defaults to table and can be of any value
+     * @return array
+     */
+    public function attributes($layout = 'table')
+    {
+        switch ($layout) {
+            default:
+                $ret = array(
+                    array(
+                        'attribute' => 'country_id',
+                        'orderclause' => 'country.iso',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'countryIso'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'cardtype_id',
+                        'orderclause' => 'cardtype.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'cardtypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'pricetype_id',
+                        'orderclause' => 'pricetype.name',
+                        'class' => 'text',
+                        'callback' => array(
+                            'name' => 'pricetypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'description',
+                        'orderclause' => 'fee.description',
+                        'class' => 'text',
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    )
+                );
         }
         return $ret;
-	}
-	
-	/**
-	 * Returns an array with possible layout for list view (index).
-	 *
-	 * @return array
-	 */
-	public function layouts()
-	{
+    }
+
+    /**
+     * Returns an array with possible layout for list view (index).
+     *
+     * @return array
+     */
+    public function layouts()
+    {
         return array('table');
-	}
+    }
 
     /**
      * Returns keywords from this bean for tagging.
@@ -277,13 +287,13 @@ SQL;
         //$this->bean->setMeta('buildcommand.unique', array(array('name')));
         $this->addValidator('name', 'hasvalue');
         $this->addValidator('name', 'isunique', array('bean' => $this->bean, 'attribute' => 'name'));
-        
+
         $this->addConverter('netincluded', 'decimal');
         $this->addConverter('additionalincluded', 'decimal');
         $this->addConverter('netexcluded', 'decimal');
         $this->addConverter('additionalexcluded', 'decimal');
     }
-    
+
     /**
      * update.
      */
@@ -291,5 +301,36 @@ SQL;
     {
         $this->bean->name = $this->bean->rule()->getId().'-'.$this->bean->pricetype()->getId();
         parent::update();
+    }
+
+    /**
+     * After updating a fee bean all cards using this fee have to updated.
+     */
+    public function after_update()
+    {
+        if ($numOfCards = R::count('card', " cardtype_id = ? AND country_id = ? AND pricetype_id = ?", array(
+            $this->bean->rule->cardtype_id,
+            $this->bean->rule->country_id,
+            $this->bean->pricetype_id
+        ))) {
+            $this->revalidateCards();
+            with(new Cinnebar_Messenger)->notify(R::dispense('user')->current(), __('fee_card_changed', $numOfCards), 'alert');
+            //error_log('Woah... you need to update ' . $numOfCards . ' cards because of me #' . $this->bean->getId());
+        }
+    }
+
+    /**
+     * Select all cards using this fee and revalidate the cardfeestep beans.
+     *
+     * @return void
+     */
+    public function revalidateCards()
+    {
+        $cards = R::exec("UPDATE card SET revalidate = 1 WHERE cardtype_id = ? AND country_id = ? AND pricetype_id = ?", array(
+            $this->bean->rule->cardtype_id,
+            $this->bean->rule->country_id,
+            $this->bean->pricetype_id
+        ));
+        return true;
     }
 }

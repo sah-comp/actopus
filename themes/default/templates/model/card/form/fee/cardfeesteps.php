@@ -65,9 +65,10 @@
     </div>
     <div class="span4">
         <div class="row">
-            <div class="span3"><?php echo __('cardfeestep_label_date') ?></div>
-            <div class="span3"><?php echo __('cardfeestep_label_net') ?></div>
-            <div class="span6"><?php echo __('cardfeestep_label_paymentstyle') ?></div>
+            <div class="span5"><?php echo __('cardfeestep_label_date') ?></div>
+            <div class="span5"><?php echo __('cardfeestep_label_net') ?></div>
+            <div class="span2">&nbsp;</div>
+            <!--<div class="span6"><?php echo __('cardfeestep_label_paymentstyle') ?></div>-->
         </div>
     </div>
 </div>
@@ -111,7 +112,7 @@
             name="dialog[ownCardfeestep][<?php echo $_id ?>][done]"
             <?php echo ($_cardfeestep->done) ? self::CHECKED : '' ?>
             value="1" />
-        <?php //echo $_cardfeestep->fy ?>
+        <?php //echo $_cardfeestep->fy?>
         <input
             type="text"
             class="autowidth"
@@ -146,7 +147,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="span1">
         <div class="row">
             <div class="span12">
@@ -157,7 +158,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="span2">
         <div class="row">
             <div class="span6">
@@ -175,22 +176,26 @@
             </div>
         </div>
     </div>
-    
+
     <div class="span4">
         <div class="row">
-            <div class="span3">
+            <div class="span5">
                 <input
                     type="text"
                     name="dialog[ownCardfeestep][<?php echo $_id ?>][paymentdate]"
                     value="<?php echo $this->date($_cardfeestep->paymentdate) ?>" />
             </div>
-            <div class="span3">
+            <div class="span5">
                 <input
                     type="text"
                     class="number"
                     name="dialog[ownCardfeestep][<?php echo $_id ?>][paymentnet]"
                     value="<?php echo $this->decimal($_cardfeestep->paymentnet, 2) ?>" />
             </div>
+            <div class="span2">
+                &nbsp;
+            </div>
+            <!--
             <div class="span3">
                 <select
                     name="dialog[ownCardfeestep][<?php echo $_id ?>][paymentstyle]">
@@ -204,7 +209,7 @@
             <div class="span3">
                 <?php echo $_cardfeestep->genLink($this) ?>
             </div>
-
+            -->
         </div>
     </div>
 </div>

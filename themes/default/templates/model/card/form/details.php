@@ -80,9 +80,9 @@
                     href="#family"
                     onclick="$('#card-family').toggle(); return false;"><?php echo __('card_toggle_family') ?></a>
         </div>
-        
-        
-        
+
+
+
         <div class="span2">
             <select
                 id="card-country"
@@ -117,7 +117,7 @@
                 <?php endforeach ?>
             </select>
         </div>
-        
+
         <div class="span1">
             <select
                 id="card-cardstatus"
@@ -145,8 +145,8 @@
                 <?php endforeach ?>
             </select>
         </div>
-        
-        
+
+
         <div class="span2">
             <input
                 id="card-original-id"
@@ -164,7 +164,7 @@
                 placeholder="<?php echo __('card_placeholder_original') ?>" />
             <?php echo $this->beanlink($record->original(), 'name') ?>
         </div>
-        
+
     </div>
 </fieldset>
 <fieldset
@@ -172,7 +172,7 @@
     style="display:none;">
     <div class="row">
         <legend class="verbose"><?php echo __('card_legend_family') ?></legend>
-        <?php if ( ! $record->getId()): ?>
+        <?php if (! $record->getId()): ?>
             <p class="info"><?php echo __('card_hint_save_first') ?></p>
         <?php else: ?>
             <?php echo $this->partial('model/card/form/family/details') ?>
@@ -191,32 +191,32 @@
         <div class="span2">
             <!-- Select menu to toggle the form subpart -->
             <select name="void" class="autowidth" onchange="$('#card-applicant-block').toggle(); if ($(this).val() == '0') $('#card-applicant').val('0'); return false;">
-                <option value="0" <?php echo ( ! $record->applicant_id) ? self::SELECTED : '' ?>><?php echo __('card_client_applicant_match') ?></option>
-                <option value="1" <?php echo ( $record->applicant_id) ? self::SELECTED : '' ?>><?php echo __('card_client_applicant_differ') ?></option>
+                <option value="0" <?php echo (! $record->applicant_id) ? self::SELECTED : '' ?>><?php echo __('card_client_applicant_match') ?></option>
+                <option value="1" <?php echo ($record->applicant_id) ? self::SELECTED : '' ?>><?php echo __('card_client_applicant_differ') ?></option>
             </select>
             <!-- End of Select menu for toggeling -->
         </div>
         <div class="span2">
             <!-- Select menu to toggle the form subpart -->
             <select name="void" class="autowidth" onchange="$('#card-foreign-block').toggle(); if ($(this).val() == '0') $('#card-foreign').val('0'); return false;">
-                <option value="0" <?php echo ( ! $record->foreign_id) ? self::SELECTED : '' ?>><?php echo __('card_client_foreign_match') ?></option>
-                <option value="1" <?php echo ( $record->foreign_id) ? self::SELECTED : '' ?>><?php echo __('card_client_foreign_differ') ?></option>
+                <option value="0" <?php echo (! $record->foreign_id) ? self::SELECTED : '' ?>><?php echo __('card_client_foreign_match') ?></option>
+                <option value="1" <?php echo ($record->foreign_id) ? self::SELECTED : '' ?>><?php echo __('card_client_foreign_differ') ?></option>
             </select>
             <!-- End of Select menu for toggeling -->
         </div>
         <div class="span2">
             <select name="void" class="autowidth" onchange="$('#card-invreceiver-block').toggle(); if ($(this).val() == '0') $('#card-invreceiver').val('0'); return false;">
-                <option value="0" <?php echo ( ! $record->invreceiver_id) ? self::SELECTED : '' ?>><?php echo __('card_client_invreceiver_match') ?></option>
-                <option value="1" <?php echo ( $record->invreceiver_id) ? self::SELECTED : '' ?>><?php echo __('card_client_invreceiver_differ') ?></option>
+                <option value="0" <?php echo (! $record->invreceiver_id) ? self::SELECTED : '' ?>><?php echo __('card_client_invreceiver_match') ?></option>
+                <option value="1" <?php echo ($record->invreceiver_id) ? self::SELECTED : '' ?>><?php echo __('card_client_invreceiver_differ') ?></option>
             </select>
         </div>
     </div>
     <div class="row">
         <div class="span3">&nbsp;</div>
         <div class="span2">
-            
+
             <div class="row">
-                
+
                 <fieldset
                     id="card-client-fieldset"
                     class="tab">
@@ -237,7 +237,7 @@
                     <?php echo $this->beanlink($record->client(), 'name') ?>
                     <br /><br />
                 </div>
-                <div class="row">        
+                <div class="row">
                     <textarea
                         id="client-address"
                         class="autowidth"
@@ -246,7 +246,7 @@
                         placeholder="<?php echo __('card_placeholder_clientaddress') ?>"><?php echo htmlspecialchars($record->clientaddress) ?></textarea>
                 </div>
 
-                <div class="row">        
+                <div class="row">
                     <input
                         id="card-clientcode"
                         class="autowidth"
@@ -256,13 +256,13 @@
                         placeholder="<?php echo __('card_placeholder_clientcode') ?>" />
                 </div>
             <fieldset>
-            
+
         </div>
         <div class="span2">
-            
+
             <fieldset
                 id="card-applicant-block"
-                style="display: <?php echo ( $record->applicant_id) ? 'block' : 'none' ?>;">
+                style="display: <?php echo ($record->applicant_id) ? 'block' : 'none' ?>;">
                 <legend class="verbose"><?php echo __('card_applicant_legend') ?></legend>
                 <div class="row">
 
@@ -282,7 +282,7 @@
                         placeholder="<?php echo __('card_placeholder_applicantnickname') ?>" />
                     <?php echo $this->beanlink($record->applicant(), 'name') ?>
                 </div>
-                <div class="row">        
+                <div class="row">
                     <textarea
                         id="applicant-address"
                         class="autowidth"
@@ -301,13 +301,13 @@
                         placeholder="<?php echo __('card_placeholder_applicantcode') ?>" />
                 </div>
             </fieldset>&nbsp;
-            
+
         </div>
         <div class="span2">
-            
+
             <fieldset
                 id="card-foreign-block"
-                style="display: <?php echo ( $record->foreign_id) ? 'block' : 'none' ?>;">
+                style="display: <?php echo ($record->foreign_id) ? 'block' : 'none' ?>;">
                 <legend class="verbose"><?php echo __('card_foreign_legend') ?></legend>
                 <div class="row">
                     <input
@@ -335,7 +335,7 @@
                         placeholder="<?php echo __('card_placeholder_foreignaddress') ?>"><?php echo htmlspecialchars($record->foreignaddress) ?></textarea>
                 </div>
 
-                <div class="row">        
+                <div class="row">
                     <input
                         id="card-foreigncode"
                         class="autowidth"
@@ -345,10 +345,10 @@
                         placeholder="<?php echo __('card_placeholder_foreigncode') ?>" />
                 </div>
             </fieldset>&nbsp;
-            
+
         </div>
         <div class="span2">
-            
+
             <fieldset
                 id="card-invreceiver-block"
                 style="display: <?php echo ($record->invreceiver_id) ? 'block' : 'none' ?>;">
@@ -371,7 +371,7 @@
                         placeholder="<?php echo __('card_placeholder_invreceivernickname') ?>" />
                     <?php echo $this->beanlink($record->invreceiver(), 'name') ?>
                 </div>
-                <div class="row">        
+                <div class="row">
                     <textarea
                         id="invreceiver-address"
                         class="autowidth"
@@ -380,7 +380,7 @@
                         placeholder="<?php echo __('card_placeholder_invreceiveraddress') ?>"><?php echo htmlspecialchars($record->invreceiveraddress) ?></textarea>
                 </div>
 
-                <div class="row">        
+                <div class="row">
                     <input
                         id="card-invreceivercode"
                         class="autowidth"
@@ -390,7 +390,7 @@
                         placeholder="<?php echo __('card_placeholder_invreceivercode') ?>" />
                 </div>
             </fieldset>&nbsp;
-            
+
         </div>
     </div>
 </fieldset>
@@ -407,7 +407,7 @@
         <div class="span4"><?php echo __('card_claim_date') ?></div>
         <div class="span5"><?php echo __('card_claim_number') ?></div>
     </div>
-    
+
     <?php foreach ($claimtypes as $_claimtype): ?>
     <div class="row">
         <div class="span3 right"><?php echo __('card_claim_type_'.$_claimtype) ?></div>
@@ -476,6 +476,24 @@
                 name="dialog[note]"
                 rows="5"><?php echo htmlspecialchars($record->note) ?></textarea>
         </div>
+        <?php if ($_attrset = $record->cardtype->withCondition("enabled = 1")->ownAttrset): ?>
+        <?php foreach ($_attrset as $_attrset_id => $_attr): ?>
+        <div class="row">
+            <label
+                for="card-attr-<?php echo $_attrset_id ?>"
+                class="attr">
+                <?php echo $_attr->label ?>
+            </label>
+            <input
+                type="text"
+                name="attrset[<?php echo $_attrset_id ?>]"
+                value="<?php echo htmlspecialchars($record->box()->attrset[$_attrset_id]) ?>" />
+            <?php if ($_attr->desc): ?>
+                <p class="info"><?php echo htmlspecialchars($_attr->desc) ?></p>
+            <?php endif; ?>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
     </fieldset>
     <fieldset
         id="card-pattern"
@@ -510,13 +528,13 @@
         id="card-fee"
         class="tab">
         <legend class="verbose"><?php echo __('card_legend_fee') ?></legend>
-        
-        <?php if ( ! $record->getId()): ?>
+
+        <?php if (! $record->getId()): ?>
             <p class="info"><?php echo __('card_hint_save_first') ?></p>
         <?php else: ?>
             <?php echo $this->partial('model/card/form/fee/details') ?>
         <?php endif ?>
-        
+
     </fieldset>
     <fieldset
         id="card-priority"
@@ -527,11 +545,11 @@
         	<div class="span3"><?php echo __('priority_label_date') ?></div>
         	<div class="span6"><?php echo __('priority_label_number') ?></div>
     	</div>
-    	
+
         <div id="priority-container" class="container attachable detachable priority">
         <?php foreach ($record->own('priority', true) as $_n => $_record): ?>
             <?php echo $this->partial(sprintf('model/%s/form/own/%s', $record->getMeta('type'), 'priority'), array('n' => $_n, 'priority' => $_record)) ?>
-        <?php endforeach ?>    
+        <?php endforeach ?>
     	    <a
     			href="<?php echo $this->url(sprintf('/%s/attach/own/%s', $record->getMeta('type'), 'priority')) ?>"
     			class="attach"
@@ -561,7 +579,9 @@
                     <?php foreach ($_attributes as $_i => $_attribute): ?>
                         <?php
                             $_class = 'invoice fn-'.$_attribute['attribute'].' order';
-                            if (isset($_attribute['class'])) $_class .= ' '.$_attribute['class'];
+                            if (isset($_attribute['class'])) {
+                                $_class .= ' '.$_attribute['class'];
+                            }
                         ?>
                     <th class="<?php echo $_class ?>">
                         <a href="#"><?php echo __('invoice_label_'.$_attribute['attribute']) ?></a>
@@ -585,4 +605,3 @@
         </table>
     </fieldset>
 </div>
-

@@ -23,6 +23,11 @@
             value="<?php echo htmlspecialchars($record->name) ?>"
             required="required" />
         <p class="info"><?php echo __('multipay_hint_name') ?></p>
+        <?php if ($record->getId() && !$record->sent): ?>
+        <p class="info">
+            <a href="<?php echo $this->url(sprintf('/multipay/activate/%d', $record->getId())) ?>"><?php echo __('multipay_action_makemecurrent') ?></a>
+        </p>
+        <?php endif; ?>
     </div>
 </fieldset>
 <div id="multipay-tabs" class="bar tabbed">
@@ -35,7 +40,7 @@
         id="multipay-multipayfee"
         class="tab">
         <legend class="verbose"><?php echo __('multipayfee_legend') ?></legend>
-        
+
     	<div class="row">
     	    <div class="span2"><?php echo __('multipayfee_label_cardname') ?></div>
         	<div class="span3"><?php echo __('multipayfee_label_applicant') ?></div>
@@ -44,11 +49,11 @@
             <div class="span1"><?php echo __('multipayfee_label_amount') ?></div>
             <div class="span2"><?php echo __('multipayfee_label_datedue') ?></div>
     	</div>
-    	
+
         <div id="multipayfee-container" class="container attachable detachable multipayfee">
         <?php foreach ($record->own('multipayfee', true) as $_n => $_record): ?>
             <?php echo $this->partial(sprintf('model/%s/form/own/%s', $record->getMeta('type'), 'multipayfee'), array('n' => $_n, 'multipayfee' => $_record)) ?>
-        <?php endforeach ?>    
+        <?php endforeach ?>
     	    <a
     			href="<?php echo $this->url(sprintf('/%s/attach/own/%s', $record->getMeta('type'), 'multipayfee')) ?>"
     			class="attach"

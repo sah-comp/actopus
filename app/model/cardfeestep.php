@@ -39,7 +39,7 @@ class Model_Cardfeestep extends Cinnebar_Model
     {
         $this->addConverter('net', 'decimal');
         $this->addConverter('additional', 'decimal');
-        
+
         $this->addConverter('awarenessdate', 'mySQLDate');
         $this->addConverter('awarenessnet', 'decimal');
         $this->addConverter('invoicedate', 'mySQLDate');
@@ -53,7 +53,9 @@ class Model_Cardfeestep extends Cinnebar_Model
      */
     public function update()
     {
-        if ( ! $this->bean->sequence) $this->bean->sequence = 0;
+        if (! $this->bean->sequence) {
+            $this->bean->sequence = 0;
+        }
         parent::update();
     }
 }

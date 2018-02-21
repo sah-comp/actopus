@@ -222,7 +222,7 @@ SQL;
 			card
 
 		LEFT JOIN country ON country.id = card.country_id
-    LEFT JOIN person AS client ON client.id = card.client_id
+        LEFT JOIN person AS client ON client.id = card.client_id
 		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
 		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
 		LEFT JOIN user AS attorney ON attorney.id = card.user_id
@@ -379,6 +379,23 @@ SQL;
     }
 
     /**
+     * Returns a text string representing feeorderneeded and hold status in multipay list.
+     *
+     * @return string
+     */
+    public function feeorderMultipay()
+    {
+        $result = '';
+        if ($this->bean->feeorderneeded) {
+            $result .= __('card_label_feeorderneeded');
+        }
+        if ($this->bean->onhold) {
+            $result .= ' ' . __('card_label_onhold');
+        }
+        return $result;
+    }
+
+    /**
      * Returns the latest cardfeestep bean.
      *
      * @return mixed Empty array or array of cardfeestep beans or false
@@ -411,7 +428,7 @@ SQL;
     /**
      * Returns a invoice receivers nickname.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function invreceiverNickname()
     {
@@ -421,7 +438,7 @@ SQL;
     /**
      * Returns a foreign nickname.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function foreignNickname()
     {
@@ -431,7 +448,7 @@ SQL;
     /**
      * Returns a team name.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function teamName()
     {
@@ -441,7 +458,7 @@ SQL;
     /**
      * Returns a attorney name.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function attorneyName()
     {
@@ -503,7 +520,7 @@ SQL;
     /**
      * Returns a applicant nickname.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function applicantNickname()
     {
@@ -980,6 +997,18 @@ SQL;
                         'viewhelper' => 'boolperv',
                         'filter' => array(
                             'tag' => 'boolperv'
+                        )
+                    ),
+                    array(
+                        'attribute' => 'stash_id AS feeorderhold',
+                        'orderclause' => 'card.feeorderneeded',
+                        'class' => 'number',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'feeorderMultipay'
+                        ),
+                        'xxx-filter' => array(
+                            'tag' => 'text'
                         )
                     )
                 );
@@ -1929,6 +1958,14 @@ SQL;
     }
 
     /**
+     * Open.
+     */
+    public function open()
+    {
+        $this->attrset = json_decode($this->bean->attrset, true);
+    }
+
+    /**
      * Update.
      *
      * @uses makeSortnumber() to build a sortable field based on the year part of card.name
@@ -1936,6 +1973,9 @@ SQL;
      */
     public function update()
     {
+        if (isset($_POST['attrset'])) {
+            $this->bean->attrset = json_encode($_POST['attrset']);
+        }
         $this->makeSortnumber();
         $this->makeBetterSearchable();
         if ($this->bean->feeinactive || ! $this->bean->getId()) {
@@ -2028,6 +2068,10 @@ SQL;
         }
         $this->bean->status = 'onhold';
         if ($this->bean->onhold) {
+            return false;
+        }
+        if (! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($this->bean->country_id, $this->bean->cardtype_id))) {
+            error_log('No rule set, just leave the card as it is');
             return false;
         }
         $this->bean->status = 'due';

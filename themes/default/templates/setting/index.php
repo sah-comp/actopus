@@ -15,6 +15,12 @@
 
 <div id="main" class="main">
 
+    <?php if ($shouldRevalidateCards): ?>
+    <div class="row">
+        <p><a href="#revalidate"><?php echo __('card_revalidate_cards_now') ?></a></p>
+    </div>
+    <?php endif; ?>
+
     <form
     	id="setting-index"
     	class="panel"
@@ -42,7 +48,7 @@
                     <?php foreach ($domains as $_id => $_domain): ?>
                     <option
                         value="<?php echo $_domain->getId() ?>"
-                        <?php echo ($record->blessedfolder()->getId() == $_domain->getId()) ? self::SELECTED : '' ?>><?php echo __('domain_'.$_domain->name) ?></option>   
+                        <?php echo ($record->blessedfolder()->getId() == $_domain->getId()) ? self::SELECTED : '' ?>><?php echo __('domain_'.$_domain->name) ?></option>
                     <?php endforeach ?>
                 </select>
                 <p class="info"><?php echo __('setting_hint_blessedfolder') ?></p>
@@ -61,13 +67,13 @@
                     <?php foreach (R::findAll('pricetype') as $_id => $_pricetype): ?>
                     <option
                         value="<?php echo $_pricetype->getId() ?>"
-                        <?php echo ($record->feebase()->getId() == $_pricetype->getId()) ? self::SELECTED : '' ?>><?php echo htmlspecialchars($_pricetype->name) ?></option>   
+                        <?php echo ($record->feebase()->getId() == $_pricetype->getId()) ? self::SELECTED : '' ?>><?php echo htmlspecialchars($_pricetype->name) ?></option>
                     <?php endforeach ?>
                 </select>
                 <p class="info"><?php echo __('setting_hint_feebase') ?></p>
-            </div>           
+            </div>
     	</fieldset>
-    	
+
         <fieldset>
             <legend class="verbose"><?php echo __('setting_legend_currency_exchangerates') ?></legend>
             <div class="row">
@@ -85,7 +91,7 @@
                 <p class="info"><?php echo __('setting_hint_loadexchangerates') ?></p>
             </div>
         </fieldset>
-        
+
         <fieldset>
             <legend class="verbose"><?php echo __('setting_legend_media') ?></legend>
             <div class="row">
@@ -106,7 +112,7 @@
                 </label>
             </div>
         </fieldset>
-        
+
         <fieldset>
             <legend class="verbose"><?php echo __('setting_legend_fiscal') ?></legend>
             <div class="row">
@@ -123,7 +129,7 @@
                     required="required" />
             </div>
         </fieldset>
-        
+
         <?php if (count($invoicetypes)): ?>
         <fieldset>
             <legend class="verbose"><?php echo __('setting_legend_invoicetype') ?></legend>
@@ -157,7 +163,7 @@
             <?php endforeach ?>
         </fieldset>
         <?php endif ?>
-        
+
         <fieldset>
             <legend class="verbose"><?php echo __('setting_legend_housedata') ?></legend>
             <div class="row">

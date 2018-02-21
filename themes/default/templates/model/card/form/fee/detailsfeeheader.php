@@ -8,6 +8,25 @@
  * @version $Id$
  */
 ?>
+<?php if ($record->revalidate): ?>
+<div class="row">
+    <div class="span3">
+        <?php echo __('card_revalidate') ?>
+    </div>
+    <div class="span9">
+        <input
+            type="hidden"
+            name="dialog[revalidate]"
+            value="0" />
+        <input
+            id="card-revalidate"
+            type="checkbox"
+            name="dialog[revalidate]"
+            <?php echo ($record->revalidate) ? self::CHECKED : '' ?>
+            value="1" />
+    </div>
+</div>
+<?php endif; ?>
 <div class="row">
     <div class="span3">
         <label>
@@ -168,7 +187,7 @@
         name="dialog[customeraccount]"
         value="<?php echo htmlspecialchars($record->customeraccount) ?>" />
 </div>
-<div class="row">        
+<div class="row">
     <label
         for="card-feesubject"
         class="<?php echo ($record->hasError('feesubject')) ? 'error' : ''; ?>">
@@ -184,10 +203,10 @@
 <!-- Start of fee lineitems based upon country, cardtype and pricetype -->
 <fieldset>
     <legend class="verbose"><?php echo __('card_legend_fee_lineitems') ?></legend>
-    
+
     <div id="card-fee-lineitems">
     <!-- replacement area -->
-    <?php if ( ! $_lineitems = $record->own('cardfeestep', false)): ?>
+    <?php if (! $_lineitems = $record->own('cardfeestep', false)): ?>
         <?php $_lineitems = array(R::dispense('cardfeestep')) ?>
     <?php endif ?>
     <?php echo $this->partial('model/card/form/fee/cardfeesteps', array('cardfeesteps' => $_lineitems)) ?>

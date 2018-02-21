@@ -34,7 +34,7 @@
             value="<?php echo $cardfeestep->fy ?>" />
     </div>
     <div class="span1">
-        <?php echo $this->decimal($cardfeestep->net, 2) ?>
+        <?php echo $this->decimal($cardfeestep->net, 2) ?>&nbsp;
     </div>
 
     <div class="span2">
@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="span1">
         <div class="row">
             <div class="span12">
@@ -65,7 +65,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="span2">
         <div class="row">
             <div class="span6">
@@ -83,23 +83,24 @@
             </div>
         </div>
     </div>
-    
+
     <div class="span4">
         <div class="row">
-            <div class="span3">
+            <div class="span5">
                 <input
                     type="text"
                     name="dialog[ownCardfeestep][<?php echo $n ?>][paymentdate]"
                     value="<?php echo $this->date($cardfeestep->paymentdate) ?>" />
             </div>
-            <div class="span3">
+            <div class="span5">
                 <input
                     type="text"
                     class="number"
                     name="dialog[ownCardfeestep][<?php echo $n ?>][paymentnet]"
                     value="<?php echo $this->decimal($cardfeestep->paymentnet, 2) ?>" />
             </div>
-
+            <div class="span2">&nbsp;</div>
+            <!--
             <div class="span3">
                 <select
                     name="dialog[ownCardfeestep][<?php echo $n ?>][paymentstyle]">
@@ -110,11 +111,11 @@
                     <?php endforeach ?>
                 </select>
             </div>
-            
+
             <div class="span1">
                 <?php echo $cardfeestep->genLink($this) ?>
             </div>
-            
+
             <div class="span2">
                 <input
                     type="hidden"
@@ -126,7 +127,8 @@
                     <?php echo ($cardfeestep->paymenthold) ? self::CHECKED : '' ?>
                     value="1" />
             </div>
+            -->
         </div>
     </div>
-    
+
 </div>

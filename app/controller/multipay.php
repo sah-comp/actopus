@@ -44,28 +44,47 @@ class Controller_Multipay extends Controller_Scaffold
     );
 
     /**
+     * Set this multipay bean as the active multipay entry where card beans will be collected.
+     *
+     * @param int $id
+     */
+    public function activate($id)
+    {
+        session_start();
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), 'multipay', 'edit')) {
+            return $this->error('403');
+        }
+        with(new Cinnebar_Messenger)->notify($this->user(), __('multipay_action_activate_success'), 'success');
+        $_SESSION['multipay']['id'] = $id;
+        $this->redirect(sprintf('/multipay/edit/%d', $id));
+    }
+
+    /**
      * Generates a PDF from the multipayfee beans of this bean.
      *
      * @param int $id Id of the multipay bean
      */
     public function pdf($id)
     {
-        $multipay = R::load( 'multipay', $id );
+        $multipay = R::load('multipay', $id);
 
         $view = $this->makeView('model/multipay/pdf/paidfee');
         $view->record = $multipay;
 
-    	require_once BASEDIR.'/vendors/mpdf/mpdf.php';
+        require_once BASEDIR.'/vendors/mpdf/mpdf.php';
         $docname = $multipay->name;
         $filename = $multipay->name . '.pdf';
         $mpdf = new mPDF('c', 'A4');
         $mpdf->SetTitle($docname);
-        $mpdf->SetAuthor( $multipay->user->name );
+        $mpdf->SetAuthor($multipay->user->name);
         $mpdf->SetDisplayMode('fullpage');
 
         $html = $view->render();
 
-        $mpdf->WriteHTML( $html );
+        $mpdf->WriteHTML($html);
         $mpdf->Output($filename, 'D');
         exit;
     }
@@ -77,10 +96,10 @@ class Controller_Multipay extends Controller_Scaffold
      */
     public function xmltool($id)
     {
-        $setting = R::load( 'setting', 1 );
-        $multipay = R::load( 'multipay', $id );
+        $setting = R::load('setting', 1);
+        $multipay = R::load('multipay', $id);
 
-        $filename = str_replace( ' ', '-', $multipay->name ) . '.xml';
+        $filename = str_replace(' ', '-', $multipay->name) . '.xml';
 
         $total_amount = 0;
         $total_records = 0;
@@ -89,67 +108,66 @@ class Controller_Multipay extends Controller_Scaffold
 
 
         // the epa batch payment xml
-        $xml = new SimpleXMLElement( "<?xml version='1.0' encoding='utf-8'?><!DOCTYPE batch-payment SYSTEM 'batch-payment.dtd'><batch-payment/>" );
-            $xml->addAttribute( 'dtd-version', '' );
-            $xml->addAttribute( 'date-produced', '' );
-            $xml->addAttribute( 'ro', '' );
+        $xml = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><!DOCTYPE batch-payment SYSTEM 'batch-payment.dtd'><batch-payment/>");
+        $xml->addAttribute('dtd-version', '');
+        $xml->addAttribute('date-produced', '');
+        $xml->addAttribute('ro', '');
 
         // <header>
-        $header = $xml->addChild( 'header' );
-            $sender = $header->addChild( 'sender' );
-                $senderName = $sender->addChild( 'name', htmlspecialchars($setting->housename1, ENT_XML1, 'UTF-8') );
-                $senderRegisteredNumber = $sender->addChild( 'registered-number', '' );
-            $sendDate = $header->addChild( 'send-date', '' );
-            $h_modeOfPayment = $header->addChild( 'mode-of-payment' );
-                $h_modeOfPayment->addAttribute( 'payment-type', 'deposit' );
-                    $h_depositAccount = $h_modeOfPayment->addChild( 'deposit-account' );
-                    $h_accountNo = $h_depositAccount->addChild( 'account-no', str_replace( ' ', '', $setting->houseepoaccount ) );
-            $paymentReferenceId = $header->addChild( 'payment-reference-id', htmlspecialchars($multipay->name, ENT_XML1, 'UTF-8') );
+        $header = $xml->addChild('header');
+        $sender = $header->addChild('sender');
+        $senderName = $sender->addChild('name', htmlspecialchars($setting->housename1, ENT_XML1, 'UTF-8'));
+        $senderRegisteredNumber = $sender->addChild('registered-number', '');
+        $sendDate = $header->addChild('send-date', '');
+        $h_modeOfPayment = $header->addChild('mode-of-payment');
+        $h_modeOfPayment->addAttribute('payment-type', 'deposit');
+        $h_depositAccount = $h_modeOfPayment->addChild('deposit-account');
+        $h_accountNo = $h_depositAccount->addChild('account-no', str_replace(' ', '', $setting->houseepoaccount));
+        $paymentReferenceId = $header->addChild('payment-reference-id', htmlspecialchars($multipay->name, ENT_XML1, 'UTF-8'));
         // </header>
 
         // <detail>
-        $detail = $xml->addChild( 'detail' );
+        $detail = $xml->addChild('detail');
 
-        foreach ( $mfees as $id => $mfee ) {
-
+        foreach ($mfees as $id => $mfee) {
             $total_amount += $mfee->amount;
             $total_records++;
 
             // <fee>
-            $fees = $detail->addChild( 'fees' );
-                $documentId = $fees->addChild( 'document-id');
-                    $country = $documentId->addChild( 'country', 'EP' );
-                    $docNumber = $documentId->addChild( 'doc-number', $mfee->applicationnumber );
-                $fileReferenceId = $fees->addChild( 'file-reference-id', $mfee->cardname );
-                $owner = $fees->addChild( 'owner', htmlspecialchars($mfee->applicantnickname, ENT_XML1, 'UTF-8') );
+            $fees = $detail->addChild('fees');
+            $documentId = $fees->addChild('document-id');
+            $country = $documentId->addChild('country', 'EP');
+            $docNumber = $documentId->addChild('doc-number', $mfee->applicationnumber);
+            $fileReferenceId = $fees->addChild('file-reference-id', $mfee->cardname);
+            $owner = $fees->addChild('owner', htmlspecialchars($mfee->applicantnickname, ENT_XML1, 'UTF-8'));
 
-                $fee = $fees->addChild( 'fee' );
-                    $typeOfFee = $fee->addChild( 'type-of-fee', $mfee->paymentcode );
-                    $feeSubAmount = $fee->addChild( 'fee-sub-amount', $mfee->amount );
-                    $feeFactor = $fee->addChild( 'fee-factor', 1 );
-                    $feeTotalAmount = $fee->addChild( 'fee-total-amount', $mfee->amount );
-                    $feeDateDue = $fee->addChild( 'fee-date-due', date( 'd.m.Y', strtotime( $mfee->datedue ) ) );
+            $fee = $fees->addChild('fee');
+            $typeOfFee = $fee->addChild('type-of-fee', $mfee->paymentcode);
+            $feeSubAmount = $fee->addChild('fee-sub-amount', $mfee->amount);
+            $feeFactor = $fee->addChild('fee-factor', 1);
+            $feeTotalAmount = $fee->addChild('fee-total-amount', $mfee->amount);
+            $feeDateDue = $fee->addChild('fee-date-due', date('d.m.Y', strtotime($mfee->datedue)));
             // </fee>
         }
 
         // </detail>
 
         // <trailer>
-        $trailer = $xml->addChild( 'trailer' );
-            $t_modeOfPayment = $trailer->addChild( 'mode-of-payment' );
-                $t_modeOfPayment->addAttribute( 'payment-type', 'deposit' );
-                    $t_depositAccount = $t_modeOfPayment->addChild( 'deposit-account' );
-                    $t_accountNo = $t_depositAccount->addChild( 'account-no', str_replace( ' ', '', $setting->houseepoaccount ) );
-            $batchPayTotalAmount = $trailer->addChild( 'batch-pay-total-amount', $total_amount );
-                $batchPayTotalAmount->addAttribute( 'currency', '' );
-            $totalRecords = $trailer->addChild( 'total-records', $total_records);
+        $trailer = $xml->addChild('trailer');
+        $t_modeOfPayment = $trailer->addChild('mode-of-payment');
+        $t_modeOfPayment->addAttribute('payment-type', 'deposit');
+        $t_depositAccount = $t_modeOfPayment->addChild('deposit-account');
+        $t_accountNo = $t_depositAccount->addChild('account-no', str_replace(' ', '', $setting->houseepoaccount));
+        $batchPayTotalAmount = $trailer->addChild('batch-pay-total-amount', $total_amount);
+        $batchPayTotalAmount->addAttribute('currency', '');
+        $totalRecords = $trailer->addChild('total-records', $total_records);
 
         // </trailer>
 
         // send it to browser as a xml file download
         header('Content-type: text/xml');
         header('Content-Disposition: attachment; filename="' . $filename .'"');
-        print( $xml->asXML() );
+        print($xml->asXML());
         exit();
     }
 }

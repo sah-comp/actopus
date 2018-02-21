@@ -31,7 +31,7 @@ class Controller_Card extends Controller_Scaffold
      * @var string
      */
     public $type = 'card';
-    
+
     /**
      * Container for actions.
      *
@@ -42,7 +42,7 @@ class Controller_Card extends Controller_Scaffold
         'edit' => array('next', 'prev', 'update', 'list', 'listandreset'),
         'add' => array('continue', 'update', 'list')
     );
-    
+
     /**
      * Displays a page with a (paginated) selection of beans.
      *
@@ -57,7 +57,7 @@ class Controller_Card extends Controller_Scaffold
     {
         return parent::index($page, $limit, $layout, $order, $dir);
     }
-    
+
     /**
      * Displays a page with a (paginated) selection of beans.
      *
@@ -72,7 +72,7 @@ class Controller_Card extends Controller_Scaffold
     {
         return parent::report($page, $limit, $layout, $order, $dir);
     }
-    
+
     /**
      * Dispatches to a certain PDF generator method depending on the template given.
      *
@@ -87,18 +87,20 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'edit')) {
-    		return $this->error('403');
-    	}
-    	
-    	require_once BASEDIR.'/vendors/fpdf/fpdf.php';
-    	$this->trigger('pdf', 'before');
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'edit')) {
+            return $this->error('403');
+        }
+
+        require_once BASEDIR.'/vendors/fpdf/fpdf.php';
+        $this->trigger('pdf', 'before');
         $callback = 'pdf_'.strtolower($template);
         $this->$callback($id, $page, $limit, $layout, $order, $dir);
         $this->trigger('pdf', 'after');
     }
-    
+
     /**
      * Generates a card PDF.
      *
@@ -110,18 +112,18 @@ class Controller_Card extends Controller_Scaffold
      */
     protected function pdf_card($id, $page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
-    	$this->path = 'model/card/pdf/';
+        $this->path = 'model/card/pdf/';
         $this->env($page, $limit, $layout, $order, $dir, $id, 'pdf');
-        
+
         $this->view->title = $this->view->record->name;
-        
+
         $data = $this->view->record->genDataPdf($this->view);
         $title = 'Akte '.$this->view->record->name;
         $this->trigger('pdf', 'before');
-        
-		$x_offset = -5;
-		$y_offset = 0;
-		$font_family = 'Helvetica';
+
+        $x_offset = -5;
+        $y_offset = 0;
+        $font_family = 'Helvetica';
 
         //get rid of undefinded characters in pdf
         $pats = array(
@@ -207,7 +209,7 @@ class Controller_Card extends Controller_Scaffold
                 'h' => 5,
                 'size' => 10
             ),
-			'original_number' => array(
+            'original_number' => array(
                 'x' => 160,
                 'y' => 37,
                 'w' => 45,
@@ -258,40 +260,40 @@ class Controller_Card extends Controller_Scaffold
             )
         );
 
-		$pdf = new FPDF('p', 'mm', 'A4');
-		$pdf->SetAutoPageBreak(true, 0);
-		$pdf->SetTitle($title);
-		$pdf->SetSubject($title);
-		//$pdf->SetAuthor('Gonzo');
-		//$pdf->SetCreator('Gonzo');
-		$pdf->AddPage();
-		foreach ($blocks as $attribute=>$options) {
+        $pdf = new FPDF('p', 'mm', 'A4');
+        $pdf->SetAutoPageBreak(true, 0);
+        $pdf->SetTitle($title);
+        $pdf->SetSubject($title);
+        //$pdf->SetAuthor('Gonzo');
+        //$pdf->SetCreator('Gonzo');
+        $pdf->AddPage();
+        foreach ($blocks as $attribute=>$options) {
             if (isset($options['only_if_not_empty']) && $options['only_if_not_empty'] && ! $data[$attribute]) {
                 continue;
-    		}
-		    $content = utf8_decode(str_replace($pats, $reps, $data[$attribute]));
-		    $pdf->SetY($options['y'] + $y_offset);
-		    $pdf->SetX($options['x'] + $x_offset);
-		    $font_style = '';
-		    $font_size = 10;
-		    if (isset($options['font-style'])) {
-		        $font_style = $options['font-style'];
-		    }
-		    if (isset($options['size'])) {
-		        $font_size = $options['size'];
-		    }
-		    $pdf->SetFont($font_family, $font_style, $font_size);
+            }
+            $content = utf8_decode(str_replace($pats, $reps, $data[$attribute]));
+            $pdf->SetY($options['y'] + $y_offset);
+            $pdf->SetX($options['x'] + $x_offset);
+            $font_style = '';
+            $font_size = 10;
+            if (isset($options['font-style'])) {
+                $font_style = $options['font-style'];
+            }
+            if (isset($options['size'])) {
+                $font_size = $options['size'];
+            }
+            $pdf->SetFont($font_family, $font_style, $font_size);
             if (isset($options['label'])) {
                 $label = utf8_decode($options['label']);
                 $pdf->MultiCell($options['w'], $options['h'], $label, 0, 'L');
                 $pdf->SetX($options['x'] + $x_offset);
             }
             $pdf->MultiCell($options['w'], $options['h'], $content, 0, 'L');
-		}
-		$pdf->Close();
-		$pdf->Output($title, 'I');
+        }
+        $pdf->Close();
+        $pdf->Output($title, 'I');
     }
-    
+
     /**
      * Generates a family PDF.
      *
@@ -303,29 +305,32 @@ class Controller_Card extends Controller_Scaffold
      */
     protected function pdf_family($id, $page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
-    	$this->path = 'model/card/pdf/';
+        $this->path = 'model/card/pdf/';
         $this->env($page, $limit, $layout, $order, $dir, $id, 'pdf');
-        
+
         $this->view->title = $this->view->record->name;
-        
+
         //$data = $this->view->record->genDataPdf($this->view);
         $title = 'Akte '.$this->view->record->name;
         $this->trigger('pdf_family', 'before');
-        
+
         $parent = $this->view->record->parent();
-        if ( ! $parent->getId()) {
+        if (! $parent->getId()) {
             $parent = $this->view->record;
         }
         $children = array($parent) + $parent->children('sortnumber');
-        
-        usort($children, function($a, $b) {
+
+        usort($children, function ($a, $b) {
             return strcasecmp($a['sortnumber'], $b['sortnumber']);
         });
-        
+
         $printed_on = $this->view->date(date('Y-m-d'));
 
-        $pdf = new FPDF($orientation = 'P', $unit = 'mm', 
-        										$format = array(90, 210.35));
+        $pdf = new FPDF(
+            $orientation = 'P',
+            $unit = 'mm',
+                                                $format = array(90, 210.35)
+        );
         $pdf->setLeftMargin(20);
         $pdf->SetAutoPageBreak(true, 0);
         $pdf->SetTitle($this->record);
@@ -337,26 +342,28 @@ class Controller_Card extends Controller_Scaffold
         $pdf->Cell(90, 5, utf8_decode($printed_on));
         $pdf->Ln();
         // }}}
-        foreach ($children as $id=>$child)
-        {
-        	$dnumber = $child->name;
-        	$dcountry = strtoupper($child->country()->iso);
-        	$dtype = $child->cardtypeName();
-        	$dstatus = $child->cardstatusName();
+        foreach ($children as $id=>$child) {
+            $dnumber = $child->name;
+            $dcountry = strtoupper($child->country()->iso);
+            $dtype = $child->cardtypeName();
+            $dstatus = $child->cardstatusName();
 
             $pdf->Cell(15, 4, utf8_decode($dnumber), 'R');
             $pdf->Cell(8, 4, utf8_decode($dcountry), 'R');
-            $pdf->Cell(20, 4, utf8_decode($dtype), 'R');
-            $pdf->Cell(20, 5, utf8_decode($dstatus));
-            
+            // comment the next line to have the status of a card printed
+            $pdf->Cell(20, 4, utf8_decode($dtype));
+            // uncomment these two lines to have the status of a card printed
+            //$pdf->Cell(20, 4, utf8_decode($dtype), 'R');
+            //$pdf->Cell(20, 5, utf8_decode($dstatus));
+
             $pdf->Ln();
         }
 
-		$pdf->Close();
-		$pdf->Output($this->record, 'I');
+        $pdf->Close();
+        $pdf->Output($this->record, 'I');
     }
-    
-    
+
+
     /**
      * Fills a PDF Form using pdftk with given card, setting and cardfeestep.
      *
@@ -369,16 +376,16 @@ class Controller_Card extends Controller_Scaffold
         global $config;
         session_start();
         $cuser = R::dispense('user')->current();
-        
+
         $setting = R::load('setting', 1);// load setting for house data
         $card = R::load('card', $id);// load our card
         $cardfeestep = R::load('cardfeestep', $cardfeestep_id);
-        
+
         require_once BASEDIR.'/vendors/pdftkphp/pdftk-php.php';
         // Initiate the class
-		$pdfmaker = new pdftk_php;
-		// Fill the data arrays
-		$fdf_data_strings = array(
+        $pdfmaker = new pdftk_php;
+        // Fill the data arrays
+        $fdf_data_strings = array(
             'First name of payer' => utf8_decode($setting->housename1),
             'Surame of payer' => utf8_decode($setting->housename2),
             'Address line 1' => utf8_decode($setting->houseaddr1),
@@ -391,36 +398,36 @@ class Controller_Card extends Controller_Scaffold
             'Text x11' => utf8_decode(__('dpma_renewal_stamp', array($cardfeestep->sequence + 2), 'en')),
             'EUR_34' => utf8_decode(number_format($cardfeestep->paymentnet, 2, '.', '')),
             'TOTAL EUR' => utf8_decode(number_format($cardfeestep->paymentnet, 2, '.', ''))
-		);
-		$fdf_data_names = array();
-		
-		// Setup checkboxes for mode of payment K1 = bank payment, K2 = debit from deposit
-		
-		if ($setting->houseepoaccount != '') {
-		    // mode of payment is K2
-		    //$fdf_data_names['K1'] = 'Off';
-    		$fdf_data_names['K2'] = 'Ja';
-    		$fdf_data_strings['Deposit account no'] = utf8_decode($setting->houseepoaccount);
-		} else {
-		    // mode of payment is K1
-		    $fdf_data_names['K1'] = 'Ja';
-    		//$fdf_data_names['K2'] = 'Off';
-    		$fdf_data_strings['Name of EPO bank'] = utf8_decode($setting->houseepobank);
-		}
-		
-		//$fdf_data_names['K1'] = 'Ja';
-		//$fdf_data_names['K2'] = 'Off';
-		
-		$fields_hidden = array();
-		$fields_readonly = array();
-		$pdf_filename = utf8_decode(__('dpma_renewal_pdfname', array($card->name, 2+$cardfeestep->sequence), 'en'));
-		$pdf_original = $config['upload']['dir'].'150618-F1010_Gebühren_DE_4-14.pdf';// ??
-		//$pdf_original = $config['upload']['dir'].'EPA-Abbuchung-EN-03_15_arial.pdf';//this is new, arial
-		// Finally make the actual PDF file!
-		$pdfmaker->make_pdf($fdf_data_strings, $fdf_data_names, $fields_hidden, $fields_readonly, $pdf_original, $pdf_filename);
-		exit;
+        );
+        $fdf_data_names = array();
+
+        // Setup checkboxes for mode of payment K1 = bank payment, K2 = debit from deposit
+
+        if ($setting->houseepoaccount != '') {
+            // mode of payment is K2
+            //$fdf_data_names['K1'] = 'Off';
+            $fdf_data_names['K2'] = 'Ja';
+            $fdf_data_strings['Deposit account no'] = utf8_decode($setting->houseepoaccount);
+        } else {
+            // mode of payment is K1
+            $fdf_data_names['K1'] = 'Ja';
+            //$fdf_data_names['K2'] = 'Off';
+            $fdf_data_strings['Name of EPO bank'] = utf8_decode($setting->houseepobank);
+        }
+
+        //$fdf_data_names['K1'] = 'Ja';
+        //$fdf_data_names['K2'] = 'Off';
+
+        $fields_hidden = array();
+        $fields_readonly = array();
+        $pdf_filename = utf8_decode(__('dpma_renewal_pdfname', array($card->name, 2+$cardfeestep->sequence), 'en'));
+        $pdf_original = $config['upload']['dir'].'150618-F1010_Gebühren_DE_4-14.pdf';// ??
+        //$pdf_original = $config['upload']['dir'].'EPA-Abbuchung-EN-03_15_arial.pdf';//this is new, arial
+        // Finally make the actual PDF file!
+        $pdfmaker->make_pdf($fdf_data_strings, $fdf_data_names, $fields_hidden, $fields_readonly, $pdf_original, $pdf_filename);
+        exit;
     }
-    
+
     /**
      * Displays a partial dialog to set up fee according to pricetype, country and cardtype.
      *
@@ -433,8 +440,7 @@ class Controller_Card extends Controller_Scaffold
      * @param int (optional) $card_rerule flag that decides wether to overwrite existings steps or not
      * @return void
      */
-    public function feeupd($card_id = null, $pricetype_id = null, $country_id = null, $cardtype_id = null,
-                        $card_rerule = null)
+    public function feeupd($card_id = null, $pricetype_id = null, $country_id = null, $cardtype_id = null, $card_rerule = null)
     {
         session_start();
         $this->cache()->deactivate();
@@ -442,21 +448,21 @@ class Controller_Card extends Controller_Scaffold
         $this->before_edit();
         $card = R::load('card', $card_id);
         $cardfeesteps = $card->own('cardfeestep', false);
-        if ( ! $cardfeesteps ) {
+        if (! $cardfeesteps) {
             // do we have a rule?
-            if ( ! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
+            if (! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
                 $rule = R::dispense('rule');
             }
-            if ( ! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
+            if (! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
                 $fee = R::dispense('fee');
             }
             $setting = R::load('setting', 1);
-            if ( ! $feebase = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $setting->feebase()->getId()))) {
+            if (! $feebase = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $setting->feebase()->getId()))) {
                 $feebase = R::dispense('fee');
             }
-            $cardfeesteps = $rule->setupCard($card, $fee, $feebase);   
+            $cardfeesteps = $rule->setupCard($card, $fee, $feebase);
         }
-        if ( $card_rerule) {
+        if ($card_rerule) {
             //kill all existing cardfeestep beans
             //$cardfeesteps = array();
             $cardfeesteps = $card->updateCardfeesteps($country_id, $cardtype_id, $pricetype_id);
@@ -482,8 +488,7 @@ class Controller_Card extends Controller_Scaffold
      * @param int (optional) $card_rerule flag that decides wether to overwrite existings steps or not
      * @return void
      */
-    public function fee($card_id = null, $pricetype_id = null, $country_id = null, $cardtype_id = null,
-                        $card_rerule = null)
+    public function fee($card_id = null, $pricetype_id = null, $country_id = null, $cardtype_id = null, $card_rerule = null)
     {
         session_start();
         $this->cache()->deactivate();
@@ -491,24 +496,24 @@ class Controller_Card extends Controller_Scaffold
         $this->before_edit();
         $card = R::load('card', $card_id);
         $cardfeesteps = $card->own('cardfeestep', false);
-        if ( $card_rerule) {
+        if ($card_rerule) {
             //kill all existing cardfeestep beans
             $cardfeesteps = array();
             //$cardfeesteps = $card->updateCardfeesteps($country_id, $cardtype_id, $pricetype_id);
         }
-        if ( ! $cardfeesteps ) {
+        if (! $cardfeesteps) {
             // do we have a rule?
-            if ( ! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
+            if (! $rule = R::findOne('rule', ' country_id = ? AND cardtype_id = ? LIMIT 1', array($country_id, $cardtype_id))) {
                 $rule = R::dispense('rule');
             }
-            if ( ! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
+            if (! $fee = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $pricetype_id))) {
                 $fee = R::dispense('fee');
             }
             $setting = R::load('setting', 1);
-            if ( ! $feebase = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $setting->feebase()->getId()))) {
+            if (! $feebase = R::findOne('fee', ' rule_id = ? AND pricetype_id = ? LIMIT 1', array($rule->getId(), $setting->feebase()->getId()))) {
                 $feebase = R::dispense('fee');
             }
-            $cardfeesteps = $rule->setupCard($card, $fee, $feebase);   
+            $cardfeesteps = $rule->setupCard($card, $fee, $feebase);
         }
         $this->view->cardfeesteps = $cardfeesteps;
         //$card->cardtype_id = $cardtype_id;
@@ -518,7 +523,7 @@ class Controller_Card extends Controller_Scaffold
         echo $this->view->partial('model/card/form/fee/cardfeesteps');
         return;
     }
-    
+
     /**
      * Marrys two cards.
      *
@@ -535,16 +540,16 @@ class Controller_Card extends Controller_Scaffold
         $this->view = $this->makeView(null);
         $card = R::load('card', $card_id);
         $sibling = R::load('card', $sibling_id);
-        
+
         $this->marry_workhorse($card, $sibling);
 
         $this->view->record = $card;
         $this->pushFamilyToView();
-        
+
         echo $this->view->partial('model/card/form/family/members');
         return;
     }
-    
+
     /**
      * Divorces two cards.
      *
@@ -561,7 +566,7 @@ class Controller_Card extends Controller_Scaffold
         $this->view = $this->makeView(null);
         $card = R::load('card', $card_id);
         $sibling = R::load('card', $sibling_id);
-        
+
         unset($sibling->card);
         try {
             R::store($sibling);
@@ -569,7 +574,7 @@ class Controller_Card extends Controller_Scaffold
             Cinnebar_Logger::instance()->log($e, 'exceptions');
         }
     }
-    
+
     /**
      * Joins the two beans together into one family.
      *
@@ -584,17 +589,17 @@ class Controller_Card extends Controller_Scaffold
     protected function marry_workhorse(RedBean_OODBBean $male, RedBean_OODBBean $female)
     {
         $grand_dad = $male->parent();
-        if ( ! $grand_dad->getId()) {
+        if (! $grand_dad->getId()) {
             $grand_dad = $male;
         }
         $grand_mum = $female->parent();
-        if ( ! $grand_mum->getId()) {
+        if (! $grand_mum->getId()) {
             $grand_mum = $female;
         }
         $dad_children = $grand_dad->children();
         $mum_children = $grand_mum->children();
-        
-        if ( ! $dad_children && ! $mum_children) {
+
+        if (! $dad_children && ! $mum_children) {
             $grand_mum->card = $grand_dad;
             try {
                 R::store($grand_mum);
@@ -604,8 +609,8 @@ class Controller_Card extends Controller_Scaffold
                 return false;
             }
         }
-        
-        if ( $dad_children && $mum_children) {
+
+        if ($dad_children && $mum_children) {
             $grand_mum->card = $grand_dad;
             foreach ($mum_children as $id => $child) {
                 $mum_children[$id]->card = $grand_dad;
@@ -619,9 +624,9 @@ class Controller_Card extends Controller_Scaffold
                 return false;
             }
         }
-        
-        if ( $dad_children && ! $mum_children) {     
-            $grand_mum->card = $grand_dad;       
+
+        if ($dad_children && ! $mum_children) {
+            $grand_mum->card = $grand_dad;
             try {
                 R::store($grand_mum);
                 return true;
@@ -630,7 +635,7 @@ class Controller_Card extends Controller_Scaffold
                 return false;
             }
         }
-        
+
         // matriachat: grand_dad is an orphan joining grand_mum's family
         // join male to grand_mum
         // return
@@ -662,7 +667,7 @@ class Controller_Card extends Controller_Scaffold
         $this->pushClaimTypesToView();
         $this->pushFamilyToView();
     }
-    
+
     /**
      * This will run before scaffold add performs.
      *
@@ -680,7 +685,7 @@ class Controller_Card extends Controller_Scaffold
         //$this->pushEnabledPersonsToView();
         $this->pushClaimTypesToView();
     }
-    
+
     /**
      * Pushes enabled cardtypes in alphabetic order to the view.
      */
@@ -688,7 +693,7 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->view->cardtypes = R::find('cardtype', ' 1 ORDER BY name');
     }
-    
+
     /**
      * Pushes enabled paymentstyles in alphabetic order to the view.
      */
@@ -696,7 +701,7 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->view->paymentstyles = R::find('paymentstyle', ' 1 ORDER BY code');
     }
-    
+
     /**
      * Pushes enabled cardtypes in alphabetic order to the view.
      */
@@ -704,7 +709,7 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->view->persons = R::find('person', ' 1 ORDER BY nickname');
     }
-    
+
     /**
      * Pushes enabled cardstati in alphabetic order to the view.
      */
@@ -712,7 +717,7 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->view->cardstati = R::find('cardstatus', ' 1 ORDER BY name');
     }
-    
+
     /**
      * Pushes enabled pricetypes in alphabetic order to the view.
      */
@@ -720,7 +725,7 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->view->pricetypes = R::find('pricetype', ' 1 ORDER BY name');
     }
-    
+
     /**
      * Pushes enabled feetypes in alphabetic order to the view.
      */
@@ -728,7 +733,7 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->view->feetypes = R::find('feetype', ' 1 ORDER BY name');
     }
-    
+
     /**
      * Pushes enabled templates in alphabetic order to the view.
      */
@@ -736,7 +741,7 @@ class Controller_Card extends Controller_Scaffold
     {
         $this->view->countries = R::find('country', ' enabled = 1 ORDER BY name');
     }
-    
+
     /**
      * Pushes enabled attorney in alphabetic order to the view.
      */
@@ -751,12 +756,12 @@ class Controller_Card extends Controller_Scaffold
      */
     public function pushFamilyToView()
     {
-        if ( ! $this->view->record || ! $this->view->record->getId()) {
+        if (! $this->view->record || ! $this->view->record->getId()) {
             $this->view->members = array();
             return;
         }
         $parent = $this->view->record->parent();
-        if ( ! $parent->getId()) {
+        if (! $parent->getId()) {
             $parent = $this->view->record;
         }
         //$children = array($parent) + $parent->children('sortnumber');
