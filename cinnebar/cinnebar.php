@@ -5145,14 +5145,14 @@ class Cinnebar_Model extends RedBean_SimpleModel
      * Defines the validation mode to store the valid or invalid state as a shared bean.
      */
     const VALIDATION_MODE_EXPLICIT = 4;
- 
+
     /**
      * Switch to decide if this model will be automactially tagged or not.
      *
      * @var bool
      */
     private $auto_tag = false;
-    
+
     /**
      * Switch to decide if this models history will be logged.
      *
@@ -5166,7 +5166,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
      * @var array
      */
     protected $errors = array();
-    
+
     /**
      * Holds the validation mode where 1 = Exception, 2 = Implicit attribute, 4 = Explicit which
      * effects all beans.
@@ -5181,28 +5181,28 @@ class Cinnebar_Model extends RedBean_SimpleModel
      * @var string
      */
     private $template = 'default';
-    
+
     /**
      * Container for list of callback validators.
      *
      * @var array
      */
     private $validators = array();
-    
+
     /**
      * State of validation.
      *
      * @var bool
      */
     private $valid = true;
-    
+
     /**
      * Container for a list of converters.
      *
      * @var array
      */
     private $converters = array();
-    
+
     /**
      * Constructs a new model.
      *
@@ -5210,7 +5210,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     public function __construct()
     {
     }
-    
+
     /**
      * Returns a short text describing the bean for humans.
      *
@@ -5222,7 +5222,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
         $template = '<a href="%s">%s</a>'."\n";
         return sprintf($template, $view->url(sprintf('/%s/edit/%d', $this->bean->getMeta('type'), $this->bean->getId())), $this->bean->getId());
     }
-    
+
     /**
      * Returns a string where this bean was rendered into a model template.
      *
@@ -5234,7 +5234,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return $view->partial(sprintf('model/%s/%s', $this->bean->getMeta('type'), $template), array('record' => $this->bean));
     }
-    
+
     /**
      * Returns own(ed) beans that belong to this bean.
      *
@@ -5251,10 +5251,12 @@ class Cinnebar_Model extends RedBean_SimpleModel
             return $this->$own_type($add);
         }
         $own = $this->bean->$own_type;
-        if ($add) $own[] = R::dispense($type);
+        if ($add) {
+            $own[] = R::dispense($type);
+        }
         return $own;
     }
-    
+
     /**
      * Returns shareded beans that belong to this bean.
      *
@@ -5267,10 +5269,12 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         $shared_type = 'shared'.ucfirst(strtolower($type));
         $shared = $this->bean->$shared_type;
-        if ($add) $shared[] = R::dispense($type);
+        if ($add) {
+            $shared[] = R::dispense($type);
+        }
         return $shared;
     }
-    
+
     /**
      * Returns wether the bean is mulilingual or not.
      *
@@ -5280,7 +5284,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return false;
     }
-    
+
     /**
      * Returns a i18n bean for this bean.
      *
@@ -5305,13 +5309,13 @@ class Cinnebar_Model extends RedBean_SimpleModel
             $iso = $language;
         }
         $i18n_type = $this->bean->getMeta('type').'i18n';
-        if ( ! $i18n = R::findOne($i18n_type, $this->bean->getMeta('type').'_id = ? AND iso = ? LIMIT 1', array($this->bean->getId(), $iso))) {
+        if (! $i18n = R::findOne($i18n_type, $this->bean->getMeta('type').'_id = ? AND iso = ? LIMIT 1', array($this->bean->getId(), $iso))) {
             $i18n = R::dispense($i18n_type);
             $i18n->iso = $iso;
         }
         return $i18n;
     }
-    
+
     /**
      * Returns an array with words splitters from a text.
      *
@@ -5322,9 +5326,9 @@ class Cinnebar_Model extends RedBean_SimpleModel
      */
     public function splitToWords($text)
     {
-    	return preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $text, -1, PREG_SPLIT_NO_EMPTY);
+        return preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $text, -1, PREG_SPLIT_NO_EMPTY);
     }
-    
+
     /**
      * Returns only alphanumeric characters of the given string.
      *
@@ -5337,7 +5341,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return preg_replace("/[^a-zA-Z0-9]+/", "", $text);
     }
-    
+
     /**
      * Returns the content of an localized attribute.
      *
@@ -5349,7 +5353,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return $this->i18n($iso)->$attribute;
     }
-    
+
     /**
      * Returns the validation mode or sets it if optional parameter is given.
      *
@@ -5359,10 +5363,12 @@ class Cinnebar_Model extends RedBean_SimpleModel
      */
     public function validationMode($mode = null)
     {
-        if ($mode !== null) self::$validation_mode = $mode;
+        if ($mode !== null) {
+            self::$validation_mode = $mode;
+        }
         return self::$validation_mode;
     }
-    
+
     /**
      * Deletes the bean from the database.
      *
@@ -5384,7 +5390,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
         $this->convert();
         $this->validate();
     }
-    
+
     /**
      * This is called after the bean was updated.
      *
@@ -5406,7 +5412,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return $this->bean->deleted;
     }
-    
+
     /**
      * This is called when a bean was loaded.
      *
@@ -5415,7 +5421,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     public function open()
     {
     }
-    
+
     /**
      * This is called before a bean will be deleted.
      *
@@ -5424,7 +5430,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     public function delete()
     {
     }
-    
+
     /**
      * This is called after a bean has been deleted.
      *
@@ -5433,7 +5439,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     public function after_delete()
     {
     }
-    
+
     /**
      * This is called when a bean is dispended.
      *
@@ -5444,7 +5450,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     public function dispense()
     {
     }
-    
+
     /**
      * Sets the auto tag mode.
      *
@@ -5486,46 +5492,46 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return $this->auto_info;
     }
-    
-	/**
-	 * Returns an array with possible attributes for order clauses and such.
-	 *
-	 * @param string (optional) $layout defaults to table and can be of any value
-	 * @return array
-	 */
-	public function attributes($layout = 'table')
-	{
-	    switch ($layout) {
-	        default:
-    	        $ret = array(
-        			array(
-        				'attribute' => 'id',
-        				'orderclause' => 'id',
-        				'class' => 'number',
-        				'filter' => array(
-        				    'type' => 'number'
-        				)
-        			)
-        		);
-	    }
+
+    /**
+     * Returns an array with possible attributes for order clauses and such.
+     *
+     * @param string (optional) $layout defaults to table and can be of any value
+     * @return array
+     */
+    public function attributes($layout = 'table')
+    {
+        switch ($layout) {
+            default:
+                $ret = array(
+                    array(
+                        'attribute' => 'id',
+                        'orderclause' => 'id',
+                        'class' => 'number',
+                        'filter' => array(
+                            'type' => 'number'
+                        )
+                    )
+                );
+        }
         return $ret;
-	}
-	
-	/**
-	 * Returns an array of the bean.
-	 *
-	 * @param bool $header defaults to false, if true then column headers are returned
-	 * @return array
-	 */
-	public function exportToCSV($header = false)
-	{
-	    if ($header === true) {
-	        return array(
-	        );
-	    }
+    }
+
+    /**
+     * Returns an array of the bean.
+     *
+     * @param bool $header defaults to false, if true then column headers are returned
+     * @return array
+     */
+    public function exportToCSV($header = false)
+    {
+        if ($header === true) {
+            return array(
+            );
+        }
         return $this->bean->export();
-	}
-	
+    }
+
     /**
      * Returns a message string for an action on this bean.
      *
@@ -5537,10 +5543,12 @@ class Cinnebar_Model extends RedBean_SimpleModel
     public function actionAsHumanText($action = 'idle', $type = 'success', $user = null)
     {
         $subject = __('you');
-        if ( is_a($user, 'RedBean_OODBBean')) $subject = $user->name();
+        if (is_a($user, 'RedBean_OODBBean')) {
+            $subject = $user->name();
+        }
         return __('action_'.$action.'_on_'.$this->bean->getMeta('type').'_'.$type, array($subject));
     }
-    
+
     /**
      * Returns an array with possible actions for scaffolding.
      *
@@ -5551,19 +5559,19 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return $actions;
     }
-	
-	/**
-	 * Returns a menu object.
-	 *
-	 * Overwrite this method in your models to achieve a custom menu for any bean you want.
-	 *
-	 * @param string $action
-	 * @param Cinnebar_View $view
-	 * @param Cinnebar_Menu (optional) $menu
-	 * @return Cinnebar_Menu
-	 */
-	public function makeMenu($action, Cinnebar_View $view, Cinnebar_Menu $menu = null)
-	{
+
+    /**
+     * Returns a menu object.
+     *
+     * Overwrite this method in your models to achieve a custom menu for any bean you want.
+     *
+     * @param string $action
+     * @param Cinnebar_View $view
+     * @param Cinnebar_Menu (optional) $menu
+     * @return Cinnebar_Menu
+     */
+    public function makeMenu($action, Cinnebar_View $view, Cinnebar_Menu $menu = null)
+    {
         $menu = new Cinnebar_Menu();
         $layouts = $this->layouts();
         if (count($layouts) > 1) {
@@ -5574,18 +5582,18 @@ class Cinnebar_Model extends RedBean_SimpleModel
         $menu->add(__('scaffold_add'), $view->url(sprintf('/%s/add', $this->bean->getMeta('type'))), 'scaffold-add');
         $menu->add(__('scaffold_browse'), $view->url(sprintf('/%s/index', $this->bean->getMeta('type'))), 'scaffold-browse');
         return $menu;
-	}
-	
-	/**
-	 * Returns an array with possible layout for list view (index).
-	 *
-	 * @return array
-	 */
-	public function layouts()
-	{
+    }
+
+    /**
+     * Returns an array with possible layout for list view (index).
+     *
+     * @return array
+     */
+    public function layouts()
+    {
         return array('table');
-	}
-	
+    }
+
     /**
      * Returns SQL for total of all beans.
      *
@@ -5597,7 +5605,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
      */
     public function sqlForTotal($where_clause = '1')
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			COUNT(DISTINCT({$this->bean->getMeta('type')}.id)) as total
 		FROM
@@ -5607,7 +5615,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
 SQL;
         return $sql;
     }
-	
+
     /**
      * Returns SQL for filtering these beans.
      *
@@ -5620,9 +5628,9 @@ SQL;
      */
     public function sqlForFilters($where_clause = '1', $order_clause = 'id', $offset = 0, $limit = 1)
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
-            DISTINCT(id)  
+            DISTINCT(id)
 
 		FROM
 			{$this->bean->getMeta('type')}
@@ -5635,7 +5643,7 @@ SQL;
 SQL;
         return $sql;
     }
-    
+
     /**
      * Returns array with strings or empty array.
      *
@@ -5662,7 +5670,7 @@ SQL;
     {
         return array();
     }
-    
+
     /**
      * Searches for given searchterm within bean and returns the result-set as an multi-dim array
      * after the given layout.
@@ -5675,7 +5683,7 @@ SQL;
         $result = R::getAll(sprintf('select id as id, id as label, id as value from %s', $this->bean->getMeta('type')));
         return $result;
     }
-    
+
     /**
      * Adds an error to the general errors or to a certain attribute if the optional parameter is set.
      *
@@ -5707,7 +5715,7 @@ SQL;
     {
         return $this->errors;
     }
-    
+
     /**
      * Returns the latest info bean of this bean.
      *
@@ -5718,19 +5726,23 @@ SQL;
      */
     public function info()
     {
-        if ( ! $this->autoInfo()) return R::dispense('info');
-        if ( ! $this->bean->getId()) return R::dispense('info');
+        if (! $this->autoInfo()) {
+            return R::dispense('info');
+        }
+        if (! $this->bean->getId()) {
+            return R::dispense('info');
+        }
         try {
             $relation = array($this->bean->getMeta('type'), 'info');
             asort($relation); // because RB orders the table names
             $info_relation = implode('_', $relation);
             $bean_id_column = $this->bean->getMeta('type').'_id';
-    		$sql = <<<SQL
+            $sql = <<<SQL
     		SELECT
     			info.id AS info_id
     		FROM
     			{$this->bean->getMeta('type')}
-		
+
     		LEFT JOIN {$info_relation} AS rinfo ON rinfo.{$bean_id_column} = {$this->bean->getMeta('type')}.id
     		LEFT JOIN info ON rinfo.info_id = info.id
 
@@ -5745,12 +5757,12 @@ SQL;
             Cinnebar_Logger::instance()->log($e, 'exceptions');
         }
         $info = R::load('info', $info_id);
-    	if ( ! $info->getId()) {
-    		$info = R::dispense('info');
-    	}
-    	return $info;
+        if (! $info->getId()) {
+            $info = R::dispense('info');
+        }
+        return $info;
     }
-    
+
     /**
      * Import data from csv array using a import map(per).
      *
@@ -5764,15 +5776,17 @@ SQL;
     public function csvImport(RedBean_OODBBean $import, array $data, array $mappers)
     {
         foreach ($mappers as $id=>$map) {
-            if ($map->target == '__none__') continue; // we skip unsoliciated ?? import fields
-            if ( empty($data[$map->source]) && ! empty($map->default)) {
+            if ($map->target == '__none__') {
+                continue;
+            } // we skip unsoliciated ?? import fields
+            if (empty($data[$map->source]) && ! empty($map->default)) {
                 $this->bean->{$map->target} = $map->default;
             } else {
                 $this->bean->{$map->target} = $data[$map->source];
             }
         }
     }
-    
+
     /**
      * Returns wether the bean is invalid or not.
      *
@@ -5783,10 +5797,12 @@ SQL;
      */
     public function invalid()
     {
-        if ( isset($this->bean->invalid) && $this->bean->invalid) return true;
+        if (isset($this->bean->invalid) && $this->bean->invalid) {
+            return true;
+        }
         return false;
     }
-    
+
     /**
      * Returns the meta bean of this bean.
      *
@@ -5794,10 +5810,12 @@ SQL;
      */
     public function meta()
     {
-        if ( ! $this->bean->meta) $this->bean->meta = R::dispense('meta');
-    	return $this->bean->meta;
+        if (! $this->bean->meta) {
+            $this->bean->meta = R::dispense('meta');
+        }
+        return $this->bean->meta;
     }
-    
+
     /**
      * Returns the parent bean of this bean or an empty bean of same type if there is no parent.
      *
@@ -5807,10 +5825,12 @@ SQL;
     public function parent()
     {
         $fn_parent = $this->bean->getMeta('type').'_id';
-        if ( ! $this->bean->$fn_parent) return R::dispense($this->bean->getMeta('type'));
+        if (! $this->bean->$fn_parent) {
+            return R::dispense($this->bean->getMeta('type'));
+        }
         return R::load($this->bean->getMeta('type'), $this->bean->$fn_parent);
     }
-    
+
     /**
      * Returns an array of beans that are subordinated to this bean, aka children.
      *
@@ -5823,7 +5843,7 @@ SQL;
         $fn_parent = $this->bean->getMeta('type').'_id';
         return R::find($this->bean->getMeta('type'), sprintf('%s = ? %s ORDER BY %s', $fn_parent, $criteria, $orderfields), array($this->bean->getId()));
     }
-    
+
     /**
      * Returns the contents of an attribute from either this bean or the next bean up the tree.
      *
@@ -5840,10 +5860,16 @@ SQL;
     public function bubble($attribute)
     {
         $fn_parent = $this->bean->getMeta('type').'_id';
-        if ( ! $this->bean->$fn_parent) return $this->bean->$attribute;
-        if ($this->bean->$attribute) return $this->bean->$attribute;
+        if (! $this->bean->$fn_parent) {
+            return $this->bean->$attribute;
+        }
+        if ($this->bean->$attribute) {
+            return $this->bean->$attribute;
+        }
         $parent = R::load($this->bean->getMeta('type'), $this->bean->$fn_parent);
-        if ( ! $parent->getId()) return null;
+        if (! $parent->getId()) {
+            return null;
+        }
         return $parent->bubble($attribute);
     }
 
@@ -5858,7 +5884,9 @@ SQL;
      */
     public function hasError($attribute = '')
     {
-        if ($attribute === '') return ! empty($this->errors);
+        if ($attribute === '') {
+            return ! empty($this->errors);
+        }
         return isset($this->errors[$attribute]);
     }
 
@@ -5871,7 +5899,7 @@ SQL;
     {
         return $this->hasError();
     }
-    
+
     /**
      * Returns an array with errors.
      *
@@ -5881,13 +5909,15 @@ SQL;
     {
         return $this->errors;
     }
-    
+
     /**
      * Calls the converters of this bean.
      */
     public function convert()
     {
-        if (empty($this->converters)) return;
+        if (empty($this->converters)) {
+            return;
+        }
         foreach ($this->converters as $attribute=>$callbacks) {
             foreach ($callbacks as $n=>$param) {
                 $converter_name = 'Converter_'.ucfirst(strtolower($param['converter']));
@@ -5896,7 +5926,7 @@ SQL;
             }
         }
     }
-    
+
     /**
      * Adds a converter callback name for an attribute.
      *
@@ -5913,7 +5943,7 @@ SQL;
             'options' => $options
         );
     }
-    
+
     /**
      * Validates this model and returns the result or throws an exception if invalid.
      *
@@ -5928,8 +5958,12 @@ SQL;
      */
     public function validate()
     {
-        if (isset($this->invalid) && $this->invalid) $this->invalid = false;
-        if ($valid = $this->validate_workhorse()) return true;
+        if (isset($this->invalid) && $this->invalid) {
+            $this->invalid = false;
+        }
+        if ($valid = $this->validate_workhorse()) {
+            return true;
+        }
         if (self::VALIDATION_MODE_EXCEPTION === self::$validation_mode) {
             throw new Exception(__CLASS__.'_invalid: '.$this->bean->getMeta('type'));
         }
@@ -5938,7 +5972,7 @@ SQL;
         }
         return false;
     }
-    
+
     /**
      * Adds a validator callback name for an attribute.
      *
@@ -5955,7 +5989,7 @@ SQL;
             'options' => $options
         );
     }
-    
+
     /**
      * Loop through all validator callbacks and returns the state of validation.
      *
@@ -5966,21 +6000,23 @@ SQL;
      */
     protected function validate_workhorse()
     {
-        if (empty($this->validators)) return true;
+        if (empty($this->validators)) {
+            return true;
+        }
         $state = true;
         foreach ($this->validators as $attribute=>$callbacks) {
             foreach ($callbacks as $n=>$param) {
                 $validator_name = 'Validator_'.ucfirst(strtolower($param['validator']));
                 $validator = new $validator_name($param['options']);
-                if ( ! $validator->execute($this->bean->$attribute)) {
+                if (! $validator->execute($this->bean->$attribute)) {
                     $state = false;
-                    $this->addError(sprintf('%s_invalid', strtolower($param['validator'])), $attribute);
+                    $this->addError(__(sprintf('%s_%s_%s_invalid', $this->bean->getMeta('type'), $attribute, strtolower($param['validator']))), $attribute);
                 }
             }
         }
         return $state;
     }
-    
+
     /**
      * If auto info is true a history entry will be added to this bean.
      *
@@ -5991,11 +6027,17 @@ SQL;
      */
     protected function info_workhorse()
     {
-        if ( ! $this->autoInfo()) return false;
-        if ( ! $this->bean->getId()) return false;
+        if (! $this->autoInfo()) {
+            return false;
+        }
+        if (! $this->bean->getId()) {
+            return false;
+        }
         $info = R::dispense('info');
         $user = R::dispense('user')->current();
-        if ($user->getId()) $info->user = $user;
+        if ($user->getId()) {
+            $info->user = $user;
+        }
         $info->stamp = time();
         try {
             R::store($info);
@@ -6005,7 +6047,7 @@ SQL;
             return false;
         }
     }
-    
+
     /**
      * If auto tag is true a all keywords of this bean will be added as tags.
      *
@@ -6014,11 +6056,17 @@ SQL;
      */
     protected function tag_workhorse()
     {
-        if ( ! $this->autoTag()) return false;
-        if ( ! $this->bean->getId()) return false;
+        if (! $this->autoTag()) {
+            return false;
+        }
+        if (! $this->bean->getId()) {
+            return false;
+        }
         $tags = array();
         foreach ($this->keywords() as $n=>$keyword) {
-            if (empty($keyword)) continue;
+            if (empty($keyword)) {
+                continue;
+            }
             $tags[] = $keyword;
         }
         try {

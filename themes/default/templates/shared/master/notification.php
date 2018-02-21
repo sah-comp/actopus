@@ -8,8 +8,12 @@
  * @version $Id$
  */
 ?>
-<?php if ( ! isset($user) || ! is_a($user, 'RedBean_OODBBean')) return ?>
-<?php if ( ! $_notifications = $user->notifications()) return ?>
+<?php if (! isset($user) || ! is_a($user, 'RedBean_OODBBean')) {
+    return;
+} ?>
+<?php if (! $_notifications = $user->notifications()) {
+    return;
+} ?>
 <!-- Start of notifications -->
 <section
     id="notifications"

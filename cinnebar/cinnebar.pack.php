@@ -2081,14 +2081,18 @@ class Cinnebar_Model extends RedBean_SimpleModel
             return $this->$own_type($add);
         }
         $own = $this->bean->$own_type;
-        if ($add) $own[] = R::dispense($type);
+        if ($add) {
+            $own[] = R::dispense($type);
+        }
         return $own;
     }
     public function shared($type, $add = false)
     {
         $shared_type = 'shared'.ucfirst(strtolower($type));
         $shared = $this->bean->$shared_type;
-        if ($add) $shared[] = R::dispense($type);
+        if ($add) {
+            $shared[] = R::dispense($type);
+        }
         return $shared;
     }
     public function isI18n()
@@ -2104,7 +2108,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
             $iso = $language;
         }
         $i18n_type = $this->bean->getMeta('type').'i18n';
-        if ( ! $i18n = R::findOne($i18n_type, $this->bean->getMeta('type').'_id = ? AND iso = ? LIMIT 1', array($this->bean->getId(), $iso))) {
+        if (! $i18n = R::findOne($i18n_type, $this->bean->getMeta('type').'_id = ? AND iso = ? LIMIT 1', array($this->bean->getId(), $iso))) {
             $i18n = R::dispense($i18n_type);
             $i18n->iso = $iso;
         }
@@ -2112,7 +2116,7 @@ class Cinnebar_Model extends RedBean_SimpleModel
     }
     public function splitToWords($text)
     {
-    	return preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $text, -1, PREG_SPLIT_NO_EMPTY);
+        return preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $text, -1, PREG_SPLIT_NO_EMPTY);
     }
     public function alphanumericonly($text)
     {
@@ -2124,7 +2128,9 @@ class Cinnebar_Model extends RedBean_SimpleModel
     }
     public function validationMode($mode = null)
     {
-        if ($mode !== null) self::$validation_mode = $mode;
+        if ($mode !== null) {
+            self::$validation_mode = $mode;
+        }
         return self::$validation_mode;
     }
     public function expunge()
@@ -2173,43 +2179,45 @@ class Cinnebar_Model extends RedBean_SimpleModel
     {
         return $this->auto_info;
     }
-	public function attributes($layout = 'table')
-	{
-	    switch ($layout) {
-	        default:
-    	        $ret = array(
-        			array(
-        				'attribute' => 'id',
-        				'orderclause' => 'id',
-        				'class' => 'number',
-        				'filter' => array(
-        				    'type' => 'number'
-        				)
-        			)
-        		);
-	    }
+    public function attributes($layout = 'table')
+    {
+        switch ($layout) {
+            default:
+                $ret = array(
+                    array(
+                        'attribute' => 'id',
+                        'orderclause' => 'id',
+                        'class' => 'number',
+                        'filter' => array(
+                            'type' => 'number'
+                        )
+                    )
+                );
+        }
         return $ret;
-	}
-	public function exportToCSV($header = false)
-	{
-	    if ($header === true) {
-	        return array(
-	        );
-	    }
+    }
+    public function exportToCSV($header = false)
+    {
+        if ($header === true) {
+            return array(
+            );
+        }
         return $this->bean->export();
-	}
+    }
     public function actionAsHumanText($action = 'idle', $type = 'success', $user = null)
     {
         $subject = __('you');
-        if ( is_a($user, 'RedBean_OODBBean')) $subject = $user->name();
+        if (is_a($user, 'RedBean_OODBBean')) {
+            $subject = $user->name();
+        }
         return __('action_'.$action.'_on_'.$this->bean->getMeta('type').'_'.$type, array($subject));
     }
     public function makeActions(array $actions = array())
     {
         return $actions;
     }
-	public function makeMenu($action, Cinnebar_View $view, Cinnebar_Menu $menu = null)
-	{
+    public function makeMenu($action, Cinnebar_View $view, Cinnebar_Menu $menu = null)
+    {
         $menu = new Cinnebar_Menu();
         $layouts = $this->layouts();
         if (count($layouts) > 1) {
@@ -2220,14 +2228,14 @@ class Cinnebar_Model extends RedBean_SimpleModel
         $menu->add(__('scaffold_add'), $view->url(sprintf('/%s/add', $this->bean->getMeta('type'))), 'scaffold-add');
         $menu->add(__('scaffold_browse'), $view->url(sprintf('/%s/index', $this->bean->getMeta('type'))), 'scaffold-browse');
         return $menu;
-	}
-	public function layouts()
-	{
+    }
+    public function layouts()
+    {
         return array('table');
-	}
+    }
     public function sqlForTotal($where_clause = '1')
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
 			COUNT(DISTINCT({$this->bean->getMeta('type')}.id)) as total
 		FROM
@@ -2238,9 +2246,9 @@ SQL;
     }
     public function sqlForFilters($where_clause = '1', $order_clause = 'id', $offset = 0, $limit = 1)
     {
-		$sql = <<<SQL
+        $sql = <<<SQL
 		SELECT
-            DISTINCT(id)  
+            DISTINCT(id)
 		FROM
 			{$this->bean->getMeta('type')}
 		WHERE {$where_clause}
@@ -2272,13 +2280,17 @@ SQL;
     }
     public function info()
     {
-        if ( ! $this->autoInfo()) return R::dispense('info');
-        if ( ! $this->bean->getId()) return R::dispense('info');
+        if (! $this->autoInfo()) {
+            return R::dispense('info');
+        }
+        if (! $this->bean->getId()) {
+            return R::dispense('info');
+        }
         try {
             $relation = array($this->bean->getMeta('type'), 'info');
             asort($relation);             $info_relation = implode('_', $relation);
             $bean_id_column = $this->bean->getMeta('type').'_id';
-    		$sql = <<<SQL
+            $sql = <<<SQL
     		SELECT
     			info.id AS info_id
     		FROM
@@ -2296,15 +2308,17 @@ SQL;
             Cinnebar_Logger::instance()->log($e, 'exceptions');
         }
         $info = R::load('info', $info_id);
-    	if ( ! $info->getId()) {
-    		$info = R::dispense('info');
-    	}
-    	return $info;
+        if (! $info->getId()) {
+            $info = R::dispense('info');
+        }
+        return $info;
     }
     public function csvImport(RedBean_OODBBean $import, array $data, array $mappers)
     {
         foreach ($mappers as $id=>$map) {
-            if ($map->target == '__none__') continue;             if ( empty($data[$map->source]) && ! empty($map->default)) {
+            if ($map->target == '__none__') {
+                continue;
+            }             if (empty($data[$map->source]) && ! empty($map->default)) {
                 $this->bean->{$map->target} = $map->default;
             } else {
                 $this->bean->{$map->target} = $data[$map->source];
@@ -2313,18 +2327,24 @@ SQL;
     }
     public function invalid()
     {
-        if ( isset($this->bean->invalid) && $this->bean->invalid) return true;
+        if (isset($this->bean->invalid) && $this->bean->invalid) {
+            return true;
+        }
         return false;
     }
     public function meta()
     {
-        if ( ! $this->bean->meta) $this->bean->meta = R::dispense('meta');
-    	return $this->bean->meta;
+        if (! $this->bean->meta) {
+            $this->bean->meta = R::dispense('meta');
+        }
+        return $this->bean->meta;
     }
     public function parent()
     {
         $fn_parent = $this->bean->getMeta('type').'_id';
-        if ( ! $this->bean->$fn_parent) return R::dispense($this->bean->getMeta('type'));
+        if (! $this->bean->$fn_parent) {
+            return R::dispense($this->bean->getMeta('type'));
+        }
         return R::load($this->bean->getMeta('type'), $this->bean->$fn_parent);
     }
     public function children($orderfields = 'id', $criteria = null)
@@ -2335,15 +2355,23 @@ SQL;
     public function bubble($attribute)
     {
         $fn_parent = $this->bean->getMeta('type').'_id';
-        if ( ! $this->bean->$fn_parent) return $this->bean->$attribute;
-        if ($this->bean->$attribute) return $this->bean->$attribute;
+        if (! $this->bean->$fn_parent) {
+            return $this->bean->$attribute;
+        }
+        if ($this->bean->$attribute) {
+            return $this->bean->$attribute;
+        }
         $parent = R::load($this->bean->getMeta('type'), $this->bean->$fn_parent);
-        if ( ! $parent->getId()) return null;
+        if (! $parent->getId()) {
+            return null;
+        }
         return $parent->bubble($attribute);
     }
     public function hasError($attribute = '')
     {
-        if ($attribute === '') return ! empty($this->errors);
+        if ($attribute === '') {
+            return ! empty($this->errors);
+        }
         return isset($this->errors[$attribute]);
     }
     public function hasErrors()
@@ -2356,7 +2384,9 @@ SQL;
     }
     public function convert()
     {
-        if (empty($this->converters)) return;
+        if (empty($this->converters)) {
+            return;
+        }
         foreach ($this->converters as $attribute=>$callbacks) {
             foreach ($callbacks as $n=>$param) {
                 $converter_name = 'Converter_'.ucfirst(strtolower($param['converter']));
@@ -2374,8 +2404,12 @@ SQL;
     }
     public function validate()
     {
-        if (isset($this->invalid) && $this->invalid) $this->invalid = false;
-        if ($valid = $this->validate_workhorse()) return true;
+        if (isset($this->invalid) && $this->invalid) {
+            $this->invalid = false;
+        }
+        if ($valid = $this->validate_workhorse()) {
+            return true;
+        }
         if (self::VALIDATION_MODE_EXCEPTION === self::$validation_mode) {
             throw new Exception(__CLASS__.'_invalid: '.$this->bean->getMeta('type'));
         }
@@ -2393,15 +2427,17 @@ SQL;
     }
     protected function validate_workhorse()
     {
-        if (empty($this->validators)) return true;
+        if (empty($this->validators)) {
+            return true;
+        }
         $state = true;
         foreach ($this->validators as $attribute=>$callbacks) {
             foreach ($callbacks as $n=>$param) {
                 $validator_name = 'Validator_'.ucfirst(strtolower($param['validator']));
                 $validator = new $validator_name($param['options']);
-                if ( ! $validator->execute($this->bean->$attribute)) {
+                if (! $validator->execute($this->bean->$attribute)) {
                     $state = false;
-                    $this->addError(sprintf('%s_invalid', strtolower($param['validator'])), $attribute);
+                    $this->addError(__(sprintf('%s_%s_%s_invalid', $this->bean->getMeta('type'), $attribute, strtolower($param['validator']))), $attribute);
                 }
             }
         }
@@ -2409,11 +2445,17 @@ SQL;
     }
     protected function info_workhorse()
     {
-        if ( ! $this->autoInfo()) return false;
-        if ( ! $this->bean->getId()) return false;
+        if (! $this->autoInfo()) {
+            return false;
+        }
+        if (! $this->bean->getId()) {
+            return false;
+        }
         $info = R::dispense('info');
         $user = R::dispense('user')->current();
-        if ($user->getId()) $info->user = $user;
+        if ($user->getId()) {
+            $info->user = $user;
+        }
         $info->stamp = time();
         try {
             R::store($info);
@@ -2425,11 +2467,17 @@ SQL;
     }
     protected function tag_workhorse()
     {
-        if ( ! $this->autoTag()) return false;
-        if ( ! $this->bean->getId()) return false;
+        if (! $this->autoTag()) {
+            return false;
+        }
+        if (! $this->bean->getId()) {
+            return false;
+        }
         $tags = array();
         foreach ($this->keywords() as $n=>$keyword) {
-            if (empty($keyword)) continue;
+            if (empty($keyword)) {
+                continue;
+            }
             $tags[] = $keyword;
         }
         try {
