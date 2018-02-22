@@ -1974,7 +1974,9 @@ SQL;
     public function update()
     {
         if (isset($_POST['attrset'])) {
-            $this->bean->attrset = json_encode($_POST['attrset']);
+            $attrset = array_map('htmlentities', $_POST['attrset']);
+            $this->bean->attrset = html_entity_decode(json_encode($attrset));
+            //$this->bean->attrset = json_encode($_POST['attrset']);
         }
         $this->makeSortnumber();
         $this->makeBetterSearchable();
