@@ -476,7 +476,9 @@
                 name="dialog[note]"
                 rows="5"><?php echo htmlspecialchars($record->note) ?></textarea>
         </div>
-        <?php if ($_attrset = $record->cardtype->withCondition("enabled = 1")->ownAttrset): ?>
+        <?php if ($_attrset = $record->cardtype->withCondition("enabled = 1")->ownAttrset):
+            $_attrset_values = $record->box()->attrset;
+        ?>
         <?php foreach ($_attrset as $_attrset_id => $_attr): ?>
         <div class="row">
             <label
@@ -487,7 +489,7 @@
             <input
                 type="text"
                 name="attrset[<?php echo $_attrset_id ?>]"
-                value="<?php echo htmlspecialchars($record->box()->attrset[$_attrset_id]) ?>" />
+                value="<?php echo isset($_attrset_values[$_attrset_id]) ? htmlspecialchars($_attrset_values[$_attrset_id]) : '' ?>" />
             <?php if ($_attr->desc): ?>
                 <p class="info"><?php echo htmlspecialchars($_attr->desc) ?></p>
             <?php endif; ?>

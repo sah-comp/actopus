@@ -19,6 +19,11 @@
 class Model_Card extends Cinnebar_Model
 {
     /**
+     * Optional set of attributes defined by the attr set of this cards cardtype bean.
+     */
+    public $attrset = array();
+
+    /**
      * Update the cardfeestep beans according to the country, cardtype and pricing and
      * returns an array of cardfeestep beans.
      *
