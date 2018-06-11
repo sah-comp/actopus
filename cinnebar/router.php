@@ -32,7 +32,7 @@ class Cinnebar_Router
      *
      * @var string
      */
-    public $scheme = 'https';
+    public $scheme = 'http';
 
     /**
      * Stores the host.
@@ -40,7 +40,7 @@ class Cinnebar_Router
      * @var string
      */
     public $host = 'localhost';
-    
+
     /**
      * Stores the directory.
      *
@@ -308,7 +308,8 @@ class Cinnebar_Router
         if (true === $omit) {
             return '/'.$this->directory.'/'.$this->language;
         }
-        return $this->scheme.'://'.$this->host().'/'.$this->directory().'/'.$this->language();
+        //return $this->scheme.'://'.$this->host().'/'.$this->directory().'/'.$this->language();
+        return '//'.$this->host().'/'.$this->directory().'/'.$this->language();
     }
 
     /**

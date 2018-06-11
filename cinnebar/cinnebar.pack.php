@@ -306,14 +306,16 @@ class Cinnebar_Autoloader
 }
 class Cinnebar_Request
 {
-    const PROTOCOL_HTTP = 'http://';
-    const PROTOCOL_HTTPS = 'https://';
+    const PROTOCOL_HTTP = '//';
+    const PROTOCOL_HTTPS = '//';
     public function __construct()
     {
     }
     public function protocol()
     {
-        if ( ! isset($_SERVER['HTTPS']) || ! $_SERVER['HTTPS']) return self::PROTOCOL_HTTP;
+        if (! isset($_SERVER['HTTPS']) || ! $_SERVER['HTTPS']) {
+            return self::PROTOCOL_HTTP;
+        }
         return self::PROTOCOL_HTTPS;
     }
     public function host()
@@ -324,18 +326,21 @@ class Cinnebar_Request
     {
         return '';
     }
-	public function getOrPost()
-	{
-		if (count($_POST) == 0) return 'get';
-		return 'post';
-	}
-	public function url()
-	{
+    public function getOrPost()
+    {
+        if (count($_POST) == 0) {
+            return 'get';
+        }
+        return 'post';
+    }
+    public function url()
+    {
         return $this->protocol().$this->host().$_SERVER['REQUEST_URI'];
-	}
-	public function isAjax() {
-	    return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-	}
+    }
+    public function isAjax()
+    {
+        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+    }
 }
 class Cinnebar_Response
 {
@@ -387,7 +392,7 @@ class Cinnebar_Response
 class Cinnebar_Router
 {
     public $settings;
-    public $scheme = 'https';
+    public $scheme = 'http';
     public $host = 'localhost';
     public $directory = '';
     public $url;
@@ -491,7 +496,7 @@ class Cinnebar_Router
         if (true === $omit) {
             return '/'.$this->directory.'/'.$this->language;
         }
-        return $this->scheme.'://'.$this->host().'/'.$this->directory().'/'.$this->language();
+                return '//'.$this->host().'/'.$this->directory().'/'.$this->language();
     }
     public function host()
     {
@@ -2022,7 +2027,9 @@ class Viewhelper_Url extends Cinnebar_Viewhelper
 {
     public function execute($url = '', $type = 'href')
     {
-        if ($type == 'href') return $this->view()->basehref().$url;
+        if ($type == 'href') {
+            return $this->view()->basehref().$url;
+        }
         return $this->view()->basehref().'/../themes/'.S_THEME.'/'.$type.'/'.$url.'.'.$type;
     }
 }

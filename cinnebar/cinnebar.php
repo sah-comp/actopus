@@ -928,14 +928,14 @@ class Cinnebar_Request
      *
      * @var string
      */
-    const PROTOCOL_HTTP = 'http://';
-    
+    const PROTOCOL_HTTP = '//';
+
     /**
      * String for HTTPS protocol.
      *
      * @var string
      */
-    const PROTOCOL_HTTPS = 'https://';
+    const PROTOCOL_HTTPS = '//';
 
     /**
      * Constructor.
@@ -943,7 +943,7 @@ class Cinnebar_Request
     public function __construct()
     {
     }
-    
+
     /**
      * Returns the protocol of the request.
      *
@@ -951,10 +951,12 @@ class Cinnebar_Request
      */
     public function protocol()
     {
-        if ( ! isset($_SERVER['HTTPS']) || ! $_SERVER['HTTPS']) return self::PROTOCOL_HTTP;
+        if (! isset($_SERVER['HTTPS']) || ! $_SERVER['HTTPS']) {
+            return self::PROTOCOL_HTTP;
+        }
         return self::PROTOCOL_HTTPS;
     }
-    
+
     /**
      * Returns the host.
      *
@@ -964,7 +966,7 @@ class Cinnebar_Request
     {
         return $_SERVER['HTTP_HOST'];
     }
-    
+
     /**
      * Returns a string with port if port differs from 80.
      *
@@ -974,40 +976,43 @@ class Cinnebar_Request
     {
         return '';
     }
-    
-	/**
-	 * Returns the clients request type, either post or get.
-	 *
-	 * @return string $getOrPost
-	 */
-	public function getOrPost()
-	{
-		if (count($_POST) == 0) return 'get';
-		return 'post';
-	}
-	
-	/**
-	 * Returns the full URL of the request.
-	 *
-	 * @return string $url
-	 */
-	public function url()
-	{
+
+    /**
+     * Returns the clients request type, either post or get.
+     *
+     * @return string $getOrPost
+     */
+    public function getOrPost()
+    {
+        if (count($_POST) == 0) {
+            return 'get';
+        }
+        return 'post';
+    }
+
+    /**
+     * Returns the full URL of the request.
+     *
+     * @return string $url
+     */
+    public function url()
+    {
         return $this->protocol().$this->host().$_SERVER['REQUEST_URI'];
-	}
-    
-	/**
-	 * Returns true if the clients request was an ajax call.
-	 *
-	 * Checks the SERVER variable to see if this was an ajax initiated request.
-	 * Your controller can then decide wether to output a complete HTML page or
-	 * only a certain partial view.
-	 *
-	 * @return bool $isAjaxOrNormalHTTPRequest
-	 */
-	public function isAjax() {
-	    return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-	}
+    }
+
+    /**
+     * Returns true if the clients request was an ajax call.
+     *
+     * Checks the SERVER variable to see if this was an ajax initiated request.
+     * Your controller can then decide wether to output a complete HTML page or
+     * only a certain partial view.
+     *
+     * @return bool $isAjaxOrNormalHTTPRequest
+     */
+    public function isAjax()
+    {
+        return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+    }
 }
 
 
@@ -1209,7 +1214,7 @@ class Cinnebar_Router
      *
      * @var string
      */
-    public $scheme = 'https';
+    public $scheme = 'http';
 
     /**
      * Stores the host.
@@ -1217,7 +1222,7 @@ class Cinnebar_Router
      * @var string
      */
     public $host = 'localhost';
-    
+
     /**
      * Stores the directory.
      *
@@ -1485,7 +1490,8 @@ class Cinnebar_Router
         if (true === $omit) {
             return '/'.$this->directory.'/'.$this->language;
         }
-        return $this->scheme.'://'.$this->host().'/'.$this->directory().'/'.$this->language();
+        //return $this->scheme.'://'.$this->host().'/'.$this->directory().'/'.$this->language();
+        return '//'.$this->host().'/'.$this->directory().'/'.$this->language();
     }
 
     /**
@@ -4978,7 +4984,9 @@ class Viewhelper_Url extends Cinnebar_Viewhelper
      */
     public function execute($url = '', $type = 'href')
     {
-        if ($type == 'href') return $this->view()->basehref().$url;
+        if ($type == 'href') {
+            return $this->view()->basehref().$url;
+        }
         return $this->view()->basehref().'/../themes/'.S_THEME.'/'.$type.'/'.$url.'.'.$type;
     }
 }
