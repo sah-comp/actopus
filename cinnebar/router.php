@@ -26,14 +26,14 @@ class Cinnebar_Router
      * @var array
      */
     public $settings;
-    
+
     /**
      * Stores the scheme, either http or https.
      *
      * @var string
      */
-    public $scheme = 'http';
-    
+    public $scheme = 'https';
+
     /**
      * Stores the host.
      *
@@ -54,7 +54,7 @@ class Cinnebar_Router
      * @var string
      */
     public $url;
-    
+
     /**
      * Stores the internal URL.
      *
@@ -63,14 +63,14 @@ class Cinnebar_Router
      * @var string
      */
     public $internal_url;
-    
+
     /**
      * Stores the slices of our sanatized URL.
      *
      * @var array
      */
     public $slices = array();
-    
+
     /**
      * Stores the parameters of the request.
      *
@@ -84,21 +84,21 @@ class Cinnebar_Router
      * @var string
      */
     public $language = 'de';
-    
+
     /**
      * Holds the controller after interpretation of an URL.
      *
      * @var string
      */
     public $controller = 'welcome';
-    
+
     /**
      * Holds the method after interpretation of an URL.
      *
      * @var string
      */
     public $method = 'index';
-    
+
     /**
      * Container for optional rerouting map.
      *
@@ -121,7 +121,7 @@ class Cinnebar_Router
             $this->map = $this->settings['map'];
         }
     }
-    
+
     /**
      * Sets the (optional) rerouting map.
      *
@@ -133,7 +133,7 @@ class Cinnebar_Router
         $this->map = $map;
         return true;
     }
-    
+
     /**
      * Interprets the given URL and sets internal attributes.
      *
@@ -170,28 +170,36 @@ class Cinnebar_Router
     public function interpret($url)
     {
         global $language;
-		$parsed = parse_url($url);
-		if ( false === $parsed) throw new Exception('Malicious URL '.$url);
-		$this->scheme = isset($parsed['scheme']) ? $parsed['scheme'] : '';
-		$this->host = isset($parsed['host']) ? $parsed['host'] : '';
-		$this->url = urldecode(trim(filter_var($parsed['path'], FILTER_SANITIZE_URL), '/'));
-		$this->slices = explode('/', $this->url);
-		$this->internal_url = implode('/', array_slice($this->slices, 1 + $this->settings['offset']));
-		if ($this->settings['offset'] == 1) {
-		    $this->directory = $this->slice(0);
-		}
-		$this->language = $this->slice($this->settings['offset']);
-		if ($this->language === null) $this->language = $this->settings['language'];
-		$language = $this->language;
-		$this->controller = $this->slice(1 + $this->settings['offset']);
-		if ($this->controller === null) $this->controller = $this->settings['controller'];
-		$this->method = $this->slice(2 + $this->settings['offset']);
-		if ($this->method === null) $this->method = $this->settings['method'];
-		$this->params = array_slice($this->slices, 3 + $this->settings['offset']);
-		$this->reRoute();
+        $parsed = parse_url($url);
+        if (false === $parsed) {
+            throw new Exception('Malicious URL '.$url);
+        }
+        $this->scheme = isset($parsed['scheme']) ? $parsed['scheme'] : '';
+        $this->host = isset($parsed['host']) ? $parsed['host'] : '';
+        $this->url = urldecode(trim(filter_var($parsed['path'], FILTER_SANITIZE_URL), '/'));
+        $this->slices = explode('/', $this->url);
+        $this->internal_url = implode('/', array_slice($this->slices, 1 + $this->settings['offset']));
+        if ($this->settings['offset'] == 1) {
+            $this->directory = $this->slice(0);
+        }
+        $this->language = $this->slice($this->settings['offset']);
+        if ($this->language === null) {
+            $this->language = $this->settings['language'];
+        }
+        $language = $this->language;
+        $this->controller = $this->slice(1 + $this->settings['offset']);
+        if ($this->controller === null) {
+            $this->controller = $this->settings['controller'];
+        }
+        $this->method = $this->slice(2 + $this->settings['offset']);
+        if ($this->method === null) {
+            $this->method = $this->settings['method'];
+        }
+        $this->params = array_slice($this->slices, 3 + $this->settings['offset']);
+        $this->reRoute();
         return true;
     }
-    
+
     /**
      * Re-Routes controller and method if a re-routing map is set and returns wether it
      * re-routed something or not.
@@ -204,7 +212,9 @@ class Cinnebar_Router
      */
     public function reRoute()
     {
-        if (empty($this->map)) return false;
+        if (empty($this->map)) {
+            return false;
+        }
         $rerouted = false;
         if (isset($this->map['controller']) && isset($this->map['controller'][$this->controller])) {
             $this->controller = $this->map['controller'][$this->controller];
@@ -216,7 +226,7 @@ class Cinnebar_Router
         }
         return $rerouted;
     }
-    
+
     /**
      * Returns the language name.
      *
@@ -226,7 +236,7 @@ class Cinnebar_Router
     {
         return $this->language;
     }
-    
+
     /**
      * Returns the controller name.
      *
@@ -236,7 +246,7 @@ class Cinnebar_Router
     {
         return $this->controller;
     }
-    
+
     /**
      * Returns the methods name.
      *
@@ -246,7 +256,7 @@ class Cinnebar_Router
     {
         return $this->method;
     }
-    
+
     /**
      * Sets the method.
      *
@@ -256,7 +266,7 @@ class Cinnebar_Router
     {
         $this->method = $method;
     }
-    
+
     /**
      * Returns the parameters array or an empty array.
      *
@@ -286,7 +296,7 @@ class Cinnebar_Router
     {
         return $this->scheme;
     }
-    
+
     /**
      * Returns the basehref.
      *
@@ -295,10 +305,12 @@ class Cinnebar_Router
      */
     public function basehref($omit = false)
     {
-        if (true === $omit) return '/'.$this->directory.'/'.$this->language;
+        if (true === $omit) {
+            return '/'.$this->directory.'/'.$this->language;
+        }
         return $this->scheme.'://'.$this->host().'/'.$this->directory().'/'.$this->language();
     }
-    
+
     /**
      * Returns the host.
      *
@@ -308,7 +320,7 @@ class Cinnebar_Router
     {
         return $this->host;
     }
-    
+
     /**
      * Returns the directory.
      *
@@ -318,7 +330,7 @@ class Cinnebar_Router
     {
         return $this->directory;
     }
-    
+
     /**
      * Returns the internal URL, that is without absolute path and language part.
      *
@@ -328,16 +340,18 @@ class Cinnebar_Router
     {
         return $this->internal_url;
     }
-    
-	/**
-	 * returns a part of the url by its index number.
-	 *
-	 * @param int $index
-	 * @return mixed
-	 */
-	protected function slice($index)
-	{
-		if ( ! isset($this->slices[$index])) return null;
-		return $this->slices[$index];
-	}
+
+    /**
+     * returns a part of the url by its index number.
+     *
+     * @param int $index
+     * @return mixed
+     */
+    protected function slice($index)
+    {
+        if (! isset($this->slices[$index])) {
+            return null;
+        }
+        return $this->slices[$index];
+    }
 }
