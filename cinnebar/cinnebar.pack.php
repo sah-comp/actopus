@@ -387,7 +387,7 @@ class Cinnebar_Response
 class Cinnebar_Router
 {
     public $settings;
-    public $scheme = 'http';
+    public $scheme = 'https';
     public $host = 'localhost';
     public $directory = '';
     public $url;
@@ -413,30 +413,40 @@ class Cinnebar_Router
     public function interpret($url)
     {
         global $language;
-		$parsed = parse_url($url);
-		if ( false === $parsed) throw new Exception('Malicious URL '.$url);
-		$this->scheme = isset($parsed['scheme']) ? $parsed['scheme'] : '';
-		$this->host = isset($parsed['host']) ? $parsed['host'] : '';
-		$this->url = urldecode(trim(filter_var($parsed['path'], FILTER_SANITIZE_URL), '/'));
-		$this->slices = explode('/', $this->url);
-		$this->internal_url = implode('/', array_slice($this->slices, 1 + $this->settings['offset']));
-		if ($this->settings['offset'] == 1) {
-		    $this->directory = $this->slice(0);
-		}
-		$this->language = $this->slice($this->settings['offset']);
-		if ($this->language === null) $this->language = $this->settings['language'];
-		$language = $this->language;
-		$this->controller = $this->slice(1 + $this->settings['offset']);
-		if ($this->controller === null) $this->controller = $this->settings['controller'];
-		$this->method = $this->slice(2 + $this->settings['offset']);
-		if ($this->method === null) $this->method = $this->settings['method'];
-		$this->params = array_slice($this->slices, 3 + $this->settings['offset']);
-		$this->reRoute();
+        $parsed = parse_url($url);
+        if (false === $parsed) {
+            throw new Exception('Malicious URL '.$url);
+        }
+        $this->scheme = isset($parsed['scheme']) ? $parsed['scheme'] : '';
+        $this->host = isset($parsed['host']) ? $parsed['host'] : '';
+        $this->url = urldecode(trim(filter_var($parsed['path'], FILTER_SANITIZE_URL), '/'));
+        $this->slices = explode('/', $this->url);
+        $this->internal_url = implode('/', array_slice($this->slices, 1 + $this->settings['offset']));
+        if ($this->settings['offset'] == 1) {
+            $this->directory = $this->slice(0);
+        }
+        $this->language = $this->slice($this->settings['offset']);
+        if ($this->language === null) {
+            $this->language = $this->settings['language'];
+        }
+        $language = $this->language;
+        $this->controller = $this->slice(1 + $this->settings['offset']);
+        if ($this->controller === null) {
+            $this->controller = $this->settings['controller'];
+        }
+        $this->method = $this->slice(2 + $this->settings['offset']);
+        if ($this->method === null) {
+            $this->method = $this->settings['method'];
+        }
+        $this->params = array_slice($this->slices, 3 + $this->settings['offset']);
+        $this->reRoute();
         return true;
     }
     public function reRoute()
     {
-        if (empty($this->map)) return false;
+        if (empty($this->map)) {
+            return false;
+        }
         $rerouted = false;
         if (isset($this->map['controller']) && isset($this->map['controller'][$this->controller])) {
             $this->controller = $this->map['controller'][$this->controller];
@@ -478,7 +488,9 @@ class Cinnebar_Router
     }
     public function basehref($omit = false)
     {
-        if (true === $omit) return '/'.$this->directory.'/'.$this->language;
+        if (true === $omit) {
+            return '/'.$this->directory.'/'.$this->language;
+        }
         return $this->scheme.'://'.$this->host().'/'.$this->directory().'/'.$this->language();
     }
     public function host()
@@ -493,11 +505,13 @@ class Cinnebar_Router
     {
         return $this->internal_url;
     }
-	protected function slice($index)
-	{
-		if ( ! isset($this->slices[$index])) return null;
-		return $this->slices[$index];
-	}
+    protected function slice($index)
+    {
+        if (! isset($this->slices[$index])) {
+            return null;
+        }
+        return $this->slices[$index];
+    }
 }
 class Cinnebar_Controller extends Cinnebar_Element
 {
