@@ -1,5 +1,5 @@
 <?php
-// Written by Stephan A. Hombergs, Copyright 2012-2013. Licensed @see license.txt
+// Written by Stephan A. Hombergs, Copyright 2012-2018. Licensed @see license.txt
  
 interface iLanguage
 {
@@ -53,7 +53,7 @@ class Cinnebar_Factory
 }
 class Cinnebar_Facade extends Cinnebar_Element
 {
-    const RELEASE = '1.13';
+    const RELEASE = '1.14';
     private $cycle;
     public function cli()
     {
@@ -645,11 +645,11 @@ class Controller_Scaffold extends Cinnebar_Controller
     }
     protected function make_filter()
     {
-        if ( ! isset($_SESSION['filter'][$this->type]['id'])) {
+        if (! isset($_SESSION['filter'][$this->type]['id'])) {
             $_SESSION['filter'][$this->type]['id'] = 0;
         }
         $filter = R::load('filter', $_SESSION['filter'][$this->type]['id']);
-        if ( ! $filter->getId()) {
+        if (! $filter->getId()) {
             $filter->rowsperpage = self::LIMIT;
             $filter->model = $this->type;             $filter->user = $this->view->user;             $filter->logic = 'AND';
             $filter->name = __('filter_auto_title', array(__('domain_' . $this->type)));
@@ -668,20 +668,20 @@ class Controller_Scaffold extends Cinnebar_Controller
     }
     protected function collection()
     {
-    	$whereClause = $this->view->filter->buildWhereClause();
-		$orderClause = $this->view->attributes[$this->order]['orderclause'].' '.$this->sortdir($this->dir);
-		$sql = $this->view->record->sqlForFilters($whereClause, $orderClause, $this->offset($this->page, $this->limit), $this->limit);
-		$this->view->total = 0;
-		try {
-						$assoc = R::$adapter->getAssoc($sql, $this->view->filter->filterValues());
-						$this->view->records = R::batch($this->type, array_keys($assoc));
-			            $this->view->total = R::getCell($this->view->record->sqlForTotal($whereClause), $this->view->filter->filterValues());
-									return true;
-		} catch (Exception $e) {
+        $whereClause = $this->view->filter->buildWhereClause();
+        $orderClause = $this->view->attributes[$this->order]['orderclause'].' '.$this->sortdir($this->dir);
+        $sql = $this->view->record->sqlForFilters($whereClause, $orderClause, $this->offset($this->page, $this->limit), $this->limit);
+        $this->view->total = 0;
+        try {
+                        $assoc = R::$adapter->getAssoc($sql, $this->view->filter->filterValues());
+                        $this->view->records = R::batch($this->type, array_keys($assoc));
+                        $this->view->total = R::getCell($this->view->record->sqlForTotal($whereClause), $this->view->filter->filterValues());
+                                    return true;
+        } catch (Exception $e) {
             Cinnebar_Logger::instance()->log('Scaffold Collection has issues: '.$e.' '.$sql, 'sql');
-			$this->view->records = array();
-			return false;
-		}    
+            $this->view->records = array();
+            return false;
+        }
     }
     protected function offset($page, $limit)
     {
@@ -689,25 +689,33 @@ class Controller_Scaffold extends Cinnebar_Controller
     }
     protected function sortdir($dir = 0)
     {
-        if ( ! isset($this->sortdirs[$dir])) return 'ASC';
+        if (! isset($this->sortdirs[$dir])) {
+            return 'ASC';
+        }
         return $this->sortdirs[$dir];
     }
-	public function trigger($action, $condition)
-	{
-	    $callback = $condition.'_'.$action;
-        if ( ! method_exists($this, $callback)) return;
+    public function trigger($action, $condition)
+    {
+        $callback = $condition.'_'.$action;
+        if (! method_exists($this, $callback)) {
+            return;
+        }
         $this->$callback();
-	}
-	protected function applyToSelection($pointers = null, $action = 'idle')
-	{
-        if ( ! $this->permission()->allowed($this->user(), $this->type, $action)) {
-			return false;
-		}	    
-        if ( empty($pointers)) return false;
-        if ( ! is_array($pointers)) return false;
+    }
+    protected function applyToSelection($pointers = null, $action = 'idle')
+    {
+        if (! $this->permission()->allowed($this->user(), $this->type, $action)) {
+            return false;
+        }
+        if (empty($pointers)) {
+            return false;
+        }
+        if (! is_array($pointers)) {
+            return false;
+        }
         $valid = true;
         foreach ($pointers as $id=>$switch) {
-            $record = R::load($this->type, $id);
+                        $record = R::load($this->type, $id);
             R::begin();
             try {
                 $record->$action();
@@ -717,17 +725,21 @@ class Controller_Scaffold extends Cinnebar_Controller
                 $valid = false;
             }
         }
-        if ($valid) return count($pointers);
+        if ($valid) {
+            return count($pointers);
+        }
         return false;
-	}
+    }
     public function report($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'index')) {
-			return $this->error('403');
-		}
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'index')) {
+            return $this->error('403');
+        }
         $this->env($page, $limit, $layout, $order, $dir, null, 'report');
         $this->trigger('report', 'before');
         if ($this->input()->post()) {
@@ -759,10 +771,10 @@ class Controller_Scaffold extends Cinnebar_Controller
                 $this->redirect(sprintf('/%s/report/%d/%d/%s/%d/%d/', $this->type, 1, $this->limit, $this->layout, $this->order, $this->dir));
             }
             if ($this->input()->post('submit') == __('scaffold_submit_order')) {
-                $this->redirect(sprintf('/%s/report/%d/%d/%s/%d/%d/', $this->type, 1, $this->limit, $this->layout, $this->input()->post('order'), $this->input()->post('dir')));            
+                $this->redirect(sprintf('/%s/report/%d/%d/%s/%d/%d/', $this->type, 1, $this->limit, $this->layout, $this->input()->post('order'), $this->input()->post('dir')));
             }
-            $this->view->selection = $this->input()->post('selection');
-            $counter = $this->applyToSelection($this->view->selection[$this->type], $this->input()->post('action'));
+            $selection = $this->combineSelectionAndCollector($this->input()->post('selection'));
+            $counter = $this->applyToSelection($selection, $this->input()->post('action'));
             if ($counter) {
                 $message = __('scaffold_apply_to_selection_success', array($counter, __('action_'.$this->input()->post('action'))), null, null, 'This takes two parameters where the first one is the number of records and the second is the translation of the applied action token');
                 with(new Cinnebar_Messenger)->notify($this->user(), $message, 'success');
@@ -787,10 +799,12 @@ class Controller_Scaffold extends Cinnebar_Controller
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'index')) {
-			return $this->error('403');
-		}
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'index')) {
+            return $this->error('403');
+        }
         $this->env($page, $limit, $layout, $order, $dir, null, 'index');
         $this->trigger('index', 'before');
         if ($this->input()->post()) {
@@ -812,10 +826,10 @@ class Controller_Scaffold extends Cinnebar_Controller
                 $this->redirect(sprintf('/%s/index/%d/%d/%s/%d/%d/', $this->type, 1, $this->limit, $this->layout, $this->order, $this->dir));
             }
             if ($this->input()->post('submit') == __('scaffold_submit_order')) {
-                $this->redirect(sprintf('/%s/index/%d/%d/%s/%d/%d/', $this->type, 1, $this->limit, $this->layout, $this->input()->post('order'), $this->input()->post('dir')));            
+                $this->redirect(sprintf('/%s/index/%d/%d/%s/%d/%d/', $this->type, 1, $this->limit, $this->layout, $this->input()->post('order'), $this->input()->post('dir')));
             }
-            $this->view->selection = $this->input()->post('selection');
-            $counter = $this->applyToSelection($this->view->selection[$this->type], $this->input()->post('action'));
+            $selection = $this->combineSelectionAndCollector($this->input()->post('selection'));
+            $counter = $this->applyToSelection($selection, $this->input()->post('action'));
             if ($counter) {
                 $message = __('scaffold_apply_to_selection_success', array($counter, __('action_'.$this->input()->post('action'))), null, null, 'This takes two parameters where the first one is the number of records and the second is the translation of the applied action token');
                 with(new Cinnebar_Messenger)->notify($this->user(), $message, 'success');
@@ -825,7 +839,7 @@ class Controller_Scaffold extends Cinnebar_Controller
         }
         $this->collection();
         $this->view->pagination = new Cinnebar_Pagination(
-            $this->view->url(sprintf('/%s/index/', $this->typeOrTypeAlias() )),
+            $this->view->url(sprintf('/%s/index/', $this->typeOrTypeAlias())),
             $this->page,
             $this->limit,
             $this->layout,
@@ -836,19 +850,32 @@ class Controller_Scaffold extends Cinnebar_Controller
         $this->trigger('index', 'after');
         echo $this->view->render();
     }
+    public function combineSelectionAndCollector($pointers)
+    {
+        $selection = array();
+        if (isset($_SESSION['collector'][$this->type]) && is_array($_SESSION['collector'][$this->type])) {
+            $selection = $_SESSION['collector'][$this->type];
+            unset($_SESSION['collector'][$this->type]);
+        }
+        return $selection;
+    }
     public function typeOrTypeAlias()
     {
-        if ( ! $this->typeAlias ) return $this->type;
+        if (! $this->typeAlias) {
+            return $this->type;
+        }
         return $this->typeAlias;
     }
     public function htmlpdf($page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'index')) {
-			return $this->error('403');
-		}
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'index')) {
+            return $this->error('403');
+        }
         $this->env($page, $limit, $layout, $order, $dir, null, 'htmlpdf');
                 $real_limit = $this->limit;
         $real_offset = $this->offset;
@@ -856,15 +883,15 @@ class Controller_Scaffold extends Cinnebar_Controller
                 $this->collection();
                 $this->limit = $real_limit;
         $this->offset = $real_offset;
-    	require_once BASEDIR.'/vendors/mpdf/mpdf.php';
+        require_once BASEDIR.'/vendors/mpdf/mpdf.php';
         $docname = 'Cards as PDF';
         $filename = 'Liste.pdf';
         $mpdf = new mPDF('c', 'A4');
         $mpdf->SetTitle($docname);
-        $mpdf->SetAuthor( 'von Rohr' );
+        $mpdf->SetAuthor('von Rohr');
         $mpdf->SetDisplayMode('fullpage');
         $html = $this->view->render();
-        $mpdf->WriteHTML( $html );
+        $mpdf->WriteHTML($html);
         $mpdf->Output($filename, 'D');
         exit;
     }
@@ -872,10 +899,12 @@ class Controller_Scaffold extends Cinnebar_Controller
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'index')) {
-			return $this->error('403');
-		}
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'index')) {
+            return $this->error('403');
+        }
         $this->env($page, $limit, $layout, $order, $dir, null, 'index');
                 $real_limit = $this->limit;
         $real_offset = $this->offset;
@@ -896,30 +925,34 @@ class Controller_Scaffold extends Cinnebar_Controller
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'add')) {
-			return $this->error('403');
-		}
-		$record = R::load($this->type, $id);
-		$dup = R::dup($record);
-				$dup->name = $dup->name . ' Kopie';
-		try {
-		    $dup->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
-		    $dup->prepareForDuplication();
-		    R::store($dup);
-		} catch (Exception $e) {
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'add')) {
+            return $this->error('403');
+        }
+        $record = R::load($this->type, $id);
+        $dup = R::dup($record);
+                $dup->name = $dup->name . ' Kopie';
+        try {
+            $dup->validationMode(Cinnebar_Model::VALIDATION_MODE_IMPLICIT);
+            $dup->prepareForDuplication();
+            R::store($dup);
+        } catch (Exception $e) {
             Cinnebar_Logger::instance()->log($e, 'exceptions');
-		}
-	    	    $this->redirect(sprintf('/%s/edit/%d/', $dup->getMeta('type'), $dup->getId()));
+        }
+                $this->redirect(sprintf('/%s/edit/%d/', $dup->getMeta('type'), $dup->getId()));
     }
     public function add($id = 0, $page = 1, $limit = self::LIMIT, $layout = self::LAYOUT, $order = 0, $dir = 0)
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'add')) {
-			return $this->error('403');
-		}
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'add')) {
+            return $this->error('403');
+        }
         $this->env($page, $limit, $layout, $order, $dir, $id, 'add');
         $this->trigger('add', 'before');
         if ($this->input()->post()) {
@@ -943,8 +976,7 @@ class Controller_Scaffold extends Cinnebar_Controller
                 $message = __('action_add_error');
                 with(new Cinnebar_Messenger)->notify($this->user(), $message, 'error');
             }
-        }
-        else {
+        } else {
             if ($this->view->record->getId()) {
                 $message = __('action_clone_success', array($this->view->url(sprintf('/%s/edit/%d/%d/%d/%s/%d/%d/', $this->type, $this->view->record->getId(), 1, self::LIMIT, $this->layout, $this->order, $this->dir))));
                 with(new Cinnebar_Messenger)->notify($this->user(), $message, 'info');
@@ -958,11 +990,13 @@ class Controller_Scaffold extends Cinnebar_Controller
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'import')) {
-			return $this->error('403');
-		}
-        $this->env($page, 0, 0, 0, 0, $id, 'import');         
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'import')) {
+            return $this->error('403');
+        }
+        $this->env($page, 0, 0, 0, 0, $id, 'import'); 
                 $this->view->record = R::load('import', $id);
         $this->view->record->model = $this->type;         $this->view->csv = $this->view->record->csv($this->view->page);
         if ($this->input()->post()) {
@@ -972,14 +1006,11 @@ class Controller_Scaffold extends Cinnebar_Controller
                 if ($this->input()->post('submit') == __('scaffold_submit_import')) {
                     $message = __('action_import_success');
                     with(new Cinnebar_Messenger)->notify($this->user(), $message, 'success');
-                                                        }
-                elseif ($this->input()->post('submit') == __('import_submit_prev')) {
+                                                        } elseif ($this->input()->post('submit') == __('import_submit_prev')) {
                     $this->view->page = max(0, $this->view->page - 1);
-                }
-                elseif ($this->input()->post('submit') == __('import_submit_next')) {
+                } elseif ($this->input()->post('submit') == __('import_submit_next')) {
                     $this->view->page = min($this->view->csv['max_records'] - 1, $this->view->page + 1);
-                }
-                elseif ($this->input()->post('submit') == __('import_submit_execute')) {
+                } elseif ($this->input()->post('submit') == __('import_submit_execute')) {
                                         R::begin();
                     try {
                         $imported_ids = $this->view->record->execute();                         $message = __('action_imported_n_of_m_success', array(count($imported_ids), count($this->view->csv['records'])));
@@ -992,8 +1023,7 @@ class Controller_Scaffold extends Cinnebar_Controller
                         with(new Cinnebar_Messenger)->notify($this->user(), $message, 'error');
                         $this->redirect(sprintf('/%s/import/%d/%d', $this->type, $this->view->record->getId(), $this->view->page));
                     }
-                }
-                else {
+                } else {
                     Cinnebar_Logger::instance()->log('scaffold import unkown post request', 'warn');
                 }
                 $this->redirect(sprintf('/%s/import/%d/%d', $this->type, $this->view->record->getId(), $this->view->page));
@@ -1010,10 +1040,12 @@ class Controller_Scaffold extends Cinnebar_Controller
     {
         $this->cache()->deactivate();
         session_start();
-        if ( ! $this->auth()) $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
-        if ( ! $this->permission()->allowed($this->user(), $this->type, 'edit')) {
-			return $this->error('403');
-		}
+        if (! $this->auth()) {
+            $this->redirect(sprintf('/login/?goto=%s', urlencode('/'.$this->router()->internalUrl())));
+        }
+        if (! $this->permission()->allowed($this->user(), $this->type, 'edit')) {
+            return $this->error('403');
+        }
         $this->env($page, $limit, $layout, $order, $dir, $id, 'edit');
         $this->trigger('edit', 'before');
         if ($this->input()->post()) {
@@ -1074,25 +1106,29 @@ class Controller_Scaffold extends Cinnebar_Controller
     }
     public function getType()
     {
-        if ( ! $this->typeAlias) return $this->type;
+        if (! $this->typeAlias) {
+            return $this->type;
+        }
         return $this->typeAlias;
     }
     protected function id_at_offset($offset)
     {
-        $offset--;         if ($offset < 0) return false;
-        $whereClause = $this->view->filter->buildWhereClause();
-		$orderClause = $this->view->attributes[$this->order]['orderclause'].' '.$this->sortdir($this->dir);
-    	$sql = $this->view->record->sqlForFilters($whereClause, $orderClause, $offset, 1);
-    	try {
-    		return R::getCell($sql, $this->view->filter->filterValues());
-    	} catch (Exception $e) {
+        $offset--;         if ($offset < 0) {
             return false;
-    	}
+        }
+        $whereClause = $this->view->filter->buildWhereClause();
+        $orderClause = $this->view->attributes[$this->order]['orderclause'].' '.$this->sortdir($this->dir);
+        $sql = $this->view->record->sqlForFilters($whereClause, $orderClause, $offset, 1);
+        try {
+            return R::getCell($sql, $this->view->filter->filterValues());
+        } catch (Exception $e) {
+            return false;
+        }
     }
     protected function pushSettingToView()
     {
         global $config;
-        if ( ! $this->view->basecurrency = R::findOne('currency', ' iso = ? LIMIT 1', array($config['currency']['base']))) {
+        if (! $this->view->basecurrency = R::findOne('currency', ' iso = ? LIMIT 1', array($config['currency']['base']))) {
             $this->view->basecurrency = R::dispense('currency');
             $this->view->basecurrency->iso = $config['currency']['base'];
             $this->view->basecurrency->exchangerate = 1.0000;
@@ -3380,16 +3416,16 @@ class Model_Filter extends Cinnebar_Model
 class Model_Criteria extends Cinnebar_Model
 {
     public $map = array(
- 		'like' => '%1$s like ?',
- 		'notlike' => '%1$s not like ?',
- 		'eq' => '%1$s = ?',
- 		'neq' => '%1$s != ?',
- 		'bw' => '%1$s like ?',
- 		'ew' => '%1$s like ?',
- 		'lt' => '%1$s < ?',
- 		'gt' => '%1$s > ?',
- 		'in' => '%1$s in (%2$s)'
- 		 		 		 	);
+        'like' => '%1$s like ?',
+        'notlike' => '%1$s not like ?',
+        'eq' => '%1$s = ?',
+        'neq' => '%1$s != ?',
+        'bw' => '%1$s like ?',
+        'ew' => '%1$s like ?',
+        'lt' => '%1$s < ?',
+        'gt' => '%1$s > ?',
+        'in' => '%1$s in (%2$s)'
+                            );
     public $operators = array(
          'text' => array('like', 'ew', 'eq', 'neq', 'bw', 'notlike'),
          'number' => array('eq', 'gt', 'lt', 'neq'),
@@ -3400,13 +3436,16 @@ class Model_Criteria extends Cinnebar_Model
          'in' => array('in'),
          'select' => array('eq'),
          'bool' => array('eq'),
-         'boolperv' => array('eq')
+         'boolperv' => array('eq'),
+         'chooser' => array('eq')
      );
-     public $pat = array('%', '_');
-     public $rep = array('\%', '\_');
+    public $pat = array('%', '_');
+    public $rep = array('\%', '\_');
     public function makeWherePart(Model_Filter $filter)
     {
-        if ( ! isset($this->map[$this->bean->op])) throw new Exception('Filter operator has no template');
+        if (! isset($this->map[$this->bean->op])) {
+            throw new Exception('Filter operator has no template');
+        }
         $template = $this->map[$this->bean->op];
         $value = $this->mask_filter_value($filter);
         return sprintf($template, $this->bean->attribute, $value);
@@ -3414,44 +3453,48 @@ class Model_Criteria extends Cinnebar_Model
     protected function mask_filter_value(Model_Filter $filter)
     {
         $add_to_filter_values = true;
-    	switch ($this->bean->op) {
-    		case 'like':
-    			$value = '%'.str_replace($this->pat, $this->rep, $this->bean->value).'%';
-    			break;
-    		case 'notlike':
-    			$value = '%'.str_replace($this->pat, $this->rep, $this->bean->value).'%';
-    			break;
-    		case 'bw':
-    			$value = str_replace($this->pat, $this->rep, $this->bean->value).'%';
-    			break;
-    		case 'ew':
-    			$value = '%'.str_replace($this->pat, $this->rep, $this->bean->value);
-    			break;
-    		case 'in':
-    		    $_sharedSubName = 'shared'.ucfirst(strtolower($this->bean->substitute));
-    		    $ids = array_keys($this->bean->{$_sharedSubName});
-    		    $value = implode(', ', $ids);
-    		    $add_to_filter_values = false;
-    		    break;
-    		default:
-    			$value = $this->bean->value;
-    	}
+        switch ($this->bean->op) {
+            case 'like':
+                $value = '%'.str_replace($this->pat, $this->rep, $this->bean->value).'%';
+                break;
+            case 'notlike':
+                $value = '%'.str_replace($this->pat, $this->rep, $this->bean->value).'%';
+                break;
+            case 'bw':
+                $value = str_replace($this->pat, $this->rep, $this->bean->value).'%';
+                break;
+            case 'ew':
+                $value = '%'.str_replace($this->pat, $this->rep, $this->bean->value);
+                break;
+            case 'in':
+                $_sharedSubName = 'shared'.ucfirst(strtolower($this->bean->substitute));
+                $ids = array_keys($this->bean->{$_sharedSubName});
+                $value = implode(', ', $ids);
+                $add_to_filter_values = false;
+                break;
+            default:
+                $value = $this->bean->value;
+        }
         if ($add_to_filter_values) {
             if ($this->bean->tag == 'date') {
                 $value = date('Y-m-d', strtotime($value));
             }
-    	    $filter->filter_values[] = $value;
-    	}
-    	return $value;
+            $filter->filter_values[] = $value;
+        }
+        return $value;
     }
     public function operators()
     {
-        if (isset($this->operators[$this->bean->tag])) return $this->operators[$this->bean->tag];
+        if (isset($this->operators[$this->bean->tag])) {
+            return $this->operators[$this->bean->tag];
+        }
         return array();
     }
     public function getOperators($type = 'text')
     {
-        if (isset($this->operators[$type])) return $this->operators[$type];
+        if (isset($this->operators[$type])) {
+            return $this->operators[$type];
+        }
         return array();
     }
     public function dispense()

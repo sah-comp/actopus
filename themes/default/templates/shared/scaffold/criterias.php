@@ -70,6 +70,22 @@
         </option>
         <?php endforeach ?>
     </select>
+    <?php elseif ($_criteria->tag == 'chooser'): ?>
+    <select
+        class="filter-select"
+        name="filter[ownCriteria][<?php echo $_i ?>][value]">
+        <option
+            value="">
+            <?php echo __('filter_placeholder_any') ?>
+        </option>
+        <?php foreach ($_attribute['filter']['options'] as $_opt_val => $_opt_text): ?>
+        <option
+            value="<?php echo $_opt_val ?>"
+            <?php echo ($_criteria->value != '' && $_opt_val == $_criteria->value) ? 'selected="selected"' : '' ?>>
+            <?php echo $_opt_text ?>
+        </option>
+        <?php endforeach ?>
+    </select>
     <?php else: ?>
     <input
         type="text"

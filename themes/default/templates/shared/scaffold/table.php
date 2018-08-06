@@ -10,6 +10,7 @@
 ?>
 <form
     id="index-<?php echo $record->getMeta('type') ?>"
+    class="scaffold-table"
     action=""
     method="post"
     accept-charset="utf-8">
@@ -22,9 +23,9 @@
             <thead>
                 <tr>
                     <th class="switch">&nbsp;</th>
-                    
+
                     <th class="scaffold-action">&nbsp;</th>
-                    
+
                     <?php echo $this->partial(sprintf('model/%s/table/thead/columns', $record->getMeta('type')), array('record' => $record, 'attributes' => $attributes)) ?>
                 </tr>
                 <?php if (isset($filter) && is_a($filter, 'RedBean_OODBBean') && $filter->hasFilter($attributes) && $_filter_html = $this->partial(sprintf('shared/scaffold/criterias', $record->getMeta('type')), array('attributes' => $attributes))): ?>
@@ -79,11 +80,11 @@
                             value="<?php echo __('filter_submit_clear') ?>" />
                     </th>
                     <?php echo $_filter_html ?>
-                    
+
                 </tr>
                 <?php endif ?>
             </thead>
-    
+
             <tfoot>
                 <tr>
                     <td>
@@ -108,7 +109,7 @@
                     </td>
                 </tr>
             </tfoot>
-    
+
             <tbody>
             <?php $_row = 0 ?>
             <?php foreach ($records as $_id => $_record): ?>
@@ -122,17 +123,20 @@
                         <input
                             type="checkbox"
                             class="selector"
+                            data-model="<?php echo $_record->getMeta('type') ?>"
+                            data-id="<?php echo $_record->getId() ?>"
+                            data-collector="<?php echo $this->url(sprintf('/%1$s/collector/%1$s/%2$d', $_record->getMeta('type'), $_record->getId())) ?>"
                             name="selection[<?php echo $_record->getMeta('type') ?>][<?php echo $_record->getId() ?>]"
                             value="1"
                             title="<?php echo __('scaffold_title_marker') ?>"
-                            <?php echo (isset($selection[$_record->getMeta('type')][$_record->getId()]) && $selection[$_record->getMeta('type')][$_record->getId()]) ? self::CHECKED : '' ?> />
+                            <?php echo ((isset($_SESSION['collector'][$_record->getMeta('type')][$_record->getId()]) && $_SESSION['collector'][$_record->getMeta('type')][$_record->getId()]) || (isset($selection[$_record->getMeta('type')][$_record->getId()]) && $selection[$_record->getMeta('type')][$_record->getId()])) ? self::CHECKED : '' ?> />
                     </td>
-                    
+
                     <td class="action">
                         <a href="<?php echo $this->url(sprintf('/%s/edit/%d/%d/%d/%s/%d/%d/', $_record->getMeta('type'), $_record->getId(), $_offset + $_row, 1, $layout, $order, $dir)) ?>" title="<?php echo __('scaffold_action_title_edit') ?>" class="edit ir"><?php echo __('action_edit') ?></a>
                     </td>
                     <!-- end of action link in a row -->
-                    
+
                     <?php echo $this->partial(sprintf('model/%s/table/tbody/columns', $_record->getMeta('type')), array('record' => $_record)) ?>
                     <!-- end of attributes -->
 

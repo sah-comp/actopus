@@ -53,7 +53,7 @@ ini_set('session.gc_maxlifetime', MAX_SESS_LIFETIME);
 /**
  * Define the GUI theme to use.
  */
-if ( ! defined('S_THEME')) {
+if (! defined('S_THEME')) {
     define('S_THEME', $config['theme']);
 }
 
@@ -68,10 +68,12 @@ $autoloader->register();
 // shall we activate a database?
 if (isset($config['db']['active']) && $config['db']['active'] === true) {
     // yes: setup the database with RedBeanPHP
-    R::setup($config['db']['driver'].':host='.
+    R::setup(
+        $config['db']['driver'].':host='.
         $config['db']['host'].';dbname='.$config['db']['database'],
         $config['db']['username'],
-        $config['db']['password']);
+        $config['db']['password']
+    );
     if (isset($config['db']['freeze']) && $config['db']['freeze'] === true) {
         R::freeze(true);
     }
@@ -82,7 +84,8 @@ if (isset($config['db']['active']) && $config['db']['active'] === true) {
  *
  * @since MySQL 5.7
  */
-R::exec( 'SET SESSION sql_mode = "ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"' );
+//R::exec( 'SET SESSION sql_mode = "ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"' );
+R::exec('SET SESSION sql_mode = ""');
 
 // There shall be non url rewriter and session id gets handled by cookies only
 ini_set('url_rewriter.tags', '');
@@ -94,12 +97,14 @@ ini_set('session.use_only_cookies', '1');
 if (isset($config['sessionhandler']) && ! empty($config['sessionhandler'])) {
     $sessionhandler_name = 'Sessionhandler_'.ucfirst(strtolower($config['sessionhandler']));
     $sessionhandler = new $sessionhandler_name;
-    session_set_save_handler(array($sessionhandler, 'open'),
+    session_set_save_handler(
+        array($sessionhandler, 'open'),
                              array($sessionhandler, 'close'),
                              array($sessionhandler, 'read'),
                              array($sessionhandler, 'write'),
                              array($sessionhandler, 'destroy'),
-                             array($sessionhandler, 'gc'));
+                             array($sessionhandler, 'gc')
+    );
     register_shutdown_function('session_write_close');
 }
 

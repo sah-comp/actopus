@@ -210,7 +210,6 @@ SQL;
     /**
      * Returns SQL for filtering these beans.
      *
-     * @uses R
      * @param string $where_clause
      * @param string $order_clause
      * @param int $offset
@@ -221,7 +220,7 @@ SQL;
     {
         $sql = <<<SQL
 		SELECT
-			DISTINCT(card.id) as id
+			card.id as id
 
 		FROM
 			card
@@ -231,6 +230,8 @@ SQL;
 		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
 		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
 		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+        LEFT JOIN feetype ON feetype.id = card.feetype_id
+        LEFT JOIN cardfeestep ON cardfeestep.id = (SELECT cardfeestep.id FROM cardfeestep WHERE cardfeestep.card_id = card.id AND cardfeestep.done = 0 ORDER BY cardfeestep.fy ASC LIMIT 1)
 
 		WHERE {$where_clause}
 
@@ -244,7 +245,6 @@ SQL;
     /**
      * Returns SQL for total.
      *
-     * @uses R
      * @param string $where_clause
      * @return string $SQL
      */
@@ -262,6 +262,8 @@ SQL;
 		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
 		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
 		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+        LEFT JOIN feetype ON feetype.id = card.feetype_id
+        LEFT JOIN cardfeestep ON cardfeestep.id = (SELECT cardfeestep.id FROM cardfeestep WHERE cardfeestep.card_id = card.id AND cardfeestep.done = 0 ORDER BY cardfeestep.fy ASC LIMIT 1)
 
 		WHERE {$where_clause}
 SQL;
@@ -314,7 +316,7 @@ SQL;
     /**
      * Returns a country name.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function countryName()
     {
@@ -324,7 +326,7 @@ SQL;
     /**
      * Returns a country iso.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function countryIso()
     {
@@ -334,7 +336,7 @@ SQL;
     /**
      * Returns a cardtype name.
      *
-     * @return RedBean_OODBBean
+     * @return string
      */
     public function cardtypeName()
     {
@@ -773,6 +775,16 @@ SQL;
     }
 
     /**
+     * Returns the feetype name.
+     *
+     * @return string
+     */
+    public function feetypeName()
+    {
+        return $this->bean->feetype()->name;
+    }
+
+    /**
      * Returns a user bean.
      *
      * @return RedBean_OODBBean
@@ -940,6 +952,18 @@ SQL;
                         )
                     ),
                     array(
+                        'attribute' => 'feetype_id',
+                        'orderclause' => 'feetype.name',
+                        'class' => 'text',
+                        'width' => '5%',
+                        'callback' => array(
+                            'name' => 'feetypeName'
+                        ),
+                        'filter' => array(
+                            'tag' => 'text'
+                        )
+                    ),
+                    array(
                         'attribute' => 'applicationdate',
                         'orderclause' => 'card.applicationdate',
                         'class' => 'date',
@@ -955,22 +979,36 @@ SQL;
                         'class' => 'number',
                         'width' => '5%',
                         'callback' => array(
-                            'name' => 'monthdue'
+                            'name' => 'monthdueByName'
                         ),
                         'filter' => array(
-                            'tag' => 'number'
+                            'tag' => 'chooser',
+                            'options' => array(
+                                1 => __('month_label_01'),
+                                2 => __('month_label_02'),
+                                3 => __('month_label_03'),
+                                4 => __('month_label_04'),
+                                5 => __('month_label_05'),
+                                6 => __('month_label_06'),
+                                7 => __('month_label_07'),
+                                8 => __('month_label_08'),
+                                9 => __('month_label_09'),
+                                10 => __('month_label_10'),
+                                11 => __('month_label_11'),
+                                12 => __('month_label_12')
+                            )
                         )
                     ),
                     array(
-                        'attribute' => 'stash_id',
-                        'orderclause' => 'card.applicationdate',
+                        'attribute' => 'cardfeestep.fy',
+                        'orderclause' => 'cardfeestep.fy',
                         'class' => 'number',
                         'width' => '15%',
                         'callback' => array(
                             'name' => 'feestepMultipay'
                         ),
-                        'xxx-filter' => array(
-                            'tag' => 'text'
+                        'filter' => array(
+                            'tag' => 'number'
                         )
                     ),
                     array(
@@ -1005,15 +1043,25 @@ SQL;
                         )
                     ),
                     array(
-                        'attribute' => 'stash_id AS feeorderhold',
-                        'orderclause' => 'card.feeorderneeded',
-                        'class' => 'number',
+                        'attribute' => 'status',
+                        'orderclause' => 'card.status',
+                        'class' => 'text',
                         'width' => '5%',
                         'callback' => array(
-                            'name' => 'feeorderMultipay'
+                            'name' => 'cardStatusInternal'
                         ),
-                        'xxx-filter' => array(
-                            'tag' => 'text'
+                        'filter' => array(
+                            'tag' => 'chooser',
+                            'options' => array(
+                                'awareness' => __('annual_label_awareness'),
+                                'billed' => __('annual_label_billed'),
+                                'done' => __('annual_label_done'),
+                                'due' => __('annual_label_due'),
+                                'inactive' => __('annual_label_inactive'),
+                                'maintain' => __('annual_label_maintain'),
+                                'onhold' => __('annual_label_onhold'),
+                                'paid' => __('annual_label_paid')
+                            )
                         )
                     )
                 );
@@ -1569,7 +1617,7 @@ SQL;
                         'width' => '10%',
                         'filter' => array(
                             'tag' => 'text',
-                            'orderclause' => 'card.name'
+                            'orderclause' => 'card.sortnumber'
                         )
                     ),
                     array(
@@ -1685,6 +1733,16 @@ SQL;
     public function monthdue()
     {
         return date('m', strtotime($this->bean->applicationdate));
+    }
+
+    /**
+     * Return the month name translated of fee due date.
+     *
+     * @return string
+     */
+    public function monthdueByName()
+    {
+        return __('month_label_' . date('m', strtotime($this->bean->applicationdate)));
     }
 
     /**
