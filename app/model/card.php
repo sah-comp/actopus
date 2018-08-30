@@ -1617,7 +1617,7 @@ SQL;
                         'width' => '10%',
                         'filter' => array(
                             'tag' => 'text',
-                            'orderclause' => 'card.sortnumber'
+                            'orderclause' => 'card.name'
                         )
                     ),
                     array(
