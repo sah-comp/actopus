@@ -56,15 +56,19 @@ class Model_Card extends Cinnebar_Model
         error_log('Rule ' . $rule->getId() . ' and fee ' . $fee->getId());
         $feesteps = $fee->with(' ORDER BY id ')->ownFeestep;
         $cardsteps = $this->bean->with(' ORDER BY fy ')->ownCardfeestep;
-        foreach ($cardsteps as $id => $cardstep) {
-            $feestep = array_shift($feesteps);
-            if ($cardstep->done) {
-                continue;
-            } //skip any done step
-            $cardstep->net = $feestep->net;
-            error_log('Step ' . $cardstep->fy . ' with feestep ' . $feestep->net);
+        if ($feesteps) {
+            foreach ($cardsteps as $id => $cardstep) {
+                $feestep = array_shift($feesteps);
+                if ($cardstep->done) {
+                    continue;
+                } //skip any done step
+                $cardstep->net = $feestep->net;
+                error_log('Step ' . $cardstep->fy . ' with feestep ' . $feestep->net);
+            }
+            error_log('Und I did. Ready.');
+        } else {
+            error_log('No feesteps definded. Most likely its an perpetual rule');
         }
-        error_log('Und I did. Ready.');
         return $cardsteps;
     }
 

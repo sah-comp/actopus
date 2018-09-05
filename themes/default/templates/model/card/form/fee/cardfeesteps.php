@@ -127,7 +127,7 @@
     	</a>
     </div>
     <div class="span1">
-        <?php echo $this->decimal($_cardfeestep->net, 2) ?>
+        <?php echo $this->decimal($_cardfeestep->net, 2) ?>&nbsp;
     </div>
 
     <div class="span2">
