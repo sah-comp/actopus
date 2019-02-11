@@ -673,7 +673,7 @@ class Controller_Scaffold extends Cinnebar_Controller
         $sql = $this->view->record->sqlForFilters($whereClause, $orderClause, $this->offset($this->page, $this->limit), $this->limit);
         $this->view->total = 0;
         try {
-                        $assoc = R::$adapter->getAssoc($sql, $this->view->filter->filterValues());
+            			$assoc = R::$adapter->getAssoc($sql, $this->view->filter->filterValues());
                         $this->view->records = R::batch($this->type, array_keys($assoc));
                         $this->view->total = R::getCell($this->view->record->sqlForTotal($whereClause), $this->view->filter->filterValues());
                                     return true;

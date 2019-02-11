@@ -86,7 +86,7 @@
         <fieldset>
             <legend class="verbose"><?php echo __($record->getMeta('type').'_legend_criterias') ?></legend>
             <div id="criteria-container" class="container attachable detachable criteria">
-                <?php foreach ($filter->own('criteria', false) as $_n => $_record): ?>
+                <?php foreach ($filter->with('ORDER BY id')->ownCriteria as $_n => $_record): ?>
                     <?php echo $this->partial(sprintf('model/%s/form/own/%s', $filter->getMeta('type'), 'criteria'), array('n' => $_n, 'criteria' => $_record)) ?>
                 <?php endforeach ?>    
                     <a
@@ -107,6 +107,8 @@
                 type="submit"
                 name="submit"
                 value="<?php echo __('filter_submit_clear') ?>" />
+				
+			<a href="<?php echo $this->url(sprintf('/%s/press/%d/%d/filter/0/0', $record->getMeta('type'), 1, 23)) ?>"><?php echo __('filter_link_export_report') ?></a>
                 
             <input
                 type="submit"

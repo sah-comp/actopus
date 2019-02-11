@@ -245,6 +245,44 @@ SQL;
 SQL;
         return $sql;
     }
+	
+    /**
+     * Returns SQL for exportToCSV a single bean.
+   	 *
+     * @return string $SQL
+     */
+    public function sqlForExportToCSV()
+    {
+        $sql = <<<SQL
+		SELECT
+			card.id AS id,
+			card.*,
+			country.*,
+			client.*,
+			cardtype.*,
+			cardstatus.*,
+			attorney.*,
+			feetype.*,
+			cardfeestep.*
+
+		FROM
+			card
+
+		LEFT JOIN country ON country.id = card.country_id
+        LEFT JOIN person AS client ON client.id = card.client_id
+		LEFT JOIN cardtype ON cardtype.id = card.cardtype_id
+		LEFT JOIN cardstatus ON cardstatus.id = card.cardstatus_id
+		LEFT JOIN user AS attorney ON attorney.id = card.user_id
+        LEFT JOIN feetype ON feetype.id = card.feetype_id
+        LEFT JOIN cardfeestep ON cardfeestep.id = (SELECT cardfeestep.id FROM cardfeestep WHERE cardfeestep.card_id = card.id AND cardfeestep.done = 0 ORDER BY cardfeestep.fy ASC LIMIT 1)
+
+		WHERE card.id = ?
+		
+		LIMIT 1
+		
+SQL;
+        return $sql;
+    }
 
     /**
      * Returns SQL for total.
@@ -1463,7 +1501,7 @@ SQL;
                     ),
                     array(
                         'attribute' => 'applicant_id',
-                        'orderclause' => 'applicantnickname',
+                        'orderclause' => 'card.applicantnickname',
                         'class' => 'text',
                         'callback' => array(
                             'name' => 'applicantNickname'
@@ -1482,7 +1520,7 @@ SQL;
                     ),
                     array(
                         'attribute' => 'invreceiver_id',
-                        'orderclause' => 'invreceivernickname',
+                        'orderclause' => 'card.invreceivernickname',
                         'class' => 'text',
                         'callback' => array(
                             'name' => 'invreceiverNickname'
@@ -1501,7 +1539,7 @@ SQL;
                     ),
                     array(
                         'attribute' => 'foreign_id',
-                        'orderclause' => 'foreignnickname',
+                        'orderclause' => 'card.foreignnickname',
                         'class' => 'text',
                         'callback' => array(
                             'name' => 'foreignNickname'
@@ -1803,6 +1841,42 @@ SQL;
      */
     public function exportToCSV($header = false, $layout = 'default')
     {
+        // layout "fitler", that is not a fixed layout, but the fields checked in a certain filter
+        if ($layout == 'filter') {
+			
+			if (!isset($_SESSION['filter']['card']['id'])) {
+	            if ($header == true) {
+	                return array(
+	                    __('card_label_card.name')
+
+	                );
+	            }
+	            return array(
+	                $this->bean->name
+	            );
+			} else {
+				// we have a filter, lets puff it away
+				$filter = R::load('filter', $_SESSION['filter']['card']['id']);
+				$fields = $filter->withCondition('switch = 1')->ownCriteria;
+	            if ($header == true) {
+					$header = array();
+					foreach ($fields as $field) {
+						$header[] = __('card_label_' . $field->attribute);
+					}
+	                return $header;
+	            }
+				$data = array();
+				$pdo = R::getDatabaseAdapter()->getDatabase()->getPDO();
+				$pdo->setAttribute(PDO::ATTR_FETCH_TABLE_NAMES, true);
+				$record = R::getRow($this->sqlForExportToCSV(), array($this->bean->getId()));
+				$pdo->setAttribute(PDO::ATTR_FETCH_TABLE_NAMES, false);
+				foreach ($fields as $field) {
+					$data[] = $record[$field->attribute];
+				}
+	            return $data;
+			}
+        }
+
         // layout vrone
         if ($layout == 'vrone') {
             if ($header == true) {

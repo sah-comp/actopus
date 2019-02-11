@@ -14,7 +14,17 @@
 	<input type="hidden" name="filter[ownCriteria][<?php echo $n ?>][tag]" value="<?php echo $criteria->tag ?>" />
 </div>
 <div class="row">
-    <div class="span3">&nbsp;</div>
+    <div class="span2">&nbsp;</div>
+	<div class="span1">
+		<div class="rgt">
+			<input type="hidden" name="filter[ownCriteria][<?php echo $n ?>][switch]" value="0" />
+			<input
+				type="checkbox"
+				name="filter[ownCriteria][<?php echo $n ?>][switch]"
+				value="1"
+				<?php echo ($criteria->switch) ? 'checked="checked"' : '' ?> />
+		</div>
+	</div>
     <div class="span2">
         <select
             id="criteria-attribute-<?php echo $n ?>"

@@ -236,7 +236,7 @@ class Controller_Scaffold extends Cinnebar_Controller
 
         try {
             //R::debug(true);
-            $assoc = R::$adapter->getAssoc($sql, $this->view->filter->filterValues());
+			$assoc = R::$adapter->getAssoc($sql, $this->view->filter->filterValues());
             //R::debug(false);
             $this->view->records = R::batch($this->type, array_keys($assoc));
             //R::debug(true);
