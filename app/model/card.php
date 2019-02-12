@@ -1857,7 +1857,7 @@ SQL;
 			} else {
 				// we have a filter, lets puff it away
 				$filter = R::load('filter', $_SESSION['filter']['card']['id']);
-				$fields = $filter->withCondition('switch = 1')->ownCriteria;
+				$fields = $filter->withCondition('switch = 1 ORDER BY sequence')->ownCriteria;
 	            if ($header == true) {
 					$header = array();
 					foreach ($fields as $field) {

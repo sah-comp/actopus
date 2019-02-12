@@ -39,7 +39,8 @@ class Controller_Filter extends Controller_Scaffold
         session_start();
         $this->cache()->deactivate();
 
-		$n = md5(microtime(true));
+		//$n = md5(microtime(true));
+		$n = rand();
         $filter = R::load('filter', $id);
         $this->view = $this->makeView(sprintf('model/%s/form/%s/%s', $this->type, $prefix, $type));
         //find first attribute not used and set up criteria
@@ -74,7 +75,6 @@ class Controller_Filter extends Controller_Scaffold
         session_start();
         $this->cache()->deactivate();
         $this->view = $this->makeView(null);
-        
         $criteria = R::load('criteria', $n);
         $this->view->record = R::dispense($model);
         //find attribute and set it up
@@ -87,7 +87,7 @@ class Controller_Filter extends Controller_Scaffold
         //$filter = $criteria->filter;
         $this->view->criteria = $criteria;
         $this->view->n = $n;
-        echo $this->view->partial('model/filter/form/own/innercriteria');
+        echo $this->view->partial('model/filter/form/own/innercriteriawrapper');
         return;
     }
     

@@ -86,7 +86,7 @@
         <fieldset>
             <legend class="verbose"><?php echo __($record->getMeta('type').'_legend_criterias') ?></legend>
             <div id="criteria-container" class="container attachable detachable criteria">
-                <?php foreach ($filter->with('ORDER BY id')->ownCriteria as $_n => $_record): ?>
+                <?php foreach ($filter->with('ORDER BY sequence')->ownCriteria as $_n => $_record): ?>
                     <?php echo $this->partial(sprintf('model/%s/form/own/%s', $filter->getMeta('type'), 'criteria'), array('n' => $_n, 'criteria' => $_record)) ?>
                 <?php endforeach ?>    
                     <a

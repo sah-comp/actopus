@@ -14,7 +14,14 @@
 	<input type="hidden" name="filter[ownCriteria][<?php echo $n ?>][tag]" value="<?php echo $criteria->tag ?>" />
 </div>
 <div class="row">
-    <div class="span2">&nbsp;</div>
+    <div class="span2">
+		<div class="rgt">
+			<input
+				type="text"
+				name="filter[ownCriteria][<?php echo $n; ?>][sequence]"
+				value="<?php echo htmlspecialchars($criteria->sequence); ?>" />
+		</div>
+    </div>
 	<div class="span1">
 		<div class="rgt">
 			<input type="hidden" name="filter[ownCriteria][<?php echo $n ?>][switch]" value="0" />
@@ -25,34 +32,15 @@
 				<?php echo ($criteria->switch) ? 'checked="checked"' : '' ?> />
 		</div>
 	</div>
-    <div class="span2">
-        <select
-            id="criteria-attribute-<?php echo $n ?>"
-            class="updateonchange"
-            name="filter[ownCriteria][<?php echo $n ?>][attribute]"
-            data-target="inner-criteria-<?php echo $n ?>"
-            data-href="<?php echo $this->url(sprintf('/filter/updcriteria/%d/', $n)) ?>"
-            data-fragments='<?php echo json_encode(array('criteria-attribute-'.$n => 'on', 'filter-model' => 'on')) ?>'>
-            <?php foreach ($record->attributes('report') as $_attribute): ?>
-                <?php $_orderclause = $_attribute['orderclause'] ?>
-                <?php if (isset($_attribute['filter']['orderclause'])): ?>
-                    <?php $_orderclause = $_attribute['filter']['orderclause'] ?>
-                <?php endif ?>
-            <option
-                value="<?php echo $_orderclause ?>"
-                <?php echo ($criteria->attribute == $_orderclause) ? self::SELECTED : '' ?>><?php echo __($record->getMeta('type').'_label_'.$_attribute['attribute']) ?></option>
-            <?php endforeach ?>
-        </select>
-    </div>
-    <div class="span2">
-        <select name="filter[ownCriteria][<?php echo $n ?>][op]">
-            <?php foreach ($criteria->getOperators($criteria->tag) as $_operator): ?>
-            <option
-                value="<?php echo $_operator ?>"
-                <?php echo ($criteria->op == $_operator) ? self::SELECTED : '' ?>><?php echo __('criteria_label_'.$_operator) ?></option>
-            <?php endforeach ?>
-        </select>
-    </div>
+	<div class="span4">
+		<div id="inner-criteria-wrapper-<?php echo $n ?>">
+		    <?php echo $this->partial('model/filter/form/own/innercriteriawrapper', array(
+		       'n' => $n,
+		       'criteria' => $criteria,
+			   'record' => $record
+		    )) ?>
+		</div>
+	</div>
     <div class="span5">    
 		<input
 			type="text"
