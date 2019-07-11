@@ -210,7 +210,7 @@ SQL;
 
                 WHERE
                     (person.nickname like :searchtext OR person.name like :searchtext) AND
-                    person.deleted IS NULL
+                    (person.deleted IS NULL OR person.deleted = 0)
 
                 ORDER BY
                     person.name
