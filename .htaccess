@@ -13,7 +13,7 @@ AddCharset utf-8 .html .css .js .xml .json .rss
 #
 # Use index.php as directory index and index.html as second choice
 #
-DirectoryIndex index.php index.html
+#DirectoryIndex index.php index.html
 
 <files *.ini>
     order deny,allow
