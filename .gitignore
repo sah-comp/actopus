@@ -3,3 +3,4 @@ cache/
 logs/
 config/default.php
 backup.sh
+uploads/
