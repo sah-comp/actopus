@@ -46,15 +46,15 @@ class Viewhelper_Beanrow extends Cinnebar_Viewhelper
             $content = '';
             if (isset($attribute['class'])) $class .= $attribute['class'];
             if (isset($attribute['viewhelper'])) {
-                $content = $this->view->$attribute['viewhelper']($record->$attribute['attribute']);
+                $content = $this->view->{$attribute['viewhelper']}($record->{$attribute['attribute']});
             } elseif (isset($attribute['callback'])) {
                 if (is_array($attribute['callback'])) {
-                    $content = $record->$attribute['callback']['name']($attribute['attribute']);                
+                    $content = $record->{$attribute['callback']['name']}($attribute['attribute']);                
                 } else {
-                    $content = $record->$attribute['callback']($attribute['attribute']);                
+                    $content = $record->{$attribute['callback']}($attribute['attribute']);                
                 }
             } else {
-                $content = $record->$attribute['attribute'];
+                $content = $record->{$attribute['attribute']};
             }
             if ( ! $trusted) $content = htmlspecialchars($content);
             $s .= sprintf($this->template, $class, $content)."\n";
