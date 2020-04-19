@@ -2,11 +2,4 @@
 cache/
 logs/
 config/default.php
-logs/sql_log
-logs/warn_log
 backup.sh
-
-
-logs/sql_log
-
-logs/warn_log
