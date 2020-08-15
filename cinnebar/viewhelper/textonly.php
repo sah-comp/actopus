@@ -12,7 +12,10 @@
 /**
  * Require the textile library.
  */
-require_once BASEDIR.'/vendors/textile/classTextile.php';
+//require_once BASEDIR.'/vendors/textile/classTextile.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/DataBag.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/Tag.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/Parser.php';
 
 /**
  * The textonly viewhelper class of the cinnebar system.
@@ -33,9 +36,12 @@ class Viewhelper_Textonly extends Cinnebar_Viewhelper
      */
     public function execute($text = '', $restricted = false)
     {
-        if (empty($text)) return '';
-        $textile = new Textile();
-        if ( ! $restricted) return trim(strip_tags($textile->TextileThis($text)));
-        return trim(strip_tags($textile->TextileRestricted($text)));
+        if (empty($text)) {
+            return '';
+        }
+        $parser = new \Netcarver\Textile\Parser();
+        //if ( ! $restricted) return trim(strip_tags($textile->TextileThis($text)));
+        //return trim(strip_tags($textile->TextileRestricted($text)));
+        return $parser->parse($text);
     }
 }

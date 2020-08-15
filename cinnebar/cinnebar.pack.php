@@ -2069,15 +2069,18 @@ class Viewhelper_Url extends Cinnebar_Viewhelper
         return $this->view()->basehref().'/../themes/'.S_THEME.'/'.$type.'/'.$url.'.'.$type;
     }
 }
-require_once BASEDIR.'/vendors/textile/classTextile.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/DataBag.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/Tag.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/Parser.php';
 class Viewhelper_Textile extends Cinnebar_Viewhelper
 {
     public function execute($text = '', $restricted = false)
     {
-        if (empty($text)) return '';
-        $textile = new Textile();
-        if ( ! $restricted) return trim($textile->TextileThis($text));
-        return trim($textile->TextileRestricted($text));
+        if (empty($text)) {
+            return '';
+        }
+        $parser = new \Netcarver\Textile\Parser();
+                        return $parser->parse($text);
     }
 }
 class Cinnebar_Messenger

@@ -5048,10 +5048,13 @@ class Viewhelper_Url extends Cinnebar_Viewhelper
 /**
  * Require the textile library.
  */
-require_once BASEDIR.'/vendors/textile/classTextile.php';
+//require_once BASEDIR.'/vendors/textile/classTextile.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/DataBag.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/Tag.php';
+require_once BASEDIR . '/vendors/Netcarver/Textile/Parser.php';
 
 /**
- * The textile viewhelper class of the cinnebar system.
+ * The textonly viewhelper class of the cinnebar system.
  *
  * @package Cinnebar
  * @subpackage Viewhelper
@@ -5060,10 +5063,7 @@ require_once BASEDIR.'/vendors/textile/classTextile.php';
 class Viewhelper_Textile extends Cinnebar_Viewhelper
 {
     /**
-     * Renders a string with Textile.
-     *
-     * If the optional parameter is set to true, Textile will render content as
-     * untrusted input.
+     * Renders html/textile as textonly.
      *
      * @uses Textile
      * @param string (optional) $text
@@ -5072,10 +5072,13 @@ class Viewhelper_Textile extends Cinnebar_Viewhelper
      */
     public function execute($text = '', $restricted = false)
     {
-        if (empty($text)) return '';
-        $textile = new Textile();
-        if ( ! $restricted) return trim($textile->TextileThis($text));
-        return trim($textile->TextileRestricted($text));
+        if (empty($text)) {
+            return '';
+        }
+        $parser = new \Netcarver\Textile\Parser();
+        //if ( ! $restricted) return trim(strip_tags($textile->TextileThis($text)));
+        //return trim(strip_tags($textile->TextileRestricted($text)));
+        return $parser->parse($text);
     }
 }
 
