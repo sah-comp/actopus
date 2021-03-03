@@ -27,7 +27,7 @@ class Cinnebar_Input
     {
         $this->gpc_magic_quotes_repair();
     }
-    
+
     /**
      * Disables magic quotes at runtime.
      *
@@ -44,7 +44,8 @@ class Cinnebar_Input
      */
     protected function gpc_magic_quotes_repair()
     {
-        if ( ! get_magic_quotes_gpc()) return; // no need to repair
+        return;
+        //if ( ! get_magic_quotes_gpc()) return; // no need to repair
         Cinnebar_Logger::instance()->log('gpc_magic_quotes should be OFF, but are ON', 'warn');
         $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
         while (list($key, $val) = each($process)) {
@@ -60,7 +61,7 @@ class Cinnebar_Input
         }
         unset($process);
     }
-    
+
     /**
      * Returns a value from POST or null if token is not set.
      *
@@ -73,8 +74,12 @@ class Cinnebar_Input
      */
     public function post($token = null)
     {
-        if ($token === null && ! empty($_POST)) return true;
-        if ( ! isset($_POST[$token])) return null;
+        if ($token === null && ! empty($_POST)) {
+            return true;
+        }
+        if (! isset($_POST[$token])) {
+            return null;
+        }
         return $this->sanatized($_POST[$token]);
     }
 
@@ -90,11 +95,15 @@ class Cinnebar_Input
      */
     public function get($token = null)
     {
-        if ($token === null && ! empty($_GET)) return true;
-        if ( ! isset($_GET[$token])) return null;
+        if ($token === null && ! empty($_GET)) {
+            return true;
+        }
+        if (! isset($_GET[$token])) {
+            return null;
+        }
         return $this->sanatized($_GET[$token]);
     }
-    
+
     /**
      * Returns the sanatized value.
      *
